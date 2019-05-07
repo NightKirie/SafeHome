@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Apply</title>
+  </head>
+  <body>
+    <form action="/upload" method="get" class="apply">
+      Name:<input name="name" type="text"><br>
+      Phone number:<input name="phone" type="text"><br>
+      Email address:<input name="email" type="text"><br>
+      Address:<input name="address" type="text"><br>
+      Relation:<input name="relation" type="text"><br> 
+      <button type="button" id="submit">submit</button><br>
+      <h1 class="apply" id"result"></h1>
+    </form>
+    <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(function(){
+        $('#submit').click((event)=>{ 
+          event.preventDefault()
+          $.get('./upload',{
+            name:$('.apply input[name="name"]').val(),
+            phone:$('.apply input[name="phone"]').val(),
+            email:$('.apply input[name="email"]').val(),
+            address:$('.apply input[name="address"]').val(),
+            relation:$('.apply input[name="relation"]').val()
+          }, (data)=>{
+          $("#result").text(data)
+          })
+        })
+      })
+    </script>
+
+        <!--form action="/show" method="post">
+      <input type="submit" value="show"/>
+    </form-->
+  </body>
+</html>
