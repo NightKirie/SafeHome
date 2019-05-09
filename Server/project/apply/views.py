@@ -23,7 +23,14 @@ def upload(request):
         Case.objects.create(name=request.GET.get("name"),
                             phone=request.GET.get("phone"),
                             email=request.GET.get("email"),
-                            address=request.GET.get("address"),
+                            addressCounty=request.GET.get("county"),
+                            addressDistrict=request.GET.get("district"),
+                            addressRoad=request.GET.get("road"),
+                            addressLane=request.GET.get("lane"),
+                            addressAlley=request.GET.get("alley"),
+                            addressNumber=request.GET.get("number"),
+                            addressFloor=request.GET.get("floor"),
+                            addressRoom=request.GET.get("room"),
                             relation=request.GET.get("relation"))
         path = os.path.abspath('.') + "/check/casefiles/case" + request.GET.get("name")
         CaseFiles.objects.create(name=request.GET.get("name"), path=path)
