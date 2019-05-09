@@ -23,13 +23,11 @@ def upload(request):
     path = os.path.abspath('.') + "/uploads"
     destination = os.path.abspath('.') + "/check/casefiles/case" + name
 
-    # if(os.path.isdir(destination) == False):
-    #     os.mkdir(destination)
-    #     CaseFiles.objects.create(name=request.POST.get('name'),
-    #                              path=destination)
-
     for f in uploadFiles:
-        fs.save(f.name, f)
+        if f.name.endswith('.html'):
+            fs.save('result'+name+'.html', f)
+        else:
+            fs.save(f.name, f)
 
     for f in os.listdir(path):
         shutil.move(path + "/" + f, destination)

@@ -29,7 +29,14 @@
             name:$('.apply input[name="name"]').val(),
             phone:$('.apply input[name="phone"]').val(),
             email:$('.apply input[name="email"]').val(),
-            address:$('.apply input[name="address"]').val(),
+            county:$('.apply input[name="county"]').val(),
+            district:$('.apply input[name="district"]').val(),
+            road:$('.apply input[name="road"]').val(),
+            lane:$('.apply input[name="lane"]').val(),
+            alley:$('.apply input[name="alley"]').val(),
+            number:$('.apply input[name="number"]').val(),
+            floor:$('.apply input[name="floor"]').val(),
+            room:$('.apply input[name="room"]').val(),
             relation:$('.apply input[name="relation"]').val()
           }, (data)=>{
           $("#result").text(data)
