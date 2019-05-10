@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['luffy.ee.ncku.edu.tw']
 # Application definition
 
 INSTALLED_APPS = [
+    'authentication.apps.AuthenticationConfig',
     'check.apps.CheckConfig',
     'apply.apps.ApplyConfig',
     'django.contrib.admin',

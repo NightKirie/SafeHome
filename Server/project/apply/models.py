@@ -8,6 +8,7 @@ class Case(models.Model):
     userID = models.CharField(max_length=50)
     phone = models.CharField(max_length=10)
     email = models.CharField(max_length=50)
+    address = models.CharField(max_length=100)
     addressCounty = models.CharField(max_length=5)
     addressDistrict = models.CharField(max_length=5)
     addressRoad = models.CharField(max_length=10)
@@ -23,19 +24,4 @@ class Case(models.Model):
     checked = models.CharField(max_length=5)
 
     def __str__(self):
-        response = ""
-        title = []
-        title.append(self.addressCounty)
-        title.append(self.addressDistrict)
-        title.append(self.addressRoad)
-        title.append(self.addressLane)
-        title.append(self.addressAlley)
-        title.append(self.addressNumber)
-        title.append(self.addressFloor)
-        title.append(self.addressRoom)
-
-        for t in title:
-            if(t != "none"):
-                response = response + t
-
-        return self.addressCounty
+        return self.address

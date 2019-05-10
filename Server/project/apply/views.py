@@ -20,18 +20,21 @@ def upload(request):
         return HttpResponse(json.dumps({'result': 'exist'}),
                             content_type="application/json")
     else:
-        Case.objects.create(name=nullInputHandle(request.GET.get("name")),
-                            phone=nullInputHandle(request.GET.get("phone")),
-                            email=nullInputHandle(request.GET.get("email")),
-                            addressCounty=nullInputHandle(request.GET.get("county")),
-                            addressDistrict=nullInputHandle(request.GET.get("district")),
-                            addressRoad=nullInputHandle(request.GET.get("road")),
-                            addressLane=nullInputHandle(request.GET.get("lane")),
-                            addressAlley=nullInputHandle(request.GET.get("alley")),
-                            addressNumber=nullInputHandle(request.GET.get("number")),
-                            addressFloor=nullInputHandle(request.GET.get("floor")),
-                            addressRoom=nullInputHandle(request.GET.get("room")),
-                            relation=request.GET.get("relation"))
+        Case.objects.create(name=nullInputHandle(request.GET.get("name"), 0),
+                            phone=nullInputHandle(request.GET.get("phone"), 0),
+                            email=nullInputHandle(request.GET.get("email"), 0),
+                            addressCounty=nullInputHandle(request.GET.get("county"), 0),
+                            addressDistrict=nullInputHandle(request.GET.get("district"), 0),
+                            addressRoad=nullInputHandle(request.GET.get("road"), 0),
+                            addressLane=nullInputHandle(request.GET.get("lane"), 0),
+                            addressAlley=nullInputHandle(request.GET.get("alley"), 0),
+                            addressNumber=nullInputHandle(request.GET.get("number"), 0),
+                            addressFloor=nullInputHandle(request.GET.get("floor"), 0),
+                            addressRoom=nullInputHandle(request.GET.get("room"), 0),
+                            relation=nullInputHandle(request.GET.get("relation"), 0))
+        case = Case.objects.get(name=request.GET.get("name"))
+        case.address = nullInputHandle(case.addressCounty, 1) + nullInputHandle(case.addressDistrict, 1) + nullInputHandle(case.addressRoad, 1) + nullInputHandle(case.addressLane, 1) + nullInputHandle(case.addressAlley, 1) + nullInputHandle(case.addressNumber, 1) + nullInputHandle(case.addressFloor, 1) + nullInputHandle(case.addressRoom, 1)
+        case.save()
         path = os.path.abspath('.') + "/check/casefiles/case" + request.GET.get("name")
         CaseFiles.objects.create(name=request.GET.get("name"), path=path)
         os.mkdir(path)
@@ -39,12 +42,19 @@ def upload(request):
                             content_type="application/json")
 
 
-def nullInputHandle(input):
-    if not input:
-        data = "none"
-        return data
-    else:
-        return input
+def nullInputHandle(input, mode):
+    if mode == 0:
+        if not input:
+            data = "none"
+            return data
+        else:
+            return input
+    if mode == 1:
+        if input == "none":
+            data = ""
+            return data
+        else:
+            return input
 
 
 # Outputting CSV test
