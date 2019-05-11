@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
-from .forms import CustomUserCreationForm
 
 import json
 # Create your views here.
@@ -9,16 +8,14 @@ import json
 
 def register(request):
     if request.method == 'POST':
-#        form = UserCreationForm(request.POST)
-        form = CustomUserCreationForm(request.POST)
+        form = UserCreationForm(request.POST)
         print("Errors", form.errors)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect("/accounts/login")
         else:
-            return HttpResponse(json.dumps({'statusCode': 'failed'}),
+            return HttpResponse(json.dumps({'statusCode': 'success'}),
                                 content_type="application/json")
     else:
-#        form = UserCreationForm()
-        form = CustomUserCreationForm()
+        form = UserCreationForm()
         return render(request, "registration/register.html", {'form': form})
