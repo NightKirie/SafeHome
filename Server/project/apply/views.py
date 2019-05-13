@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Case
 from check.models import CaseFiles
+from authentication.views import group_required
 
 import json
 import os
@@ -10,11 +11,13 @@ import csv
 # Create your views here.
 
 
+@group_required('House', 'Volunteer')
 def home(request):
     path = os.path.abspath('.') + "/templates/apply.html"
     return render(request, path)
 
 
+@group_required('House', 'Volunteer')
 def upload(request):
     if Case.objects.filter(name=request.GET.get("name")):
         return HttpResponse(json.dumps({'result': 'exist'}),
@@ -69,7 +72,9 @@ def someView(request):
     return response
 
 
-# def showCases(request):
-#    data = Case.objects.all()
-#    for
-# 讓model多一個完整地址的欄位，並寫一個function把地址合併完整
+def showCases(request):
+    data = Case.objects.all()
+    for d in data:
+        print(d.name)
+
+# 分配cases

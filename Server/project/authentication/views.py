@@ -1,16 +1,16 @@
+from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
-from .forms import CustomUserCreationForm
+from .forms import HouseUserCreationForm, VolunteerUserCreationForm, EngineerUserCreationForm
 
 import json
 # Create your views here.
 
 
-def register(request):
+def houseRegister(request):
     if request.method == 'POST':
-#        form = UserCreationForm(request.POST)
-        form = CustomUserCreationForm(request.POST)
+        form = HouseUserCreationForm(request.POST)
         print("Errors", form.errors)
         if form.is_valid():
             form.save()
@@ -19,6 +19,45 @@ def register(request):
             return HttpResponse(json.dumps({'statusCode': 'failed'}),
                                 content_type="application/json")
     else:
-#        form = UserCreationForm()
-        form = CustomUserCreationForm()
+        form = HouseUserCreationForm()
         return render(request, "registration/register.html", {'form': form})
+
+
+def volunteerRegister(request):
+    if request.method == 'POST':
+        form = VolunteerUserCreationForm(request.POST)
+        print("Errors", form.errors)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/accounts/login")
+        else:
+            return HttpResponse(json.dumps({'statusCode': 'failed'}),
+                                content_type="application/json")
+    else:
+        form = HouseUserCreationForm()
+        return render(request, "registration/register.html", {'form': form})
+
+
+def engineerRegister(request):
+    if request.method == 'POST':
+        form = EngineerUserCreationForm(request.POST)
+        print("Errors", form.errors)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/accounts/login")
+        else:
+            return HttpResponse(json.dumps({'statusCode': 'failed'}),
+                                content_type="application/json")
+    else:
+        form = HouseUserCreationForm()
+        return render(request, "registration/register.html", {'form': form})
+
+
+def group_required(*group_names):
+    def in_groups(user):
+        if user.is_authenticated:
+            if bool(user.groups.filter(name__in=group_names)) | user.is_superuser:
+                return True
+        return False
+
+    return user_passes_test(in_groups, login_url='/accounts/login')
