@@ -6,17 +6,22 @@
   <body>
     <form action="/upload" method="get" class="apply">
       Name:<input name="name" type="text"><br>
+      TWID:<input name="twid" type="text"><br>
       Phone number:<input name="phone" type="text"><br>
-      Email address:<input name="email" type="text"><br>
+      Relation:<input name="relation" type="text"><br>
+      Date:<input name="date" type="text"><br>
       County/City:<input name="county" type="text"><br>
       Town/Village/City/District:<input name="district" type="text"><br>
       Road:<input name="road" type="text"><br>
+      Section:<input name="section" type="text"><br>
       Lane:<input name="lane" type="text"><br>
       Alley:<input name="alley" type="text"><br>
       Number:<input name="number" type="text"><br>
       Floor:<input name="floor" type="text"><br>
       Room:<input name="room" type="text"><br>
-      Relation:<input name="relation" type="text"><br> 
+      Building age:<input name="age" type="text"><br>
+      Building type:<input name=type" type="text"><br>
+      Remarks:<input name="remarks" type="text"><br>
       <button type="button" id="submit">submit</button><br>
       <h1 class="apply" id"result"></h1>
     </form>
@@ -27,17 +32,22 @@
           event.preventDefault()
           $.get('./upload',{
             name:$('.apply input[name="name"]').val(),
+            TWID:$('.apply input[name="twid"]').val(),
             phone:$('.apply input[name="phone"]').val(),
-            email:$('.apply input[name="email"]').val(),
+            relation:$('.apply input[name="relation"]').val(),
+            date:$('.apply input[name="date"]').val(),
             county:$('.apply input[name="county"]').val(),
             district:$('.apply input[name="district"]').val(),
             road:$('.apply input[name="road"]').val(),
+            section:$('.apply input[name="section"]').val(),
             lane:$('.apply input[name="lane"]').val(),
             alley:$('.apply input[name="alley"]').val(),
             number:$('.apply input[name="number"]').val(),
             floor:$('.apply input[name="floor"]').val(),
             room:$('.apply input[name="room"]').val(),
-            relation:$('.apply input[name="relation"]').val()
+            age:$('.apply input[name="age"]').val(),
+            type:$('.apply input[name="type"]').val(),
+            remarks:$('.apply input[name="remarks"]').val()
           }, (data)=>{
           $("#result").text(data)
           })

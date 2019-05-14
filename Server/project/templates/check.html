@@ -7,14 +7,19 @@
   <body>
     <form action="./upload/" method="post" enctype="multipart/form-data">
       {% csrf_token %}
-      Name:<input name="name" type="text"><br>
+      SN:<input name="sn" type="text"><br>
       <input type="file" name="file" multiple><br>
       <button type="submit">Upload</button>
     </form>
     <form action="./result/" method="post">
       {% csrf_token %}
-      Name:<input name="name" type="text"><br>
-      <button type="submit">Request</button>
+      SN:<input name="sn" type="text"><br>
+      <button type="submit">Show result</button>
+    </form>
+    <form action="./assign/" method="post">
+      {% csrf_token %}
+      SN:<input name="sn" type="text"><br>
+      <button type="submit">Assign</button>
     </form>
   </body>
 </html>

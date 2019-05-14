@@ -2,6 +2,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.files.storage import FileSystemStorage
+from django.contrib.auth.models import User
 from .models import CaseFiles
 from apply.models import Case
 from authentication.views import group_required
@@ -20,34 +21,66 @@ def home(request):
 
 @group_required('Volunteer')
 def upload(request):
-    name = request.POST.get('name')
+    SN = request.POST.get('sn')
     uploadFiles = request.FILES.getlist('file')
 
-    fs = FileSystemStorage()
-    path = os.path.abspath('.') + "/uploads"
-    destination = os.path.abspath('.') + "/check/casefiles/case" + name
+    if CaseFiles.objects.filter(SN=SN):
+        fs = FileSystemStorage()
+        path = os.path.abspath('.') + "/uploads"
+        destination = os.path.abspath('.') + "/check/casefiles/case" + SN
 
-    for f in uploadFiles:
-        if f.name.endswith('.html'):
-            fs.save('result'+name+'.html', f)
-        else:
-            fs.save(f.name, f)
+        for f in uploadFiles:
+            if f.name.endswith('.html'):
+                fs.save('result'+SN+'.html', f)
+            else:
+                fs.save(f.name, f)
 
-    for f in os.listdir(path):
-        shutil.move(path + "/" + f, destination)
+        for f in os.listdir(destination):
+            os.remove(f)
 
-    Case.objects.filter(name=name).update(checked=1)
+        for f in os.listdir(path):
+            shutil.move(path + "/" + f, destination)
 
-    return HttpResponse(json.dumps({'statusCode': 'success'}),
-                        content_type="application/json")
+        Case.objects.filter(SN=SN).update(checked=1)
+
+        return HttpResponse(json.dumps({'statusCode': 'success'}),
+                            content_type="application/json")
+    else:
+        return HttpResponse(json.dumps({'statusCode': 'failed'}),
+                            content_type="application/json")
+
 
 @group_required('Volunteer', 'Engineer')
 def result(request):
-    name = request.POST.get('name')
-    case = CaseFiles.objects.get(name=name)
+    SN = request.POST.get('sn')
+    case = CaseFiles.objects.get(SN=SN)
 
-    if(os.path.isfile(case.path + "/result" + name + ".html") == True):
-        return render(request, case.path + "/result" + name + ".html")
+    if(os.path.isfile(case.path + "/result" + SN + ".html") == True):
+        return render(request, case.path + "/result" + SN + ".html")
+    else:
+        return HttpResponse(json.dumps({'statusCode': 'failed'}),
+                            content_type="application/json")
+
+
+@group_required('Volunteer', 'Engineer')
+def showUnassignedCases(request):
+    data = Case.objects.all()
+    response = []
+    for d in data:
+        if d.assign == '0':
+            response.append(d.name + " " + d.SN)
+    for r in response:
+        print(r)
+
+
+@group_required('Volunteer', 'Engineer')
+def assign(request):
+    SN = request.POST.get('sn')
+    Case.objects.filter(SN=SN).update(volunteer=request.user.username)
+    if Case.objects.get(SN=SN).volunteer == request.user.username:
+        Case.objects.filter(SN=SN).update(assign=1)
+        return HttpResponse(json.dumps({'statusCode': 'success'}),
+                            content_type="application/json")
     else:
         return HttpResponse(json.dumps({'statusCode': 'failed'}),
                             content_type="application/json")
