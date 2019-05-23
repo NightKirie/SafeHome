@@ -17,6 +17,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('showmycases/', views.showMyCases),
+    path('showcheckedcases/', views.showCheckedCases),
     path('showunassignedcases/', views.showUnassignedCases),
     path('assign/', views.assign),
     path('result/', views.result),

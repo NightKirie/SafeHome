@@ -6,7 +6,7 @@
   <body>
     <form action="/upload" method="get" class="apply">
       Name:<input name="name" type="text"><br>
-      TWID:<input name="twid" type="text"><br>
+      LineID:<input name="lineid" type="text"><br>
       Phone number:<input name="phone" type="text"><br>
       Relation:<input name="relation" type="text"><br>
       Date:<input name="date" type="text"><br>
@@ -20,19 +20,43 @@
       Floor:<input name="floor" type="text"><br>
       Room:<input name="room" type="text"><br>
       Building age:<input name="age" type="text"><br>
-      Building type:<input name=type" type="text"><br>
+      Building type:<input name="type" type="text"><br>
+      Building floors:<input name="floors" type="text"><br>
       Remarks:<input name="remarks" type="text"><br>
-      <button type="button" id="submit">submit</button><br>
-      <h1 class="apply" id"result"></h1>
+      <button type="button" id="applySubmit">apply</button><br>
+      <h1 class="apply" id"applyResult"></h1>
+    </form>
+    <form action="/modify" method="get" class="modify">
+      SN:<input name="sn" type="text"><br>
+      Name:<input name="name" type="text"><br>
+      LineID:<input name="lineid" type="text"><br>
+      Phone number:<input name="phone" type="text"><br>
+      Relation:<input name="relation" type="text"><br>
+      Date:<input name="date" type="text"><br>
+      County/City:<input name="county" type="text"><br>
+      Town/Village/City/District:<input name="district" type="text"><br>
+      Road:<input name="road" type="text"><br>
+      Section:<input name="section" type="text"><br>
+      Lane:<input name="lane" type="text"><br>
+      Alley:<input name="alley" type="text"><br>
+      Number:<input name="number" type="text"><br>
+      Floor:<input name="floor" type="text"><br>
+      Room:<input name="room" type="text"><br>
+      Building age:<input name="age" type="text"><br>
+      Building type:<input name="type" type="text"><br>
+      Building floors:<input name="floors" type="text"><br>
+      Remarks:<input name="remarks" type="text"><br>
+      <button type="button" id="modifySubmit">modify</button><br>
+      <h1 class="apply" id"modifyResult"></h1>
     </form>
     <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>
       $(document).ready(function(){
-        $('#submit').click((event)=>{ 
+        $('#applySubmit').click((event)=>{ 
           event.preventDefault()
           $.get('./upload',{
             name:$('.apply input[name="name"]').val(),
-            TWID:$('.apply input[name="twid"]').val(),
+            LineID:$('.apply input[name="lineid"]').val(),
             phone:$('.apply input[name="phone"]').val(),
             relation:$('.apply input[name="relation"]').val(),
             date:$('.apply input[name="date"]').val(),
@@ -47,9 +71,36 @@
             room:$('.apply input[name="room"]').val(),
             age:$('.apply input[name="age"]').val(),
             type:$('.apply input[name="type"]').val(),
+            floors:$('.apply input[name="floors"]').val(),
             remarks:$('.apply input[name="remarks"]').val()
           }, (data)=>{
-          $("#result").text(data)
+          $("#applyResult").text(data)
+          })
+        })
+        $('#modifySubmit').click((event)=>{ 
+          event.preventDefault()
+          $.get('./modify',{
+            sn:$('.modify input[name="sn"]').val(),
+            name:$('.modify input[name="name"]').val(),
+            LineID:$('.modify input[name="lineid"]').val(),
+            phone:$('.modify input[name="phone"]').val(),
+            relation:$('.modify input[name="relation"]').val(),
+            date:$('.modify input[name="date"]').val(),
+            county:$('.modify input[name="county"]').val(),
+            district:$('.modify input[name="district"]').val(),
+            road:$('.modify input[name="road"]').val(),
+            section:$('.modify input[name="section"]').val(),
+            lane:$('.modify input[name="lane"]').val(),
+            alley:$('.modify input[name="alley"]').val(),
+            number:$('.modify input[name="number"]').val(),
+            floor:$('.modify input[name="floor"]').val(),
+            room:$('.modify input[name="room"]').val(),
+            age:$('.modify input[name="age"]').val(),
+            type:$('.modify input[name="type"]').val(),
+            floors:$('.modify input[name="floors"]').val(),
+            remarks:$('.modify input[name="remarks"]').val()
+          }, (data)=>{
+          $("#modifyResult").text(data)
           })
         })
       })

@@ -33,10 +33,41 @@ def upload(request):
         # 要可以更改資料
         # 用地址判斷
         # 不同人申請同一間，要顯示兩筆？
+        else:
+            Case.objects.create(SN=generateSN(),
+                                name=nullInputHandle(request.GET.get("name"), 0),
+                                lineID=nullInputHandle(request.GET.get("LineID"), 0),
+                                username=request.user.username,
+                                phone=nullInputHandle(request.GET.get("phone"), 0),
+                                relation=nullInputHandle(request.GET.get("relation"), 0),
+                                wishDate=nullInputHandle(request.GET.get("date"), 0),
+                                address=address,
+                                addressCounty=nullInputHandle(request.GET.get("county"), 0),
+                                addressDistrict=nullInputHandle(request.GET.get("district"), 0),
+                                addressRoad=nullInputHandle(request.GET.get("road"), 0),
+                                addressSection=nullInputHandle(request.GET.get("section"), 0),
+                                addressLane=nullInputHandle(request.GET.get("lane"), 0),
+                                addressAlley=nullInputHandle(request.GET.get("alley"), 0),
+                                addressNumber=nullInputHandle(request.GET.get("number"), 0),
+                                addressFloor=nullInputHandle(request.GET.get("floor"), 0),
+                                addressRoom=nullInputHandle(request.GET.get("room"), 0),
+                                buildingAge=nullInputHandle(request.GET.get("age"), 0),
+                                buildingType=nullInputHandle(request.GET.get("type"), 0),
+                                buildingFloors=nullInputHandle(request.GET.get("floors"), 0),
+                                buildingRemarks=nullInputHandle(request.GET.get("remarks"), 0),
+                                assign=0,
+                                checked=0,
+                                applyDate=datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
+            case = Case.objects.get(name=request.GET.get("name"), address=address)
+            path = os.path.abspath('.') + "/check/casefiles/case" + case.SN
+            CaseFiles.objects.create(SN=case.SN, name=request.GET.get("name"), path=path)
+            os.mkdir(path)
+            return HttpResponse(json.dumps({'statusCode': 'success'}),
+                                content_type="application/json")
     else:
         Case.objects.create(SN=generateSN(),
                             name=nullInputHandle(request.GET.get("name"), 0),
-                            TWID=nullInputHandle(request.GET.get("TWID"), 0),
+                            lineID=nullInputHandle(request.GET.get("LineID"), 0),
                             username=request.user.username,
                             phone=nullInputHandle(request.GET.get("phone"), 0),
                             relation=nullInputHandle(request.GET.get("relation"), 0),
@@ -53,6 +84,7 @@ def upload(request):
                             addressRoom=nullInputHandle(request.GET.get("room"), 0),
                             buildingAge=nullInputHandle(request.GET.get("age"), 0),
                             buildingType=nullInputHandle(request.GET.get("type"), 0),
+                            buildingFloors=nullInputHandle(request.GET.get("floors"), 0),
                             buildingRemarks=nullInputHandle(request.GET.get("remarks"), 0),
                             assign=0,
                             checked=0,
@@ -60,10 +92,10 @@ def upload(request):
         case = Case.objects.get(address=address)
         # case.address = nullInputHandle(case.addressCounty, 1) + nullInputHandle(case.addressDistrict, 1) + nullInputHandle(case.addressRoad, 1) + nullInputHandle(case.addressSection, 1) + nullInputHandle(case.addressLane, 1) + nullInputHandle(case.addressAlley, 1) + nullInputHandle(case.addressNumber, 1) + nullInputHandle(case.addressFloor, 1) + nullInputHandle(case.addressRoom, 1)
         # case.save()
-        path = os.path.abspath('.') + "/check/casefiles/case" + Case.objects.get(address=address).SN
+        path = os.path.abspath('.') + "/check/casefiles/case" + case.SN
         CaseFiles.objects.create(SN=case.SN, name=request.GET.get("name"), path=path)
         os.mkdir(path)
-        return HttpResponse(json.dumps({'result': 0}),
+        return HttpResponse(json.dumps({'statusCode': 'success'}),
                             content_type="application/json")
 
 
@@ -106,4 +138,47 @@ def generateSN():
         SN = datetime.datetime.now().strftime("%Y%m%d") + '{0:04}'.format(count)
     return SN
 
-# Modifyyyyyy
+
+@group_required('House', 'Volunteer')
+def modify(request):
+    address = nullInputHandle(request.GET.get("county"), 1) + nullInputHandle(request.GET.get("district"), 1) + nullInputHandle(request.GET.get("road"), 1) + nullInputHandle(request.GET.get("section"), 1) + nullInputHandle(request.GET.get("lane"), 1) + nullInputHandle(request.GET.get("alley"), 1) + nullInputHandle(request.GET.get("number"), 1) + nullInputHandle(request.GET.get("floor"), 1) + nullInputHandle(request.GET.get("room"), 1)
+    if Case.objects.filter(username=request.user.username,
+                           SN=request.GET.get('sn')):
+        case = Case.objects.get(username=request.user.username,
+                                SN=request.GET.get('sn'))
+        if case.lineID != nullInputHandle(request.GET.get('LineID'), 0):
+            case.lineID = nullInputHandle(request.GET.get('LineID'), 0)
+        if case.phone != nullInputHandle(request.GET.get('phone'), 0):
+            case.phone = nullInputHandle(request.GET.get('phone'), 0)
+        if case.relation != nullInputHandle(request.GET.get('relation'), 0):
+            case.relation = nullInputHandle(request.GET.get('relation'), 0)
+        if case.wishDate != nullInputHandle(request.GET.get('date'), 0):
+            case.wishDate = nullInputHandle(request.GET.get('date'), 0)
+        if case.address != address:
+            case.address = address
+            case.addressCounty = nullInputHandle(request.GET.get('county'), 0)
+            case.addressDistrict = nullInputHandle(request.GET.get('district'), 0)
+            case.addressRoad = nullInputHandle(request.GET.get('road'), 0)
+            case.addressSection = nullInputHandle(request.GET.get('section'), 0)
+            case.addressLane = nullInputHandle(request.GET.get('lane'), 0)
+            case.addressAlley = nullInputHandle(request.GET.get('alley'), 0)
+            case.addressNumber = nullInputHandle(request.GET.get('number'), 0)
+            case.addressFloor = nullInputHandle(request.GET.get('floor'), 0)
+            case.addressRoom = nullInputHandle(request.GET.get('room'), 0)
+        if case.buildingAge != nullInputHandle(request.GET.get('age'), 0):
+            case.buildingAge = nullInputHandle(request.GET.get('age'), 0)
+        if case.buildingType != nullInputHandle(request.GET.get('type'), 0):
+            case.buildingType = nullInputHandle(request.GET.get('type'), 0)
+        if case.buildingFloors != nullInputHandle(request.GET.get("floors"), 0):
+            case.buildingFloors = nullInputHandle(request.GET.get("floors"), 0)
+        if case.buildingRemarks != nullInputHandle(request.GET.get('remarks'), 0):
+            case.buildingRemarks = nullInputHandle(request.GET.get('remarks'), 0)
+        case.applyDate = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+
+        case.save()
+
+        return HttpResponse(json.dumps({'statusCode': 'success'}),
+                            content_type="application/json")
+    else:
+        return HttpResponse(json.dumps({'statusCode': 'failed'}),
+                            content_type="application/json")

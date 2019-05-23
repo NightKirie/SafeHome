@@ -6,7 +6,7 @@ from django.db import models
 class Case(models.Model):
     SN = models.CharField(max_length=12, default='000000000000')
     name = models.CharField(max_length=16)
-    TWID = models.CharField(max_length=10)
+    lineID = models.CharField(max_length=100)
     username = models.CharField(max_length=50)
     phone = models.CharField(max_length=10)
     relation = models.CharField(max_length=5)
@@ -23,6 +23,7 @@ class Case(models.Model):
     addressRoom = models.CharField(max_length=5)
     buildingAge = models.CharField(max_length=3)
     buildingType = models.CharField(max_length=20)
+    buildingFloors = models.CharField(max_length=3, default='1')
     buildingRemarks = models.CharField(max_length=100)
     assign = models.CharField(max_length=10)
     volunteer = models.CharField(max_length=16)

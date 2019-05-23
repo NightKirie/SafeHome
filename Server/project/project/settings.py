@@ -29,8 +29,10 @@ ALLOWED_HOSTS = ['luffy.ee.ncku.edu.tw']
 
 
 # Application definition
+#    'werkzeug_debugger_runserver',
 
 INSTALLED_APPS = [
+    'django_extensions',
     'authentication.apps.AuthenticationConfig',
     'check.apps.CheckConfig',
     'apply.apps.ApplyConfig',
