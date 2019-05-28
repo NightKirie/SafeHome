@@ -23,7 +23,28 @@
     </form>
     <a href="./showunassignedcases/">Show unassigned cases</a><br>
     <a href="./showcheckedcases/">Show checked cases</a><br>
-    <a href="./showmycases/">Show my cases</a>
+    <a href="./showmycases/">Show my cases</a><br>
+    <form action="./showdetail/" method="get" class="showDetail">
+      {% csrf_token %}
+      Name:<input name="name" type="text"><br>
+      Address:<input name="address" method="get"><br>
+      <button id="detailSubmit" type="submit">look for</button>
+    </form>
+
+    <!--script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(function(){
+        $('#detailCommit').click((event)=>{
+          event.preventDefault()
+          $.get('./showdetail/', {
+            name:$('.showDetail input[name="name"]').val(),
+            address:$('.showDetail input[name="address"]').val()
+          }, (data)=>{
+            $('#detailResult').text(data)
+          })
+        })
+      })
+    </script-->
   </body>
 </html>
 
