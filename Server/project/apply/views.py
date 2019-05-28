@@ -24,7 +24,7 @@ def home(request):
 
 @group_required('House', 'Volunteer')
 def upload(request):
-    address = nullInputHandle(request.GET.get("county"), 1) + nullInputHandle(request.GET.get("district"), 1) + nullInputHandle(request.GET.get("road"), 1) + nullInputHandle(request.GET.get("section"), 1) + nullInputHandle(request.GET.get("lane"), 1) + nullInputHandle(request.GET.get("alley"), 1) + nullInputHandle(request.GET.get("number"), 1) + nullInputHandle(request.GET.get("floor"), 1) + nullInputHandle(request.GET.get("room"), 1)
+    address = nullInputHandle(request.GET.get("county"), 1) + nullInputHandle(request.GET.get("district"), 1) + nullInputHandle(request.GET.get("road"), 1) + nullInputHandle(request.GET.get("section"), 1) + nullInputHandle(request.GET.get("lane"), 1) + nullInputHandle(request.GET.get("alley"), 1) + nullInputHandle(request.GET.get("number"), 1) + nullInputHandle(request.GET.get("numberD"), 1) + nullInputHandle(request.GET.get("floor"), 1) + nullInputHandle(request.GET.get("floorD"), 1) + nullInputHandle(request.GET.get("room"), 1)
     # if Case.objects.filter(name=request.GET.get("name")):
     if Case.objects.filter(address=address):
         if Case.objects.filter(name=request.GET.get("name")):
@@ -49,7 +49,9 @@ def upload(request):
                                 addressLane=nullInputHandle(request.GET.get("lane"), 0),
                                 addressAlley=nullInputHandle(request.GET.get("alley"), 0),
                                 addressNumber=nullInputHandle(request.GET.get("number"), 0),
+                                addressNumberD=nullInputHandle(request.GET.get("numberD"), 0),
                                 addressFloor=nullInputHandle(request.GET.get("floor"), 0),
+                                addressFloorD=nullInputHandle(request.GET.get("floorD"), 0),
                                 addressRoom=nullInputHandle(request.GET.get("room"), 0),
                                 buildingAge=nullInputHandle(request.GET.get("age"), 0),
                                 buildingType=nullInputHandle(request.GET.get("type"), 0),
@@ -80,7 +82,9 @@ def upload(request):
                             addressLane=nullInputHandle(request.GET.get("lane"), 0),
                             addressAlley=nullInputHandle(request.GET.get("alley"), 0),
                             addressNumber=nullInputHandle(request.GET.get("number"), 0),
+                            addressNumberD=nullInputHandle(request.GET.get("numberD"), 0),
                             addressFloor=nullInputHandle(request.GET.get("floor"), 0),
+                            addressFloorD=nullInputHandle(request.GET.get("floorD"), 0),
                             addressRoom=nullInputHandle(request.GET.get("room"), 0),
                             buildingAge=nullInputHandle(request.GET.get("age"), 0),
                             buildingType=nullInputHandle(request.GET.get("type"), 0),
@@ -141,7 +145,7 @@ def generateSN():
 
 @group_required('House', 'Volunteer')
 def modify(request):
-    address = nullInputHandle(request.GET.get("county"), 1) + nullInputHandle(request.GET.get("district"), 1) + nullInputHandle(request.GET.get("road"), 1) + nullInputHandle(request.GET.get("section"), 1) + nullInputHandle(request.GET.get("lane"), 1) + nullInputHandle(request.GET.get("alley"), 1) + nullInputHandle(request.GET.get("number"), 1) + nullInputHandle(request.GET.get("floor"), 1) + nullInputHandle(request.GET.get("room"), 1)
+    address = nullInputHandle(request.GET.get("county"), 1) + nullInputHandle(request.GET.get("district"), 1) + nullInputHandle(request.GET.get("road"), 1) + nullInputHandle(request.GET.get("section"), 1) + nullInputHandle(request.GET.get("lane"), 1) + nullInputHandle(request.GET.get("alley"), 1) + nullInputHandle(request.GET.get("number"), 1) + nullInputHandle(request.GET.get("numberD"), 1) + nullInputHandle(request.GET.get("floor"), 1) + nullInputHandle(request.GET.get("floorD"), 1) + nullInputHandle(request.GET.get("room"), 1)
     if Case.objects.filter(username=request.user.username,
                            SN=request.GET.get('sn')):
         case = Case.objects.get(username=request.user.username,
@@ -163,7 +167,9 @@ def modify(request):
             case.addressLane = nullInputHandle(request.GET.get('lane'), 0)
             case.addressAlley = nullInputHandle(request.GET.get('alley'), 0)
             case.addressNumber = nullInputHandle(request.GET.get('number'), 0)
+            case.addressNumberD = nullInputHandle(request.GET.get('numberD'), 0)
             case.addressFloor = nullInputHandle(request.GET.get('floor'), 0)
+            case.addressFloorD = nullInputHandle(request.GET.get('floorD'), 0)
             case.addressRoom = nullInputHandle(request.GET.get('room'), 0)
         if case.buildingAge != nullInputHandle(request.GET.get('age'), 0):
             case.buildingAge = nullInputHandle(request.GET.get('age'), 0)
