@@ -7,14 +7,14 @@ class Name extends Component {
         return (
             <View>
                 <Text style={{ color: "#F37021", fontSize: 50 }}>
-                    {this.props.name} <Text style={{ color: "#BBBBBB", fontSize: 30 }}>你好</Text>
+                    {this.props.name} <Text style={{ color: "#BBBBBB", fontSize: 30 }}>您好</Text>
                 </Text>
             </View>
         );
     }
 }
 
-class VolunteerFirstPage extends Component {
+class VolunteerHomePage extends Component {
     static navigationOptions = {
         headerLeft: null,
         headerTitle: (
@@ -83,18 +83,7 @@ const styles = StyleSheet.create({
         marginHorizontal: "10%",
         marginTop: "10%",
         marginBottom: "5%",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.30,
-        shadowRadius: 4.65,
-        elevation: 8,
         backgroundColor: "white"
-    },
-    textName: {
-
     },
     containerWork: {
         flex: 2,
@@ -129,4 +118,4 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     }
 })
-export default VolunteerFirstPage;
+export default VolunteerHomePage;
