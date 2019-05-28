@@ -10,6 +10,7 @@ from authentication.views import group_required
 import json
 import os
 import shutil
+import datetime
 # Create your views here.
 
 
@@ -25,7 +26,7 @@ def upload(request):
     uploadFiles = request.FILES.getlist('file')
 
     if CaseFiles.objects.filter(SN=SN):
-        if Case.objects.get(SN=SN).checked == 0:
+        if Case.objects.get(SN=SN).assign == '1' and Case.objects.get(SN=SN).volunteer == request.user.username:
             fs = FileSystemStorage()
             path = os.path.abspath('.') + "/uploads"
             destination = os.path.abspath('.') + "/check/casefiles/case" + SN
@@ -37,21 +38,26 @@ def upload(request):
                     fs.save(f.name, f)
 
             for f in os.listdir(destination):
-                os.remove(f)
+                os.remove(destination + "/" + f)
 
             for f in os.listdir(path):
                 shutil.move(path + "/" + f, destination)
 
-            Case.objects.filter(SN=SN).update(checked=1)
+            Case.objects.filter(SN=SN).update(checked='1')
+            Case.objects.filter(SN=SN).update(checkDate=datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
 
             return HttpResponse(json.dumps({'statusCode': 'success'}),
                                 content_type="application/json")
 
         else:
-            return HttpResponse(json.dumps({'statusCode': 'exist'}),
-                                content_type="application/json")
+            if Case.objects.get(SN=SN).assign == '0':
+                return HttpResponse(json.dumps({'statusCode': 'case not assigne'}),
+                                    content_type="application/json")
+            if Case.objects.get(SN=SN).volunteer != request.user.username:
+                return HttpResponse(json.dumps({'statusCode': 'permission denied'}),
+                                    content_type="application/json")
     else:
-        return HttpResponse(json.dumps({'statusCode': 'failed'}),
+        return HttpResponse(json.dumps({'statusCode': 'cant find case'}),
                             content_type="application/json")
 
 
@@ -87,7 +93,7 @@ def showCheckedCases(request):
 
 @group_required('Volunteer', 'Engineer')
 def showMyCases(request):
-    data = Case.objects.filter(username=request.user.username, checked='0')
+    data = Case.objects.filter(volunteer=request.user.username, checked='0')
     response = []
     for d in data:
         response.append(d.SN + " " + d.name)
@@ -96,9 +102,9 @@ def showMyCases(request):
 
 @group_required('Volunteer', 'Engineer')
 def showDetail(request):
-    case = Case.objects.get(name=request.GET.get('name'),
-                            address=request.GET.get('address'))
+    case = Case.objects.get(SN=request.POST.get('sn'))
     response = []
+    response.append(case.SN)
     response.append(case.name)
     response.append(case.buildingType)
     response.append(case.address)
@@ -110,11 +116,15 @@ def showDetail(request):
 @group_required('Volunteer', 'Engineer')
 def assign(request):
     SN = request.POST.get('sn')
-    Case.objects.filter(SN=SN).update(volunteer=request.user.username)
-    if Case.objects.get(SN=SN).volunteer == request.user.username:
-        Case.objects.filter(SN=SN).update(assign=1)
-        return HttpResponse(json.dumps({'statusCode': 'success'}),
-                            content_type="application/json")
+    if Case.objects.filter(SN=SN):
+        if Case.objects.get(SN=SN).assign == '0':
+            Case.objects.filter(SN=SN).update(volunteer=request.user.username)
+            Case.objects.filter(SN=SN).update(assign='1')
+            return HttpResponse(json.dumps({'statusCode': 'success'}),
+                                content_type="application/json")
+        else:
+            return HttpResponse(json.dumps({'statusCode': 'already assigned'}),
+                                content_type="application/json")
     else:
-        return HttpResponse(json.dumps({'statusCode': 'failed'}),
+        return HttpResponse(json.dumps({'statusCode': 'cant find case'}),
                             content_type="application/json")

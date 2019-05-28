@@ -32,6 +32,7 @@ class Case(models.Model):
     checked = models.CharField(max_length=5)
     status = models.CharField(max_length=10)
     applyDate = models.CharField(max_length=60, default='undefined')
+    checkDate = models.CharField(max_length=60, default='undefined')
 
     def __str__(self):
         return self.address

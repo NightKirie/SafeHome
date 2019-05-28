@@ -24,10 +24,9 @@
     <a href="./showunassignedcases/">Show unassigned cases</a><br>
     <a href="./showcheckedcases/">Show checked cases</a><br>
     <a href="./showmycases/">Show my cases</a><br>
-    <form action="./showdetail/" method="get" class="showDetail">
+    <form action="./showdetail/" method="post" class="showDetail">
       {% csrf_token %}
-      Name:<input name="name" type="text"><br>
-      Address:<input name="address" method="get"><br>
+      SN:<input name="sn" type="text"><br>
       <button id="detailSubmit" type="submit">look for</button>
     </form>
 
