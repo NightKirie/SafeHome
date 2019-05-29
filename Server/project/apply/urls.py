@@ -17,7 +17,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('modify/', views.modify),
+    path('modifyapplication/modify/', views.modify),
+    path('modifyapplication/fetch/', views.modifyFetch),
+    path('modifyapplication/', views.modifyHome),
     path('someview/', views.someView),
     path('upload/', views.upload),
     path('', views.home),

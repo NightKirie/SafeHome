@@ -4,9 +4,10 @@
     <title>Apply</title>
   </head>
   <body>
-    <form action="/upload" method="get" class="apply">
+    <form action="./upload/" method="post" class="apply">
+      {% csrf_token %}
       Name:<input name="name" type="text"><br>
-      LineID:<input name="lineid" type="text"><br>
+      LineID:<input name="lineID" type="text"><br>
       Phone number:<input name="phone" type="text"><br>
       Relation:<input name="relation" type="text"><br>
       Wish date:<input name="date" type="text"><br>
@@ -25,14 +26,15 @@
       Building type:<input name="type" type="text"><br>
       Building floors:<input name="floors" type="text"><br>
       Remarks:<input name="remarks" type="text"><br>
-      <button type="button" id="applySubmit">apply</button><br>
+      <button type="submit" id="applySubmit">apply</button><br>
       <h1 class="apply" id"applyResult"></h1>
     </form>
 
-    <form action="/modify" method="get" class="modify">
+    <form action="./modify/" method="post" class="modify">
+      {% csrf_token %}
       SN:<input name="sn" type="text"><br>
       Name:<input name="name" type="text"><br>
-      LineID:<input name="lineid" type="text"><br>
+      LineID:<input name="lineID" type="text"><br>
       Phone number:<input name="phone" type="text"><br>
       Relation:<input name="relation" type="text"><br>
       Wish date:<input name="date" type="text"><br>
@@ -51,13 +53,13 @@
       Building type:<input name="type" type="text"><br>
       Building floors:<input name="floors" type="text"><br>
       Remarks:<input name="remarks" type="text"><br>
-      <button type="button" id="modifySubmit">modify</button><br>
+      <button type="submit" id="modifySubmit">modify</button><br>
       <h1 class="apply" id"modifyResult"></h1>
     </form>
 
 
 
-    <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!--script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>
       $(document).ready(function(){
         $('#applySubmit').click((event)=>{ 
@@ -116,10 +118,6 @@
           })
         })
       })
-    </script>
-
-        <!--form action="/show" method="post">
-      <input type="submit" value="show"/>
-    </form-->
+    </script-->
   </body>
 </html>

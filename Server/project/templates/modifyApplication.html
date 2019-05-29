@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Modify application</title>
+  </head>
+  <body>
+    <form action="./fetch/" method="get" class="fetch">
+      SN:<input name="sn" type="text"><br>
+      <button id="fetch">fetch</button>
+    </form>
+    <form action="./modify/" method="post" class="modify">
+      {% csrf_token %}
+      SN:<input name="sn" type="text"><br>
+      Name:<input name="name" type="text"><br>
+      LineID:<input name="lineID" type="text"><br>
+      Phone number:<input name="phone" type="text"><br>
+      Relation:<input name="relation" type="text"><br>
+      Wish date:<input name="date" type="text"><br>
+      County/City:<input name="county" type="text"><br>
+      Town/Village/City/District:<input name="district" type="text"><br>
+      Road:<input name="road" type="text"><br>
+      Section:<input name="section" type="text"><br>
+      Lane:<input name="lane" type="text"><br>
+      Alley:<input name="alley" type="text"><br>
+      Number:<input name="number" type="text"><br>
+      -number:<input name="numberD" type="text"><br>
+      Floor:<input name="floor" type="text"><br>
+      -floor:<input name="floorD" type="text"><br>
+      Room:<input name="room" type="text"><br>
+      Building age:<input name="age" type="text"><br>
+      Building type:<input name="type" type="text"><br>
+      Building floors:<input name="floors" type="text"><br>
+      Remarks:<input name="remarks" type="text"><br>
+      <button type="submit" id="modifySubmit">modify</button><br>
+      <h1 class="apply" id"modifyResult"></h1>
+    </form>
+
+    <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(function(){
+         $('#fetch').click((event)=>{ 
+          event.preventDefault()
+          $.get('./fetch/',{
+            sn:$('.fetch input[name="sn"]').val()
+          }, (data)=>{
+            $('.modify input[name="sn"]').val(data[20]),
+            $('.modify input[name="name"]').val(data[0]),
+            $('.modify input[name="lineID"]').val(data[1]),
+            $('.modify input[name="phone"]').val(data[2])
+            $('.modify input[name="relation"]').val(data[3]),
+            $('.modify input[name="date"]').val(data[4]),
+            $('.modify input[name="county"]').val(data[5]),
+            $('.modify input[name="district"]').val(data[6]),
+            $('.modify input[name="road"]').val(data[7]),
+            $('.modify input[name="section"]').val(data[8]),
+            $('.modify input[name="lane"]').val(data[9]),
+            $('.modify input[name="alley"]').val(data[10]),
+            $('.modify input[name="number"]').val(data[11]),
+            $('.modify input[name="numberD"]').val(data[12]),
+            $('.modify input[name="floor"]').val(data[13]),
+            $('.modify input[name="floorD"]').val(data[14]),
+            $('.modify input[name="room"]').val(data[15]),
+            $('.modify input[name="age"]').val(data[16]),
+            $('.modify input[name="type"]').val(data[17]),
+            $('.modify input[name="floors"]').val(data[18]),
+            $('.modify input[name="remarks"]').val(data[19])
+          })
+         })
+         /*$('#modifySubmit').click((event)=>{
+           event.preventDefault()
+           $.get('./modify/', {
+             name:$('.apply input[name="name"]').val(),
+             lineID:$('.apply input[name="lineid"]').val(),
+             phone:$('.apply input[name="phone"]').val(),
+             relation:$('.apply input[name="relation"]').val(),
+             date:$('.apply input[name="date"]').val(),
+             county:$('.apply input[name="county"]').val(),
+             district:$('.apply input[name="district"]').val(),
+             road:$('.apply input[name="road"]').val(),
+             section:$('.apply input[name="section"]').val(),
+             lane:$('.apply input[name="lane"]').val(),
+             alley:$('.apply input[name="alley"]').val(),
+             number:$('.apply input[name="number"]').val(),
+             numberD:$('.apply input[name="numberD"]').val(),
+             floor:$('.apply input[name="floor"]').val(),
+             floorD:$('.apply input[name="floorD"]').val(),
+             room:$('.apply input[name="room"]').val(),
+             age:$('.apply input[name="age"]').val(),
+             type:$('.apply input[name="type"]').val(),
+             floors:$('.apply input[name="floors"]').val(),
+             remarks:$('.apply input[name="remarks"]').val()
+           }, (data)=>{
+           $('#modifyResult').text(data)
+           })
+         })*/
+      })
+    </script>
+  </body>
+</html>
