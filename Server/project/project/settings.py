@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['luffy.ee.ncku.edu.tw']
 INSTALLED_APPS = [
     'django_extensions',
     'authentication.apps.AuthenticationConfig',
+    'homepage.apps.HomepageConfig',
     'check.apps.CheckConfig',
     'apply.apps.ApplyConfig',
     'django.contrib.admin',
@@ -137,3 +138,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 300
 SESSION_SAVE_EVERY_REQUEST = True
+
+
+# Login redirect
+
+LOGIN_REDIRECT_URL = '/home/welcome/'
