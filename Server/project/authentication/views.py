@@ -11,12 +11,11 @@ import json
 def houseRegister(request):
     if request.method == 'POST':
         form = HouseUserCreationForm(request.POST)
-        print("Errors", form.errors)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect("/accounts/login")
         else:
-            return HttpResponse(json.dumps({'statusCode': 'failed'}),
+            return HttpResponse(json.dumps(form.errors),
                                 content_type="application/json")
     else:
         form = HouseUserCreationForm()
@@ -26,12 +25,11 @@ def houseRegister(request):
 def volunteerRegister(request):
     if request.method == 'POST':
         form = VolunteerUserCreationForm(request.POST)
-        print("Errors", form.errors)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect("/accounts/login")
         else:
-            return HttpResponse(json.dumps({'statusCode': 'failed'}),
+            return HttpResponse(json.dumps(form.errors),
                                 content_type="application/json")
     else:
         form = HouseUserCreationForm()
@@ -41,12 +39,11 @@ def volunteerRegister(request):
 def engineerRegister(request):
     if request.method == 'POST':
         form = EngineerUserCreationForm(request.POST)
-        print("Errors", form.errors)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect("/accounts/login")
         else:
-            return HttpResponse(json.dumps({'statusCode': 'failed'}),
+            return HttpResponse(json.dumps(form.errors),
                                 content_type="application/json")
     else:
         form = HouseUserCreationForm()

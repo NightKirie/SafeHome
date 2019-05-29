@@ -16,7 +16,7 @@ class HouseUserCreationForm(forms.Form):
         username = self.cleaned_data['username'].lower()
         r = User.objects.filter(username=username)
         if r.count():
-            raise ValidationError("Username already exists")
+            raise ValidationError("Username already exists.")
         return username
 
     def clean_email(self):
@@ -69,7 +69,7 @@ class VolunteerUserCreationForm(forms.Form):
         username = self.cleaned_data['username'].lower()
         r = User.objects.filter(username=username)
         if r.count():
-            raise ValidationError("Username already exists")
+            raise ValidationError("Username already exists.")
         return username
 
     def clean_email(self):
@@ -106,10 +106,8 @@ class VolunteerUserCreationForm(forms.Form):
         user.last_name = self.cleaned_data['lastName']
         user.save()
 
-        user = User.objects.get(name=self.cleaned_data['username'])
         group = Group.objects.get(name="Volunteer")
-        user.groups.add(group)
-
+        group.user_set.add(user)
         return user
 
 class EngineerUserCreationForm(forms.Form):

@@ -25,14 +25,11 @@ def home(request):
 @group_required('House', 'Volunteer')
 def upload(request):
     address = nullInputHandle(request.GET.get("county"), 1) + nullInputHandle(request.GET.get("district"), 1) + nullInputHandle(request.GET.get("road"), 1) + nullInputHandle(request.GET.get("section"), 1) + nullInputHandle(request.GET.get("lane"), 1) + nullInputHandle(request.GET.get("alley"), 1) + nullInputHandle(request.GET.get("number"), 1) + nullInputHandle(request.GET.get("numberD"), 1) + nullInputHandle(request.GET.get("floor"), 1) + nullInputHandle(request.GET.get("floorD"), 1) + nullInputHandle(request.GET.get("room"), 1)
-    # if Case.objects.filter(name=request.GET.get("name")):
+
     if Case.objects.filter(address=address):
         if Case.objects.filter(name=request.GET.get("name")):
-            return HttpResponse(json.dumps({'result': 'exist'}),
+            return HttpResponse(json.dumps({'result': 'case exists'}),
                                 content_type="application/json")
-        # 要可以更改資料
-        # 用地址判斷
-        # 不同人申請同一間，要顯示兩筆？
         else:
             Case.objects.create(SN=generateSN(),
                                 name=nullInputHandle(request.GET.get("name"), 0),
@@ -60,12 +57,31 @@ def upload(request):
                                 assign=0,
                                 checked=0,
                                 applyDate=datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
-            case = Case.objects.get(name=request.GET.get("name"), address=address)
+            # verification
+            if Case.objects.filter(name=request.GET.get("name"), address=address):
+                case = Case.objects.get(name=request.GET.get("name"), address=address)
+            else:
+                return HttpResponse(json.dumps({'stausCode': 'application failed'}),
+                                    content_type="application/json")
+
             path = os.path.abspath('.') + "/check/casefiles/case" + case.SN
             CaseFiles.objects.create(SN=case.SN, name=request.GET.get("name"), path=path)
+
+            if os.path.exists(path):
+                os.remove(path)
             os.mkdir(path)
-            return HttpResponse(json.dumps({'statusCode': 'success'}),
-                                content_type="application/json")
+
+            #verification
+            if CaseFiles.objects.filter(SN=case.SN):
+                if os.path.exists(CaseFiles.objects.get(SN=case.SN).path):
+                    return HttpResponse(json.dumps({'statusCode': 'success'}),
+                                        content_type="application/json")
+                else:
+                    return HttpResponse(json.dumps({'statusCode': 'failed to create directory'}),
+                                        content_type="application/json")
+            else:
+                return HttpResponse(json.dumps({'statusCode': 'failed to create object in casefiles'}),
+                                    content_type="application/json")
     else:
         Case.objects.create(SN=generateSN(),
                             name=nullInputHandle(request.GET.get("name"), 0),
@@ -93,14 +109,32 @@ def upload(request):
                             assign=0,
                             checked=0,
                             applyDate=datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
-        case = Case.objects.get(address=address)
-        # case.address = nullInputHandle(case.addressCounty, 1) + nullInputHandle(case.addressDistrict, 1) + nullInputHandle(case.addressRoad, 1) + nullInputHandle(case.addressSection, 1) + nullInputHandle(case.addressLane, 1) + nullInputHandle(case.addressAlley, 1) + nullInputHandle(case.addressNumber, 1) + nullInputHandle(case.addressFloor, 1) + nullInputHandle(case.addressRoom, 1)
-        # case.save()
+
+        # verification
+        if Case.objects.filter(name=request.GET.get("name"), address=address):
+            case = Case.objects.get(name=request.GET.get("name"), address=address)
+        else:
+            return HttpResponse(json.dumps({'stausCode': 'application failed'}),
+                                    content_type="application/json")
+
         path = os.path.abspath('.') + "/check/casefiles/case" + case.SN
         CaseFiles.objects.create(SN=case.SN, name=request.GET.get("name"), path=path)
+
+        if os.path.exists(path):
+            os.remove(path)
         os.mkdir(path)
-        return HttpResponse(json.dumps({'statusCode': 'success'}),
-                            content_type="application/json")
+
+        #verification
+        if CaseFiles.objects.filter(SN=case.SN):
+            if os.path.exists(CaseFiles.objects.get(SN=case.SN).path):
+                return HttpResponse(json.dumps({'statusCode': 'success'}),
+                                    content_type="application/json")
+            else:
+                return HttpResponse(json.dumps({'statusCode': 'failed to create directory'}),
+                                    content_type="application/json")
+        else:
+            return HttpResponse(json.dumps({'statusCode': 'failed to create object in casefiles'}),
+                                content_type="application/json")
 
 
 def nullInputHandle(input, mode):
@@ -111,7 +145,6 @@ def nullInputHandle(input, mode):
         else:
             return input
     if mode == 1:
-        # if input == "none":
         if not input:
             data = ""
             return data
@@ -146,6 +179,8 @@ def generateSN():
 @group_required('House', 'Volunteer')
 def modify(request):
     address = nullInputHandle(request.GET.get("county"), 1) + nullInputHandle(request.GET.get("district"), 1) + nullInputHandle(request.GET.get("road"), 1) + nullInputHandle(request.GET.get("section"), 1) + nullInputHandle(request.GET.get("lane"), 1) + nullInputHandle(request.GET.get("alley"), 1) + nullInputHandle(request.GET.get("number"), 1) + nullInputHandle(request.GET.get("numberD"), 1) + nullInputHandle(request.GET.get("floor"), 1) + nullInputHandle(request.GET.get("floorD"), 1) + nullInputHandle(request.GET.get("room"), 1)
+
+    # use another website to modify the data
     if Case.objects.filter(username=request.user.username,
                            SN=request.GET.get('sn')):
         case = Case.objects.get(username=request.user.username,
@@ -188,3 +223,6 @@ def modify(request):
     else:
         return HttpResponse(json.dumps({'statusCode': 'failed'}),
                             content_type="application/json")
+
+
+# show my application history

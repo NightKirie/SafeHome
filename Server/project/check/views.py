@@ -29,7 +29,8 @@ def upload(request):
         if Case.objects.get(SN=SN).assign == '1' and Case.objects.get(SN=SN).volunteer == request.user.username:
             fs = FileSystemStorage()
             path = os.path.abspath('.') + "/uploads"
-            destination = os.path.abspath('.') + "/check/casefiles/case" + SN
+#            destination = os.path.abspath('.') + "/check/casefiles/case" + SN
+            destination = CaseFiles.objects.get(SN=SN).path
 
             for f in uploadFiles:
                 if f.name.endswith('.html'):
@@ -51,7 +52,7 @@ def upload(request):
 
         else:
             if Case.objects.get(SN=SN).assign == '0':
-                return HttpResponse(json.dumps({'statusCode': 'case not assigne'}),
+                return HttpResponse(json.dumps({'statusCode': 'case not assigned'}),
                                     content_type="application/json")
             if Case.objects.get(SN=SN).volunteer != request.user.username:
                 return HttpResponse(json.dumps({'statusCode': 'permission denied'}),
