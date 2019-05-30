@@ -14,7 +14,7 @@ import datetime
 # Create your views here.
 
 
-@group_required('Volunteer')
+@group_required('Volunteer', 'Engineer')
 def home(request):
     path = os.path.abspath('.') + "/templates/check.html"
     return render(request, path)
@@ -65,18 +65,25 @@ def upload(request):
 @group_required('Volunteer', 'Engineer')
 def result(request):
     SN = request.POST.get('sn')
-    case = CaseFiles.objects.get(SN=SN)
+    if CaseFiles.objects.filter(SN=SN):
+        case = CaseFiles.objects.get(SN=SN)
+        if Case.objects.get(SN=SN).volunteer == request.user.username or request.user.groups.filter(name="Engineer").exists() == True or request.user.is_superuser == True:
+            if(os.path.isfile(case.path + "/result" + SN + ".html") == True):
+                # return render(request, case.path + "/result" + SN + ".html")
 
-    if(os.path.isfile(case.path + "/result" + SN + ".html") == True):
-        # return render(request, case.path + "/result" + SN + ".html")
-
-        # respond with an attachment
-        openFile = open(case.path + "/result" + SN + ".html", 'r')
-        response = HttpResponse(openFile.read(), content_type="text/html")
-        response['Content-Disposition'] = 'attachment; filename="result' + SN + '.html"'
-        return response
+                # respond with an attachment
+                openFile = open(case.path + "/result" + SN + ".html", 'r')
+                response = HttpResponse(openFile.read(), content_type="text/html")
+                response['Content-Disposition'] = 'attachment; filename="result' + SN + '.html"'
+                return response
+            else:
+                return HttpResponse(json.dumps({'statusCode': 'file not exists'}),
+                                    content_type="application/json")
+        else:
+            return HttpResponse(json.dumps({'statusCode': 'permission denied'}),
+                                content_type="application/json")
     else:
-        return HttpResponse(json.dumps({'statusCode': 'file not exists'}),
+        return HttpResponse(json.dumps({'statusCode': 'cant find case'}),
                             content_type="application/json")
 
 
@@ -89,8 +96,8 @@ def showUnassignedCases(request):
     return HttpResponse(response)
 
 
-@group_required('Volunteer', 'Engineer')
-def showCheckedCases(request):
+@group_required('Volunteer')
+def showVolunteerCheckedCases(request):
     data = Case.objects.filter(volunteer=request.user.username, checked='1')
     response = []
     for d in data:
@@ -98,8 +105,8 @@ def showCheckedCases(request):
     return HttpResponse(response)
 
 
-@group_required('Volunteer', 'Engineer')
-def showNotCheckedCases(request):
+@group_required('Volunteer')
+def showVolunteerNotCheckedCases(request):
     data = Case.objects.filter(volunteer=request.user.username, checked='0')
     response = []
     for d in data:
@@ -108,7 +115,7 @@ def showNotCheckedCases(request):
 
 
 @group_required('House', 'Volunteer')
-def showAppliedCases(request):
+def showPersonalAppliedCases(request):
     data = Case.objects.filter(username=request.user.username)
     response = []
     for d in data:
@@ -133,7 +140,7 @@ def showDetail(request):
                             content_type="application/json")
 
 
-@group_required('Volunteer', 'Engineer')
+@group_required('Volunteer')
 def assign(request):
     SN = request.POST.get('sn')
     if Case.objects.filter(SN=SN):
