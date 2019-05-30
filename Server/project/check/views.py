@@ -77,7 +77,7 @@ def result(request):
                 response['Content-Disposition'] = 'attachment; filename="result' + SN + '.html"'
                 return response
             else:
-                return HttpResponse(json.dumps({'statusCode': 'file not exists'}),
+                return HttpResponse(json.dumps({'statusCode': 'file does not exists'}),
                                     content_type="application/json")
         else:
             return HttpResponse(json.dumps({'statusCode': 'permission denied'}),
@@ -97,7 +97,7 @@ def showUnassignedCases(request):
 
 
 @group_required('Volunteer')
-def showVolunteerCheckedCases(request):
+def volunteerShowCheckedCases(request):
     data = Case.objects.filter(volunteer=request.user.username, checked='1')
     response = []
     for d in data:
@@ -106,7 +106,7 @@ def showVolunteerCheckedCases(request):
 
 
 @group_required('Volunteer')
-def showVolunteerNotCheckedCases(request):
+def volunteerShowNotCheckedCases(request):
     data = Case.objects.filter(volunteer=request.user.username, checked='0')
     response = []
     for d in data:
@@ -115,11 +115,20 @@ def showVolunteerNotCheckedCases(request):
 
 
 @group_required('House', 'Volunteer')
-def showPersonalAppliedCases(request):
+def personalShowAppliedCases(request):
     data = Case.objects.filter(username=request.user.username)
     response = []
     for d in data:
         response.append(d.SN + " " + d.address + " checked" + d.checked)
+    return HttpResponse(response)
+
+
+@group_required('Engineer')
+def engineerShowChecks(request):
+    data = Case.objects.filter(checked='1')
+    response = []
+    for d in data:
+        response.append(d.SN + " " + d.name + " " + d.address)
     return HttpResponse(response)
 
 

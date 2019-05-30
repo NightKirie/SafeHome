@@ -17,5 +17,7 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
+    path('permissiondenied/', views.permissionD),
+    path('seeya/', views.seeya),
     path('welcome/', views.welcome),
 ]

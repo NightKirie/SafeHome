@@ -57,4 +57,5 @@ def group_required(*group_names):
                 return True
         return False
 
-    return user_passes_test(in_groups, login_url='/accounts/login')
+    return user_passes_test(in_groups, login_url='/home/permissiondenied/',
+                            redirect_field_name=None)

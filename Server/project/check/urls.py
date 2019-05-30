@@ -18,9 +18,10 @@ from . import views
 
 urlpatterns = [
     path('showdetail/', views.showDetail),
-    path('personal/showappliedcases/', views.showPersonalAppliedCases),
-    path('volunteer/shownotcheckedcases/', views.showVolunteerNotCheckedCases),
-    path('volunteer/showcheckedcases/', views.showVolunteerCheckedCases),
+    path('engineer/showchecks/', views.engineerShowChecks),
+    path('personal/showappliedcases/', views.personalShowAppliedCases),
+    path('volunteer/shownotcheckedcases/', views.volunteerShowNotCheckedCases),
+    path('volunteer/showcheckedcases/', views.volunteerShowCheckedCases),
     path('showunassignedcases/', views.showUnassignedCases),
     path('assign/', views.assign),
     path('result/', views.result),

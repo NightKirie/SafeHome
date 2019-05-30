@@ -143,3 +143,4 @@ SESSION_SAVE_EVERY_REQUEST = True
 # Login redirect
 
 LOGIN_REDIRECT_URL = '/home/welcome/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
