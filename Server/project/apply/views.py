@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from .models import Case
 from check.models import CaseFiles
 from authentication.views import group_required
@@ -145,12 +145,14 @@ def nullInputHandle(input, mode):
             return data
         else:
             return input
+
     if mode == 1:
         if not input:
             data = ""
             return data
         else:
             return input
+
     if mode == 2:
         if input == "none":
             data = ""
@@ -183,6 +185,7 @@ def generateSN():
     return SN
 
 
+# modify application
 @group_required('House', 'Volunteer')
 def modifyHome(request):
     path = os.path.abspath('.') + "/templates/modifyApplication.html"
@@ -192,10 +195,11 @@ def modifyHome(request):
 @group_required('House', 'Volunteer')
 def modifyFetch(request):
     SN = request.GET.get("sn")
+    response = []
     if Case.objects.filter(SN=SN):
         case = Case.objects.get(SN=SN)
         if case.username == request.user.username:
-            response = []
+            response.append(case.SN)
             response.append(nullInputHandle(case.name, 2))
             response.append(nullInputHandle(case.lineID, 2))
             response.append(nullInputHandle(case.phone, 2))
@@ -216,14 +220,19 @@ def modifyFetch(request):
             response.append(nullInputHandle(case.buildingType, 2))
             response.append(nullInputHandle(case.buildingFloors, 2))
             response.append(nullInputHandle(case.buildingRemarks, 2))
-            response.append(case.SN)
             return HttpResponse(json.dumps(response, ensure_ascii=False),
                                 content_type="application/json")
         else:
-            return HttpResponse(json.dumps({'statusCode: permission denied'}),
+            response.append('statusCode: permission denied')
+#            return HttpResponse(json.dumps([{'statusCode: permission denied'}]),
+#                                content_type="application/json")
+            return HttpResponse(json.dumps(response, ensure_ascii=False),
                                 content_type="application/json")
     else:
-        return HttpResponse(json.dumps({'statusCode: cant find case'}),
+        response.append('statusCode: cant find case')
+#        return HttpResponse(json.dumps([{'statusCode: cant find case'}]),
+#                            content_type="application/json")
+        return HttpResponse(json.dumps(response, ensure_ascii=False),
                             content_type="application/json")
 
 
@@ -231,41 +240,47 @@ def modifyFetch(request):
 def modify(request):
     address = nullInputHandle(request.POST.get("county"), 1) + nullInputHandle(request.POST.get("district"), 1) + nullInputHandle(request.POST.get("road"), 1) + nullInputHandle(request.POST.get("section"), 1) + nullInputHandle(request.POST.get("lane"), 1) + nullInputHandle(request.POST.get("alley"), 1) + nullInputHandle(request.POST.get("number"), 1) + nullInputHandle(request.POST.get("numberD"), 1) + nullInputHandle(request.POST.get("floor"), 1) + nullInputHandle(request.POST.get("floorD"), 1) + nullInputHandle(request.POST.get("room"), 1)
 
-    case = Case.objects.get(SN=request.POST.get('sn'))
-    if case.lineID != nullInputHandle(request.POST.get('lineID'), 0):
-        case.lineID = nullInputHandle(request.POST.get('lineID'), 0)
-    if case.phone != nullInputHandle(request.POST.get('phone'), 0):
-        case.phone = nullInputHandle(request.POST.get('phone'), 0)
-    if case.relation != nullInputHandle(request.POST.get('relation'), 0):
-        case.relation = nullInputHandle(request.POST.get('relation'), 0)
-    if case.wishDate != nullInputHandle(request.POST.get('date'), 0):
-        case.wishDate = nullInputHandle(request.POST.get('date'), 0)
-    if case.address != address:
-        case.address = address
-        case.addressCounty = nullInputHandle(request.POST.get('county'), 0)
-        case.addressDistrict = nullInputHandle(request.POST.get('district'), 0)
-        case.addressRoad = nullInputHandle(request.POST.get('road'), 0)
-        case.addressSection = nullInputHandle(request.POST.get('section'), 0)
-        case.addressLane = nullInputHandle(request.POST.get('lane'), 0)
-        case.addressAlley = nullInputHandle(request.POST.get('alley'), 0)
-        case.addressNumber = nullInputHandle(request.POST.get('number'), 0)
-        case.addressNumberD = nullInputHandle(request.POST.get('numberD'), 0)
-        case.addressFloor = nullInputHandle(request.POST.get('floor'), 0)
-        case.addressFloorD = nullInputHandle(request.POST.get('floorD'), 0)
-        case.addressRoom = nullInputHandle(request.POST.get('room'), 0)
-    if case.buildingAge != nullInputHandle(request.POST.get('age'), 0):
-        case.buildingAge = nullInputHandle(request.POST.get('age'), 0)
-    if case.buildingType != nullInputHandle(request.POST.get('type'), 0):
-        case.buildingType = nullInputHandle(request.POST.get('type'), 0)
-    if case.buildingFloors != nullInputHandle(request.POST.get("floors"), 0):
-        case.buildingFloors = nullInputHandle(request.POST.get("floors"), 0)
-    if case.buildingRemarks != nullInputHandle(request.POST.get('remarks'), 0):
-        case.buildingRemarks = nullInputHandle(request.POST.get('remarks'), 0)
-    case.applyDate = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+    if Case.objects.filter(SN=request.POST.get('sn')):
+        case = Case.objects.get(SN=request.POST.get('sn'))
+        if case.username == request.user.username:
+            if case.lineID != nullInputHandle(request.POST.get('lineID'), 0):
+                case.lineID = nullInputHandle(request.POST.get('lineID'), 0)
+            if case.phone != nullInputHandle(request.POST.get('phone'), 0):
+                case.phone = nullInputHandle(request.POST.get('phone'), 0)
+            if case.relation != nullInputHandle(request.POST.get('relation'), 0):
+                case.relation = nullInputHandle(request.POST.get('relation'), 0)
+            if case.wishDate != nullInputHandle(request.POST.get('date'), 0):
+                case.wishDate = nullInputHandle(request.POST.get('date'), 0)
+            if case.address != address:
+                case.address = address
+                case.addressCounty = nullInputHandle(request.POST.get('county'), 0)
+                case.addressDistrict = nullInputHandle(request.POST.get('district'), 0)
+                case.addressRoad = nullInputHandle(request.POST.get('road'), 0)
+                case.addressSection = nullInputHandle(request.POST.get('section'), 0)
+                case.addressLane = nullInputHandle(request.POST.get('lane'), 0)
+                case.addressAlley = nullInputHandle(request.POST.get('alley'), 0)
+                case.addressNumber = nullInputHandle(request.POST.get('number'), 0)
+                case.addressNumberD = nullInputHandle(request.POST.get('numberD'), 0)
+                case.addressFloor = nullInputHandle(request.POST.get('floor'), 0)
+                case.addressFloorD = nullInputHandle(request.POST.get('floorD'), 0)
+                case.addressRoom = nullInputHandle(request.POST.get('room'), 0)
+            if case.buildingAge != nullInputHandle(request.POST.get('age'), 0):
+                case.buildingAge = nullInputHandle(request.POST.get('age'), 0)
+            if case.buildingType != nullInputHandle(request.POST.get('type'), 0):
+                case.buildingType = nullInputHandle(request.POST.get('type'), 0)
+            if case.buildingFloors != nullInputHandle(request.POST.get("floors"), 0):
+                case.buildingFloors = nullInputHandle(request.POST.get("floors"), 0)
+            if case.buildingRemarks != nullInputHandle(request.POST.get('remarks'), 0):
+                case.buildingRemarks = nullInputHandle(request.POST.get('remarks'), 0)
+            case.applyDate = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
 
-    case.save()
+            case.save()
 
-    return HttpResponse(json.dumps({'statusCode': 'success'}),
-                        content_type="application/json")
-
-# show my application history
+            return HttpResponse(json.dumps({'statusCode': 'success'}),
+                                content_type="application/json")
+        else:
+            return HttpResponse(json.dumps({'statusCode': 'permission denied'}),
+                                content_type="application/json")
+    else:
+        return HttpResponse(json.dumps({'statusCode': 'cant find case'}),
+                            content_type="application/json")

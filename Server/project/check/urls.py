@@ -18,7 +18,8 @@ from . import views
 
 urlpatterns = [
     path('showdetail/', views.showDetail),
-    path('showmycases/', views.showMyCases),
+    path('showappliedcases/', views.showAppliedCases),
+    path('shownotcheckedcases/', views.showNotCheckedCases),
     path('showcheckedcases/', views.showCheckedCases),
     path('showunassignedcases/', views.showUnassignedCases),
     path('assign/', views.assign),

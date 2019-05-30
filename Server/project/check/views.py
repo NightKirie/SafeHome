@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.files.storage import FileSystemStorage
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from .models import CaseFiles
 from apply.models import Case
 from authentication.views import group_required
@@ -68,9 +68,15 @@ def result(request):
     case = CaseFiles.objects.get(SN=SN)
 
     if(os.path.isfile(case.path + "/result" + SN + ".html") == True):
-        return render(request, case.path + "/result" + SN + ".html")
+        # return render(request, case.path + "/result" + SN + ".html")
+
+        # respond with an attachment
+        openFile = open(case.path + "/result" + SN + ".html", 'r')
+        response = HttpResponse(openFile.read(), content_type="text/html")
+        response['Content-Disposition'] = 'attachment; filename="result' + SN + '.html"'
+        return response
     else:
-        return HttpResponse(json.dumps({'statusCode': 'failed'}),
+        return HttpResponse(json.dumps({'statusCode': 'file not exists'}),
                             content_type="application/json")
 
 
@@ -93,25 +99,38 @@ def showCheckedCases(request):
 
 
 @group_required('Volunteer', 'Engineer')
-def showMyCases(request):
+def showNotCheckedCases(request):
     data = Case.objects.filter(volunteer=request.user.username, checked='0')
     response = []
     for d in data:
-        response.append(d.SN + " " + d.name)
+        response.append(d.SN + " " + d.name + " " + d.address)
+    return HttpResponse(response)
+
+
+@group_required('House', 'Volunteer')
+def showAppliedCases(request):
+    data = Case.objects.filter(username=request.user.username)
+    response = []
+    for d in data:
+        response.append(d.SN + " " + d.address + " checked" + d.checked)
     return HttpResponse(response)
 
 
 @group_required('Volunteer', 'Engineer')
 def showDetail(request):
-    case = Case.objects.get(SN=request.POST.get('sn'))
-    response = []
-    response.append(case.SN)
-    response.append(case.name)
-    response.append(case.buildingType)
-    response.append(case.address)
-    response.append(case.phone)
-    response.append(case.applyDate)
-    return HttpResponse(response)
+    if Case.objects.filter(SN=request.POST.get('sn')):
+        case = Case.objects.get(SN=request.POST.get('sn'))
+        response = []
+        response.append(case.SN)
+        response.append(case.name)
+        response.append(case.buildingType)
+        response.append(case.address)
+        response.append(case.phone)
+        response.append(case.applyDate)
+        return HttpResponse(response)
+    else:
+        return HttpResponse(json.dumps({'statusCode': 'cant find case'}),
+                            content_type="application/json")
 
 
 @group_required('Volunteer', 'Engineer')

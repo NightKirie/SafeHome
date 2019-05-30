@@ -9,9 +9,10 @@
       SN:<input name="sn" type="text"><br>
       <button id="fetch">fetch</button>
     </form>
+    <h1 class="apply" id="modifyResult"></h1>
     <form action="./modify/" method="post" class="modify">
       {% csrf_token %}
-      SN:<input name="sn" type="text"><br>
+      <input name="sn" type="hidden"><br>
       Name:<input name="name" type="text"><br>
       LineID:<input name="lineID" type="text"><br>
       Phone number:<input name="phone" type="text"><br>
@@ -33,7 +34,6 @@
       Building floors:<input name="floors" type="text"><br>
       Remarks:<input name="remarks" type="text"><br>
       <button type="submit" id="modifySubmit">modify</button><br>
-      <h1 class="apply" id"modifyResult"></h1>
     </form>
 
     <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -44,27 +44,32 @@
           $.get('./fetch/',{
             sn:$('.fetch input[name="sn"]').val()
           }, (data)=>{
-            $('.modify input[name="sn"]').val(data[20]),
-            $('.modify input[name="name"]').val(data[0]),
-            $('.modify input[name="lineID"]').val(data[1]),
-            $('.modify input[name="phone"]').val(data[2])
-            $('.modify input[name="relation"]').val(data[3]),
-            $('.modify input[name="date"]').val(data[4]),
-            $('.modify input[name="county"]').val(data[5]),
-            $('.modify input[name="district"]').val(data[6]),
-            $('.modify input[name="road"]').val(data[7]),
-            $('.modify input[name="section"]').val(data[8]),
-            $('.modify input[name="lane"]').val(data[9]),
-            $('.modify input[name="alley"]').val(data[10]),
-            $('.modify input[name="number"]').val(data[11]),
-            $('.modify input[name="numberD"]').val(data[12]),
-            $('.modify input[name="floor"]').val(data[13]),
-            $('.modify input[name="floorD"]').val(data[14]),
-            $('.modify input[name="room"]').val(data[15]),
-            $('.modify input[name="age"]').val(data[16]),
-            $('.modify input[name="type"]').val(data[17]),
-            $('.modify input[name="floors"]').val(data[18]),
-            $('.modify input[name="remarks"]').val(data[19])
+            if(data.length==1){
+              $('#modifyResult').text(data[0])
+            }
+            else if(data.length>1){
+            $('.modify input[name="sn"]').val(data[0]),
+            $('.modify input[name="name"]').val(data[1]),
+            $('.modify input[name="lineID"]').val(data[2]),
+            $('.modify input[name="phone"]').val(data[3])
+            $('.modify input[name="relation"]').val(data[4]),
+            $('.modify input[name="date"]').val(data[5]),
+            $('.modify input[name="county"]').val(data[6]),
+            $('.modify input[name="district"]').val(data[7]),
+            $('.modify input[name="road"]').val(data[8]),
+            $('.modify input[name="section"]').val(data[9]),
+            $('.modify input[name="lane"]').val(data[10]),
+            $('.modify input[name="alley"]').val(data[11]),
+            $('.modify input[name="number"]').val(data[12]),
+            $('.modify input[name="numberD"]').val(data[13]),
+            $('.modify input[name="floor"]').val(data[14]),
+            $('.modify input[name="floorD"]').val(data[15]),
+            $('.modify input[name="room"]').val(data[16]),
+            $('.modify input[name="age"]').val(data[17]),
+            $('.modify input[name="type"]').val(data[18]),
+            $('.modify input[name="floors"]').val(data[19]),
+            $('.modify input[name="remarks"]').val(data[20])
+            }
           })
          })
          /*$('#modifySubmit').click((event)=>{
