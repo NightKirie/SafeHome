@@ -8,6 +8,7 @@
     <form action="./upload/" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       SN:<input name="sn" type="text"><br>
+      status:<input name="status" type="text"><br>
       <input type="file" name="file" multiple><br>
       <button type="submit">Upload</button>
     </form>

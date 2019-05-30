@@ -12,7 +12,7 @@
     </ul>
     {% endif %}
 
-    <form method="post">
+    <!--form method="post">
       {% csrf_token %}
       <table>
         {{ form.as_table }}
@@ -21,7 +21,7 @@
           <td><input type="submit" name="submit" value="Register"/></td>
         </tr>
       </table>
-    </form>
+    </form-->
     <form method="post">
       {% csrf_token %}
       {{ form.as_p }}

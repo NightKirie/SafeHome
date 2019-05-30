@@ -29,7 +29,6 @@ def upload(request):
         if Case.objects.get(SN=SN).assign == '1' and Case.objects.get(SN=SN).volunteer == request.user.username:
             fs = FileSystemStorage()
             path = os.path.abspath('.') + "/uploads"
-#            destination = os.path.abspath('.') + "/check/casefiles/case" + SN
             destination = CaseFiles.objects.get(SN=SN).path
 
             for f in uploadFiles:
@@ -44,8 +43,9 @@ def upload(request):
             for f in os.listdir(path):
                 shutil.move(path + "/" + f, destination)
 
-            Case.objects.filter(SN=SN).update(checked='1')
-            Case.objects.filter(SN=SN).update(checkDate=datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
+            Case.objects.filter(SN=SN).update(checked='1',
+                                              status=request.POST.get('status'),
+                                              checkDate=datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
 
             return HttpResponse(json.dumps({'statusCode': 'success'}),
                                 content_type="application/json")
@@ -58,7 +58,7 @@ def upload(request):
                 return HttpResponse(json.dumps({'statusCode': 'permission denied'}),
                                     content_type="application/json")
     else:
-        return HttpResponse(json.dumps({'statusCode': 'cant find case'}),
+        return HttpResponse(json.dumps({'statusCode': 'case not found'}),
                             content_type="application/json")
 
 
@@ -66,24 +66,28 @@ def upload(request):
 def result(request):
     SN = request.POST.get('sn')
     if CaseFiles.objects.filter(SN=SN):
-        case = CaseFiles.objects.get(SN=SN)
-        if Case.objects.get(SN=SN).volunteer == request.user.username or request.user.groups.filter(name="Engineer").exists() == True or request.user.is_superuser == True:
-            if(os.path.isfile(case.path + "/result" + SN + ".html") == True):
-                # return render(request, case.path + "/result" + SN + ".html")
+        if Case.objects.get(SN=SN).volunteer == request.user.username or request.user.groups.filter(name="Engineer").exists() is True or request.user.is_superuser is True:
+            if Case.objects.get(SN=SN).checked == '1':
+                case = CaseFiles.objects.get(SN=SN)
+                if os.path.isfile(case.path + "/result" + SN + ".html") is True:
+                    # return render(request, case.path + "/result" + SN + ".html")
 
-                # respond with an attachment
-                openFile = open(case.path + "/result" + SN + ".html", 'r')
-                response = HttpResponse(openFile.read(), content_type="text/html")
-                response['Content-Disposition'] = 'attachment; filename="result' + SN + '.html"'
-                return response
+                    # respond with an attachment
+                    openFile = open(case.path + "/result" + SN + ".html", 'r')
+                    response = HttpResponse(openFile.read(), content_type="text/html")
+                    response['Content-Disposition'] = 'attachment; filename="result' + SN + '.html"'
+                    return response
+                else:
+                    return HttpResponse(json.dumps({'statusCode': 'file does not exist'}),
+                                        content_type="application/json")
             else:
-                return HttpResponse(json.dumps({'statusCode': 'file does not exists'}),
+                return HttpResponse(json.dumps({'statusCode': 'case not checked'}),
                                     content_type="application/json")
         else:
             return HttpResponse(json.dumps({'statusCode': 'permission denied'}),
                                 content_type="application/json")
     else:
-        return HttpResponse(json.dumps({'statusCode': 'cant find case'}),
+        return HttpResponse(json.dumps({'statusCode': 'case not found'}),
                             content_type="application/json")
 
 
@@ -145,7 +149,7 @@ def showDetail(request):
         response.append(case.applyDate)
         return HttpResponse(response)
     else:
-        return HttpResponse(json.dumps({'statusCode': 'cant find case'}),
+        return HttpResponse(json.dumps({'statusCode': 'case not found'}),
                             content_type="application/json")
 
 
@@ -154,13 +158,13 @@ def assign(request):
     SN = request.POST.get('sn')
     if Case.objects.filter(SN=SN):
         if Case.objects.get(SN=SN).assign == '0':
-            Case.objects.filter(SN=SN).update(volunteer=request.user.username)
-            Case.objects.filter(SN=SN).update(assign='1')
+            Case.objects.filter(SN=SN).update(volunteer=request.user.username,
+                                              assign='1')
             return HttpResponse(json.dumps({'statusCode': 'success'}),
                                 content_type="application/json")
         else:
-            return HttpResponse(json.dumps({'statusCode': 'already assigned'}),
+            return HttpResponse(json.dumps({'statusCode': 'case was assigned'}),
                                 content_type="application/json")
     else:
-        return HttpResponse(json.dumps({'statusCode': 'cant find case'}),
+        return HttpResponse(json.dumps({'statusCode': 'case not found'}),
                             content_type="application/json")
