@@ -6,7 +6,7 @@ import json
 # Create your views here.
 
 
-@group_required('House', 'Volunteer')
+@group_required('House', 'Volunteer', 'Engineer')
 def welcome(request):
     response = "Hi! " + request.user.last_name + request.user.first_name
     return HttpResponse(response)
