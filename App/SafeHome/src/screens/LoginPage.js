@@ -21,6 +21,8 @@ class LodingPage extends Component {
         }
         this.springAnimationXY = new Animated.ValueXY({ x: 0, y: 1000 })
     }
+
+    /* For slide down the SafeHome icon */
     slideDown = () => {
         Animated.spring(
             this.springAnimationXY, {
@@ -28,16 +30,41 @@ class LodingPage extends Component {
             }
         ).start();
         this.setState({ backgroundColorContainer: "grey" });
+        if(this.interval)  // Remove the timer
+            clearInterval(this.interval);
     }
+    
+    /* If user doesn't click SafeHome icon after 3 seconds, automatically slide down it */
+    setTimerlideDown = () => {
+        this.interval = setInterval(this.slideDown, 3000);
+    }
+
+    /* For check login type, passing to backend to confirm whether the account exist */
     login() {
-        if (this.state.loginUserType == 2) {
-            this.props.navigation.navigate('VolunteerHomePage')
+        switch(this.state.loginUserType) {
+            /* For householder */
+            case 1:   
+                alert("Householder page is build in progress");
+                break;
+            /* For volunteer */
+            case 2:
+                this.props.navigation.navigate('VolunteerHomePage')
+                break;
+            /* For technician */
+            case 3:
+                alert("Technician page is build in progress");
+                break;
+            default:
+                alert("Type not found");
         }
+
     }
+
     render() {
         return (
             <TouchableOpacity style={[styles.container, { backgroundColor: this.state.backgroundColorContainer }]}
                 onPress={this.slideDown}
+                onLayout={this.setTimerlideDown}
                 activeOpacity={1}>
                 <View style={{ position: "absolute" }}>
                     <Image
