@@ -15,15 +15,15 @@ class Name extends Component {
 }
 
 class VolunteerHomePage extends Component {
-    static navigationOptions = {
-        headerLeft: null,
-        headerTitle: (
-            <Image
-                resizeMode="contain"
-                source={require('../../../assets/img/plaingrey-07.png')}
-                style={{ height: 50, width: 50, flex: 1 }} />
-        ),
-    }
+    // static navigationOptions = {
+    //     headerLeft: null,
+    //     headerTitle: (
+    //         <Image
+    //             resizeMode="contain"
+    //             source={require('../../../assets/img/plaingrey-07.png')}
+    //             style={{ height: 50, width: 50, flex: 1 }} />
+    //     ),
+    // }
     render() {
         return (
             <View style={styles.container}>
@@ -34,6 +34,10 @@ class VolunteerHomePage extends Component {
                     <View style={styles.firstRow}>
                         <TouchableOpacity style={styles.containerItem}
                             onPress={() => this.props.navigation.navigate('UnprogressedCase')}>
+                            <Image
+                                source={require('../../../assets/img/Case_Background.png')}
+                                style={{ position: 'absolute', width: "100%", height: "100%",}}
+                            />
                             <Image
                                 source={require('../../../assets/img/numeric-1-circle.png')}
                                 style={{ height: 30, width: 30 }}
@@ -48,7 +52,7 @@ class VolunteerHomePage extends Component {
                             <Text style={styles.txtItem}>已接案件</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.firstRow}>
+                    <View style={styles.secondRow}>
                         <TouchableOpacity style={styles.containerItem}>
                             <Image
                                 source={require('../../../assets/img/numeric-3-circle.png')}
@@ -73,33 +77,43 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         zIndex: 0,
-        backgroundColor: "#F2F1EF",
+        backgroundColor: "yellow",
     },
     containerName: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        width: "80%",
-        marginHorizontal: "10%",
+        width: "82",
+        height: "10%",
+        //marginHorizontal: "10%",
         marginTop: "10%",
         marginBottom: "5%",
         backgroundColor: "white"
     },
     containerWork: {
         flex: 2,
+        flexDirection: 'column',
         justifyContent: 'space-between',
         backgroundColor: "#F2F1EF",
         width: "80%",
         marginBottom: "10%",
+        backgroundColor: "red",
     },
     firstRow: {
         flex: 1,
         justifyContent: 'space-between',
         flexDirection: "row",
     },
+    secondRow: {
+        flex: 1,
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
+        flexDirection: "row",
+        backgroundColor: 'black',
+    },
     containerItem: {
-        width: "48%",
-        height: "92%",
+        width: 125,
+        height: 125,
         backgroundColor: "#F37021",
         shadowColor: "#000",
         shadowOffset: {

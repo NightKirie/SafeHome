@@ -18,6 +18,8 @@ class LodingPage extends Component {
             buttonUser1Color: "#FFFFFF",
             buttonUser2Color: "#F37021",
             buttonUser3Color: "#F37021",
+            account: "",
+            password: "",
         }
         this.springAnimationXY = new Animated.ValueXY({ x: 0, y: 1000 })
     }
@@ -41,6 +43,7 @@ class LodingPage extends Component {
 
     /* For check login type, passing to backend to confirm whether the account exist */
     login() {
+        alert(`${this.account}  ${this.password}`)
         switch(this.state.loginUserType) {
             /* For householder */
             case 1:   
@@ -135,17 +138,20 @@ class LodingPage extends Component {
                         </View>
                         <View style={styles.containerInput}>
                             <Input
-                                placeholder={"電子郵件"}
+                                placeholder={"電話/手機號碼"}
                                 leftIcon={
                                     <Icon
-                                        name='mail'
-                                        type='Feather'
+                                        name='call'
+                                        type='Foundation'
                                         color='#F37021'
                                         size={17}
                                     />
                                 }
-                                inputStyle={styles.inputstyleEmailPW}
-                                containerStyle={{ paddingHorizontal: 18 }} />
+                                onChangeText={(account) => this.account = account}
+                                keyboardType='phone-pad'
+                                inputStyle={styles.inputEmailPW}
+                                containerStyle={{ paddingHorizontal: 18 }} 
+                                leftIconContainerStyle={styles.inputEmailPWIcon} />
                             <Input
                                 placeholder={"密碼"}
                                 leftIcon={
@@ -156,8 +162,12 @@ class LodingPage extends Component {
                                         size={17}
                                     />
                                 }
-                                inputStyle={styles.inputstyleEmailPW}
-                                containerStyle={{ paddingHorizontal: 18 }} />
+                                onChangeText={(password) => this.password = password}
+                                secureTextEntry={true}
+                                autoCapitalize = 'none'
+                                inputStyle={styles.inputEmailPW}
+                                containerStyle={{ paddingHorizontal: 18 }}
+                                leftIconContainerStyle={styles.inputEmailPWIcon} />
                         </View>
                         <Button
                             title={"忘記密碼 ？"}
@@ -232,9 +242,13 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFFFFF",
         paddingBottom: "5%",
     },
-    inputstyleEmailPW: {
-        paddingBottom: 5,
-        paddingLeft: 15,
+    inputEmailPW: {
+        paddingTop: 20,
+        paddingLeft: 10,
+    },
+    inputEmailPWIcon: {
+        marginLeft: 0, 
+        paddingTop: 10 ,
     },
     containerstyleButtonForgetPW: {
         marginTop: "0.2%",
