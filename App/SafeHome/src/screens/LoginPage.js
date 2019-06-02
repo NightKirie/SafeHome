@@ -36,7 +36,7 @@ class LodingPage extends Component {
     
     /* If user doesn't click SafeHome icon after 3 seconds, automatically slide down it */
     setTimerlideDown = () => {
-        this.interval = setInterval(this.slideDown, 3000);
+        this.interval = setInterval(this.slideDown, 1500);
     }
 
     /* For check login type, passing to backend to confirm whether the account exist */
