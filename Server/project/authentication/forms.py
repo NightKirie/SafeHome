@@ -5,8 +5,8 @@ from django.core.exceptions import ValidationError
 
 
 class HouseUserCreationForm(forms.Form):
-    username = forms.CharField(label='Enter username', min_length=4, max_length=150)
-    email = forms.EmailField(label='Enter email')
+    username = forms.CharField(label='Enter username', min_length=4, max_length=20)
+#    email = forms.EmailField(label='Enter email')
     firstName = forms.CharField(label='Enter first name', max_length=10)
     lastName = forms.CharField(label='Enter last name', max_length=10)
     password1 = forms.CharField(label='Enter password', widget=forms.PasswordInput)
@@ -19,12 +19,12 @@ class HouseUserCreationForm(forms.Form):
             raise ValidationError("Username already exists.")
         return username
 
-    def clean_email(self):
-        email = self.cleaned_data['email'].lower()
-        r = User.objects.filter(email=email)
-        if r.count():
-            raise ValidationError("Email already exists")
-        return email
+#    def clean_email(self):
+#        email = self.cleaned_data['email'].lower()
+#        r = User.objects.filter(email=email)
+#        if r.count():
+#            raise ValidationError("Email already exists")
+#        return email
 
     def clean_firstName(self):
         firstName = self.cleaned_data['firstName']
@@ -46,7 +46,7 @@ class HouseUserCreationForm(forms.Form):
     def save(self, commit=True):
         user = User.objects.create_user(
             self.cleaned_data['username'],
-            self.cleaned_data['email'],
+            'none@mail.com',
             self.cleaned_data['password1']
         )
         user.first_name = self.cleaned_data['firstName']
@@ -58,8 +58,8 @@ class HouseUserCreationForm(forms.Form):
         return user
 
 class VolunteerUserCreationForm(forms.Form):
-    username = forms.CharField(label='Enter username', min_length=4, max_length=150)
-    email = forms.EmailField(label='Enter email')
+    username = forms.CharField(label='Enter username', min_length=4, max_length=20)
+#    email = forms.EmailField(label='Enter email')
     firstName = forms.CharField(label='Enter first name', max_length=10)
     lastName = forms.CharField(label='Enter last name', max_length=10)
     password1 = forms.CharField(label='Enter password', widget=forms.PasswordInput)
@@ -72,12 +72,12 @@ class VolunteerUserCreationForm(forms.Form):
             raise ValidationError("Username already exists.")
         return username
 
-    def clean_email(self):
-        email = self.cleaned_data['email'].lower()
-        r = User.objects.filter(email=email)
-        if r.count():
-            raise ValidationError("Email already exists")
-        return email
+#    def clean_email(self):
+#        email = self.cleaned_data['email'].lower()
+#        r = User.objects.filter(email=email)
+#        if r.count():
+#            raise ValidationError("Email already exists")
+#        return email
 
     def clean_firstName(self):
         firstName = self.cleaned_data['firstName']
@@ -97,9 +97,10 @@ class VolunteerUserCreationForm(forms.Form):
         return password2
 
     def save(self, commit=True):
+#        self.cleaned_data['email']
         user = User.objects.create_user(
             self.cleaned_data['username'],
-            self.cleaned_data['email'],
+            'none@mail.com',
             self.cleaned_data['password1']
         )
         user.first_name = self.cleaned_data['firstName']
@@ -111,8 +112,8 @@ class VolunteerUserCreationForm(forms.Form):
         return user
 
 class EngineerUserCreationForm(forms.Form):
-    username = forms.CharField(label='Enter username', min_length=4, max_length=150)
-    email = forms.EmailField(label='Enter email')
+    username = forms.CharField(label='Enter username', min_length=4, max_length=20)
+#    email = forms.EmailField(label='Enter email')
     firstName = forms.CharField(label='Enter first name', max_length=10)
     lastName = forms.CharField(label='Enter last name', max_length=10)
     password1 = forms.CharField(label='Enter password', widget=forms.PasswordInput)
@@ -125,12 +126,12 @@ class EngineerUserCreationForm(forms.Form):
             raise ValidationError("Username already exists")
         return username
 
-    def clean_email(self):
-        email = self.cleaned_data['email'].lower()
-        r = User.objects.filter(email=email)
-        if r.count():
-            raise ValidationError("Email already exists")
-        return email
+#    def clean_email(self):
+#        email = self.cleaned_data['email'].lower()
+#        r = User.objects.filter(email=email)
+#        if r.count():
+#            raise ValidationError("Email already exists")
+#        return email
 
     def clean_firstName(self):
         firstName = self.cleaned_data['firstName']
@@ -152,7 +153,7 @@ class EngineerUserCreationForm(forms.Form):
     def save(self, commit=True):
         user = User.objects.create_user(
             self.cleaned_data['username'],
-            self.cleaned_data['email'],
+            'none@mail.com',
             self.cleaned_data['password1']
         )
         user.first_name = self.cleaned_data['firstName']
