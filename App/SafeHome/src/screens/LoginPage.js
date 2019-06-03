@@ -43,7 +43,7 @@ class LodingPage extends Component {
 
     /* For check login type, passing to backend to confirm whether the account exist */
     login() {
-        alert(`${this.account}  ${this.password}`)
+       //alert(`${this.account}  ${this.password}`)
         switch(this.state.loginUserType) {
             /* For householder */
             case 1:   

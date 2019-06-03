@@ -15,15 +15,15 @@ class Name extends Component {
 }
 
 class VolunteerHomePage extends Component {
-    // static navigationOptions = {
-    //     headerLeft: null,
-    //     headerTitle: (
-    //         <Image
-    //             resizeMode="contain"
-    //             source={require('../../../assets/img/plaingrey-07.png')}
-    //             style={{ height: 50, width: 50, flex: 1 }} />
-    //     ),
-    // }
+    static navigationOptions = {
+        headerLeft: null,
+        headerTitle: (
+            <Image
+                resizeMode="contain"
+                source={require('../../../assets/img/plaingrey-07.png')}
+                style={{ height: 50, width: 50, flex: 1 }} />
+        ),
+    }
     render() {
         return (
             <View style={styles.container}>
@@ -46,6 +46,10 @@ class VolunteerHomePage extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.containerItem}>
                             <Image
+                                source={require('../../../assets/img/AcceptCase_Background.png')}
+                                style={{ position: 'absolute', width: "100%", height: "100%",}}
+                            />
+                            <Image
                                 source={require('../../../assets/img/numeric-2-circle.png')}
                                 style={{ height: 30, width: 30 }}
                             />
@@ -54,6 +58,10 @@ class VolunteerHomePage extends Component {
                     </View>
                     <View style={styles.secondRow}>
                         <TouchableOpacity style={styles.containerItem}>
+                            <Image
+                                source={require('../../../assets/img/History_Background.png')}
+                                style={{ position: 'absolute', width: "100%", height: "100%",}}
+                            />
                             <Image
                                 source={require('../../../assets/img/numeric-3-circle.png')}
                                 style={{ height: 30, width: 30 }}
@@ -77,15 +85,14 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         zIndex: 0,
-        backgroundColor: "yellow",
+        backgroundColor: "#F2F1EF"
     },
     containerName: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        width: "82",
-        height: "10%",
-        //marginHorizontal: "10%",
+        width: "82%",
+        marginHorizontal: "10%",
         marginTop: "10%",
         marginBottom: "5%",
         backgroundColor: "white"
@@ -95,9 +102,8 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-between',
         backgroundColor: "#F2F1EF",
-        width: "80%",
-        marginBottom: "10%",
-        backgroundColor: "red",
+        width: "82%",
+        marginBottom: "20%",
     },
     firstRow: {
         flex: 1,
@@ -106,14 +112,12 @@ const styles = StyleSheet.create({
     },
     secondRow: {
         flex: 1,
+        paddingTop: '10%',
         justifyContent: 'space-between',
-        alignItems: 'flex-end',
         flexDirection: "row",
-        backgroundColor: 'black',
     },
     containerItem: {
-        width: 125,
-        height: 125,
+        width: "45%",
         backgroundColor: "#F37021",
         shadowColor: "#000",
         shadowOffset: {
@@ -125,6 +129,7 @@ const styles = StyleSheet.create({
         elevation: 8,
         alignItems: 'center',
         justifyContent: 'center',
+        aspectRatio: 1
     },
     txtItem: {
         color: "white",
