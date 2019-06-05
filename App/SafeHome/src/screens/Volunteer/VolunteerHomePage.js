@@ -27,6 +27,13 @@ class VolunteerHomePage extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <View style={styles.containerHead}>
+                    <Image
+                    resizeMode="contain"
+                    onPress={() => alert('test')}
+                    source={require('../../../assets/img/plaingrey-07.png')}
+                    style={{ height: 50, width: 50, flex: 1 }} />
+                </View>
                 <View style={styles.containerName}>
                     <Name style={styles.textName} name="楊承憲"></Name>
                 </View>
@@ -87,23 +94,30 @@ const styles = StyleSheet.create({
         zIndex: 0,
         backgroundColor: "#F2F1EF"
     },
-    containerName: {
+    containerHead: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        width: "100%",
+        backgroundColor: 'white',
+    },
+    containerName: {
+        flex: 2,
+        alignItems: 'center',
+        justifyContent: 'center',
         width: "82%",
-        marginHorizontal: "10%",
+        //marginHorizontal: "10%",
         marginTop: "10%",
-        marginBottom: "5%",
+        marginBottom: "10%",
         backgroundColor: "white"
     },
     containerWork: {
-        flex: 2,
+        flex: 4,
         flexDirection: 'column',
         justifyContent: 'space-between',
         backgroundColor: "#F2F1EF",
         width: "82%",
-        marginBottom: "20%",
+        marginBottom: "10%",
     },
     firstRow: {
         flex: 1,
