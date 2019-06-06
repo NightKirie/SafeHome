@@ -4,7 +4,8 @@
     <title>Login</title>
   </head>
   <body>
-    <form method="post">
+    <form method="post" id="loginForm">
+      {% csrf_token %}
       {{ form.as_p }}
       <button type="submit">Login</button>
     </form>
