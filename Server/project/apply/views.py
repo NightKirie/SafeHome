@@ -3,7 +3,6 @@ from django.http import HttpResponse
 from .models import Case
 from check.models import CaseFiles
 from authentication.views import group_required
-from django.views.decorators.csrf import csrf_exempt
 
 import json
 import os
@@ -17,15 +16,13 @@ today = ""
 count = 0
 
 
-# @group_required('House', 'Volunteer')
-# @csrf_exempt
+@group_required('House', 'Volunteer')
 def home(request):
     path = os.path.abspath('.') + "/templates/apply.html"
     return render(request, path)
 
 
-# @group_required('House', 'Volunteer')
-# @csrf_exempt
+@group_required('House', 'Volunteer')
 def upload(request):
     address = nullInputHandle(request.POST.get("county"), 1) + nullInputHandle(request.POST.get("district"), 1) + nullInputHandle(request.POST.get("road"), 1) + nullInputHandle(request.POST.get("section"), 1) + nullInputHandle(request.POST.get("lane"), 1) + nullInputHandle(request.POST.get("alley"), 1) + nullInputHandle(request.POST.get("number"), 1) + nullInputHandle(request.POST.get("numberD"), 1) + nullInputHandle(request.POST.get("floor"), 1) + nullInputHandle(request.POST.get("floorD"), 1) + nullInputHandle(request.POST.get("room"), 1)
 
