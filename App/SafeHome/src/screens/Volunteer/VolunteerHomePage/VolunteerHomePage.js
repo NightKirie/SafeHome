@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import UnprogressedCasePage from './UnprogressedCasePage';
-import ProgressingCasePage from './ProgressingCasePage'
+import ProgressingCasePage from './ProgressingCasePage';
 import HistoryCasePage from './HistoryCasePage';
 
 class Name extends Component {  
@@ -19,57 +19,56 @@ class Name extends Component {
 class VolunteerHomePage extends Component {
     render() {
         return (
-            <View style={styles.container}>
-                <View style={styles.containerHead}>
-                    <Image
-                    resizeMode="contain"
-                    onPress={() => alert('test')}
-                    source={require('../../../assets/img/plaingrey-07.png')}
-                    style={{ height: 50, width: 50, flex: 1 }} />
-                </View>
-                <View style={styles.containerName}>
-                    <Name style={styles.textName} name="楊承憲"></Name>
-                </View>
-                <View style={styles.containerWork}>
-                    <View style={styles.firstRow}>
-                        <TouchableOpacity style={styles.containerItem}
-                            onPress={() => this.props.navigation.navigate('UnprogressedCasePage')}>
-                            <Image
-                                source={require('../../../../assets/img/Case_Background.png')}
-                                style={{ position: 'absolute', width: "100%", height: "100%",}}
-                            />
-                            <Image
-                                source={require('../../../../assets/img/numeric-1-circle.png')}
-                                style={{ height: 30, width: 30 }}
-                            />
-                            <Text style={styles.txtItem}>待理案件</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.containerItem}
-                            onPress={() => this.props.navigation.navigate('ProgressingCasePage')}>
-                            <Image
-                                source={require('../../../../assets/img/AcceptCase_Background.png')}
-                                style={{ position: 'absolute', width: "100%", height: "100%",}}
-                            />
-                            <Image
-                                source={require('../../../../assets/img/numeric-2-circle.png')}
-                                style={{ height: 30, width: 30 }}
-                            />
-                            <Text style={styles.txtItem}>已接案件</Text>
-                        </TouchableOpacity>
+            <View style={styles.backgroundContainer}>
+                <View style={styles.container}>
+                    <View style={{ flex: 1, width: "100%" }}>
+                        <View style={styles.containerName}>
+                            <Name style={styles.textName} name="楊承憲"></Name>
+                        </View>
                     </View>
-                    <View style={styles.secondRow}>
-                        <TouchableOpacity style={styles.containerItem}
-                            onPress={() => this.props.navigation.navigate('HistoryCasePage')}>
-                            <Image
-                                source={require('../../../../assets/img/History_Background.png')}
-                                style={{ position: 'absolute', width: "100%", height: "100%",}}
-                            />
-                            <Image
-                                source={require('../../../../assets/img/numeric-3-circle.png')}
-                                style={{ height: 30, width: 30 }}
-                            />
-                            <Text style={styles.txtItem}>歷史案件</Text>
-                        </TouchableOpacity>
+                    <View style={{ flex: 2, width: "100%" }}>
+                        <View style={styles.containerWork}>
+                            <View style={styles.firstRow}>
+                                <TouchableOpacity style={styles.containerItem}
+                                    onPress={() => this.props.navigation.navigate('UnprogressedCasePage')}>
+                                    <Image
+                                        source={require('../../../../assets/img/Case_Background.png')}
+                                        style={{ position: 'absolute', width: "100%", height: "100%",}}
+                                    />
+                                    <Image
+                                        source={require('../../../../assets/img/numeric-1-circle.png')}
+                                        style={{ height: 30, width: 30 }}
+                                    />
+                                    <Text style={styles.txtItem}>待理案件</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.containerItem}
+                                    onPress={() => this.props.navigation.navigate('ProgressingCasePage')}>
+                                    <Image
+                                        source={require('../../../../assets/img/AcceptCase_Background.png')}
+                                        style={{ position: 'absolute', width: "100%", height: "100%",}}
+                                    />
+                                    <Image
+                                        source={require('../../../../assets/img/numeric-2-circle.png')}
+                                        style={{ height: 30, width: 30 }}
+                                    />
+                                    <Text style={styles.txtItem}>已接案件</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.secondRow}>
+                                <TouchableOpacity style={styles.containerItem}
+                                    onPress={() => this.props.navigation.navigate('HistoryCasePage')}>
+                                    <Image
+                                        source={require('../../../../assets/img/History_Background.png')}
+                                        style={{ position: 'absolute', width: "100%", height: "100%",}}
+                                    />
+                                    <Image
+                                        source={require('../../../../assets/img/numeric-3-circle.png')}
+                                        style={{ height: 30, width: 30 }}
+                                    />
+                                    <Text style={styles.txtItem}>歷史案件</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                     </View>
                 </View>
             </View>
@@ -129,56 +128,43 @@ const VolunteerHomePageStackNavigation = createStackNavigator({
 });
 
 const styles = StyleSheet.create({
-    container: {
+    backgroundContainer: {
         alignItems: 'center',
         justifyContent: 'center',
         width: "100%",
         height: "100%",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        zIndex: 0,
         backgroundColor: "#F2F1EF"
     },
-    containerHead: {
-        flex: 1,
+    container: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: "80%",
+        height: "90%",
+    },
+    containerName: {
         alignItems: 'center',
         justifyContent: 'center',
         width: "100%",
-        backgroundColor: 'white',
-    },
-    containerName: {
-        flex: 2,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: "82%",
-        //marginHorizontal: "10%",
-        marginTop: "10%",
-        marginBottom: "10%",
+        height: "90%",
         backgroundColor: "white"
     },
     containerWork: {
-        flex: 4,
         flexDirection: 'column',
         justifyContent: 'space-between',
         backgroundColor: "#F2F1EF",
-        width: "82%",
-        marginBottom: "10%",
+        width: "100%",
     },
     firstRow: {
-        flex: 1,
         justifyContent: 'space-between',
         flexDirection: "row",
     },
     secondRow: {
-        flex: 1,
-        paddingTop: '10%',
+        paddingTop: '4%',
         justifyContent: 'space-between',
         flexDirection: "row",
     },
     containerItem: {
-        width: "45%",
+        width: "48%",
         backgroundColor: "#F37021",
         shadowColor: "#000",
         shadowOffset: {

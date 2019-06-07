@@ -12,15 +12,6 @@ class UnprogressedCasePage extends Component {
         })
         this.springAnimationXY = new Animated.ValueXY({ x: 0, y: height })
     };
-    static navigationOptions = {
-        headerTitle: "待理案件",
-        headerTitleStyle: { flex: 2, textAlign: "center", },
-        headerTintColor: "#F37021",
-        headerRight: (<Image
-            source={require('../../../../assets/img/help-circle.png')}
-            style={{ height: 25, width: 25, tintColor: "#F37021", margin: 3 }}
-        />)
-    }
     onLayout = (e) => {
         this.setState({
             overlayWidth: e.nativeEvent.layout.width,
