@@ -1,15 +1,12 @@
 import React from 'react';
 import { AppRegistry } from 'react-native';
-import { createAppContainer, createStackNavigator, } from 'react-navigation'; // Version can be specified in package.json
+import { createAppContainer, createSwitchNavigator, } from 'react-navigation'; // Version can be specified in package.json
 
 import LoginPage from './src/screens/LoginPage';
-import VolunteerHomePage from './src/screens/Volunteer/VolunteerHomePage'
-import UnprogressedCase from './src/screens/Volunteer/UnprogressedCase'
-
-const AppNavigator = createStackNavigator({
+import VolunteerBottomTabNavigation from './src/screens/Volunteer/VolunteerBottomTabNavigation'
+const AppNavigator = createSwitchNavigator({
     LoginPage: LoginPage,
-    VolunteerHomePage: VolunteerHomePage,
-    UnprogressedCase: UnprogressedCase,
+    VolunteerBottomTabNavigation: VolunteerBottomTabNavigation,
 });
 
 export default createAppContainer(AppNavigator);

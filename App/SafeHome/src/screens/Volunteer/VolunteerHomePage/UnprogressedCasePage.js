@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Animated, TouchableOpacity, Image, ListView } from 'react-native';
 import { Dimensions } from 'react-native';
-const data = require('../../../assets/json/progressedcases.json');
+const data = require('../../../../assets/json/progressedcases.json');
 var { height } = Dimensions.get('window');
 
-class UnprogressedCase extends Component {
+class UnprogressedCasePage extends Component {
     constructor() {
         super();
         this.dataSource = new ListView.DataSource({
@@ -17,7 +17,7 @@ class UnprogressedCase extends Component {
         headerTitleStyle: { flex: 2, textAlign: "center", },
         headerTintColor: "#F37021",
         headerRight: (<Image
-            source={require('../../../assets/img/help-circle.png')}
+            source={require('../../../../assets/img/help-circle.png')}
             style={{ height: 25, width: 25, tintColor: "#F37021", margin: 3 }}
         />)
     }
@@ -59,7 +59,7 @@ class UnprogressedCase extends Component {
                 <Animated.View style={[this.springAnimationXY.getLayout(), { position: "absolute", height: "100%", width: "100%", justifyContent: 'flex-end', }]}>
                     <View style={styles.overlay} onLayout={this.onLayout}>
                         <Image
-                            source={require('../../../assets/img/Yes.png')}
+                            source={require('../../../../assets/img/Yes.png')}
                             style={{ height: 50, width: 50, tintColor: "#F37021" }}
                         />
                         <Text style={{ color: "#BBBBBB", fontSize: 40 }}>結案成功</Text>
@@ -109,4 +109,5 @@ const styles = StyleSheet.create({
         paddingBottom: "10%",
     }
 })
-export default UnprogressedCase;
+
+export default UnprogressedCasePage;

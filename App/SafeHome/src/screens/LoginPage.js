@@ -51,7 +51,7 @@ class LodingPage extends Component {
                 break;
             /* For volunteer */
             case 2:
-                this.props.navigation.navigate('VolunteerHomePage')
+                this.props.navigation.navigate('VolunteerBottomTabNavigation')
                 break;
             /* For technician */
             case 3:

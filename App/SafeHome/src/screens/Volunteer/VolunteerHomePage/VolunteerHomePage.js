@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
+import UnprogressedCasePage from './UnprogressedCasePage';
+import ProgressingCasePage from './ProgressingCasePage'
+import HistoryCasePage from './HistoryCasePage';
 
-
-class Name extends Component {
+class Name extends Component {  
     render() {
         return (
             <View>
@@ -13,17 +16,7 @@ class Name extends Component {
         );
     }
 }
-
 class VolunteerHomePage extends Component {
-    static navigationOptions = {
-        headerLeft: null,
-        headerTitle: (
-            <Image
-                resizeMode="contain"
-                source={require('../../../assets/img/plaingrey-07.png')}
-                style={{ height: 50, width: 50, flex: 1 }} />
-        ),
-    }
     render() {
         return (
             <View style={styles.container}>
@@ -33,37 +26,39 @@ class VolunteerHomePage extends Component {
                 <View style={styles.containerWork}>
                     <View style={styles.firstRow}>
                         <TouchableOpacity style={styles.containerItem}
-                            onPress={() => this.props.navigation.navigate('UnprogressedCase')}>
+                            onPress={() => this.props.navigation.navigate('UnprogressedCasePage')}>
                             <Image
-                                source={require('../../../assets/img/Case_Background.png')}
+                                source={require('../../../../assets/img/Case_Background.png')}
                                 style={{ position: 'absolute', width: "100%", height: "100%",}}
                             />
                             <Image
-                                source={require('../../../assets/img/numeric-1-circle.png')}
+                                source={require('../../../../assets/img/numeric-1-circle.png')}
                                 style={{ height: 30, width: 30 }}
                             />
                             <Text style={styles.txtItem}>待理案件</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.containerItem}>
+                        <TouchableOpacity style={styles.containerItem}
+                            onPress={() => this.props.navigation.navigate('ProgressingCasePage')}>
                             <Image
-                                source={require('../../../assets/img/AcceptCase_Background.png')}
+                                source={require('../../../../assets/img/AcceptCase_Background.png')}
                                 style={{ position: 'absolute', width: "100%", height: "100%",}}
                             />
                             <Image
-                                source={require('../../../assets/img/numeric-2-circle.png')}
+                                source={require('../../../../assets/img/numeric-2-circle.png')}
                                 style={{ height: 30, width: 30 }}
                             />
                             <Text style={styles.txtItem}>已接案件</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.secondRow}>
-                        <TouchableOpacity style={styles.containerItem}>
+                        <TouchableOpacity style={styles.containerItem}
+                            onPress={() => this.props.navigation.navigate('HistoryCasePage')}>
                             <Image
-                                source={require('../../../assets/img/History_Background.png')}
+                                source={require('../../../../assets/img/History_Background.png')}
                                 style={{ position: 'absolute', width: "100%", height: "100%",}}
                             />
                             <Image
-                                source={require('../../../assets/img/numeric-3-circle.png')}
+                                source={require('../../../../assets/img/numeric-3-circle.png')}
                                 style={{ height: 30, width: 30 }}
                             />
                             <Text style={styles.txtItem}>歷史案件</Text>
@@ -74,6 +69,58 @@ class VolunteerHomePage extends Component {
         );
     }
 }
+
+const VolunteerHomePageStackNavigation = createStackNavigator({
+    VolunteerHomePage: {
+        screen: VolunteerHomePage,
+        navigationOptions: {
+            headerLeft: null,
+            headerTitle: (
+                <Image
+                    resizeMode="contain"
+                    source={require('../../../../assets/img/plaingrey-07.png')}
+                    style={{ height: 50, width: 50, flex: 1 }} />
+            ),
+        },
+    },
+    UnprogressedCasePage: {
+        screen: UnprogressedCasePage,
+        navigationOptions: {
+            headerTitle: "待理案件",
+            headerTitleStyle: { flex: 2, textAlign: "center", },
+            headerTintColor: "#F37021",
+            headerRight: (<Image
+                source={require('../../../../assets/img/help-circle.png')}
+                style={{ height: 25, width: 25, tintColor: "#F37021", margin: 3 }}
+            />)
+        }
+    },
+    ProgressingCasePage: {
+        screen: ProgressingCasePage,
+        navigationOptions: {
+            headerTitle: "已接案件",
+            headerTitleStyle: { flex: 2, textAlign: "center", },
+            headerTintColor: "#F37021",
+            headerRight: (<Image
+                source={require('../../../../assets/img/help-circle.png')}
+                style={{ height: 25, width: 25, tintColor: "#F37021", margin: 3 }}
+            />)
+        }
+    },
+    HistoryCasePage: {
+        screen: HistoryCasePage,
+        navigationOptions: {
+            headerTitle: "歷史案件",
+            headerTitleStyle: { flex: 2, textAlign: "center", },
+            headerTintColor: "#F37021",
+            headerRight: (<Image
+                source={require('../../../../assets/img/help-circle.png')}
+                style={{ height: 25, width: 25, tintColor: "#F37021", margin: 3 }}
+            />)
+        }
+    }
+});
+
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
@@ -137,4 +184,5 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     }
 })
-export default VolunteerHomePage;
+
+export default VolunteerHomePageStackNavigation;
