@@ -5,7 +5,8 @@
     <title>Modify application</title>
   </head>
   <body>
-    <form action="./fetch/" method="get" class="fetch">
+    <form action="./fetch/" method="post" class="fetch">
+      {% csrf_token %}
       SN:<input name="sn" type="text"><br>
       <button id="fetch">fetch</button>
     </form>
@@ -37,7 +38,7 @@
     </form>
 
     <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script>
+    <!--script>
       $(document).ready(function(){
          $('#fetch').click((event)=>{ 
           event.preventDefault()
@@ -100,6 +101,6 @@
            })
          })*/
       })
-    </script>
+    </script-->
   </body>
 </html>

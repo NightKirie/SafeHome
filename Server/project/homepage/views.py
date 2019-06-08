@@ -8,7 +8,8 @@ import json
 
 @group_required('House', 'Volunteer', 'Engineer')
 def welcome(request):
-    response = "Hi! " + request.user.last_name + request.user.first_name
+#    response = "Hi! " + request.user.last_name + request.user.first_name
+    response = '<ul class="success"><li>' + request.user.groups.all()[0].name + '</li></ul>'
     return HttpResponse(response)
 
 

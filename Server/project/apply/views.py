@@ -194,7 +194,8 @@ def modifyHome(request):
 
 @group_required('House', 'Volunteer')
 def modifyFetch(request):
-    SN = request.GET.get("sn")
+#    SN = request.GET.get("sn")
+    SN = request.POST.get("sn")
     response = []
     if Case.objects.filter(SN=SN):
         case = Case.objects.get(SN=SN)
