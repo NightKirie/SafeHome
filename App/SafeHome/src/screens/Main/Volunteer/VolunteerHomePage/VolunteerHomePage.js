@@ -23,6 +23,10 @@ class VolunteerHomePage extends Component {
                 <View style={styles.container}>
                     <View style={{ flex: 1, width: "100%" }}>
                         <View style={styles.containerName}>
+                            <Image
+                                source={require('../../../../../assets/img/Name_Background.png')}
+                                style={{ position: 'absolute', width: "100%", height: "100%", }}
+                            />
                             <Name style={styles.textName} name="楊承憲"></Name>
                         </View>
                     </View>
@@ -32,11 +36,11 @@ class VolunteerHomePage extends Component {
                                 <TouchableOpacity style={styles.containerItem}
                                     onPress={() => this.props.navigation.navigate('UnprogressedCasePage')}>
                                     <Image
-                                        source={require('../../../../assets/img/Case_Background.png')}
+                                        source={require('../../../../../assets/img/Case_Background.png')}
                                         style={{ position: 'absolute', width: "100%", height: "100%",}}
                                     />
                                     <Image
-                                        source={require('../../../../assets/img/numeric-1-circle.png')}
+                                        source={require('../../../../../assets/img/numeric-1-circle.png')}
                                         style={{ height: 30, width: 30 }}
                                     />
                                     <Text style={styles.txtItem}>待理案件</Text>
@@ -44,11 +48,11 @@ class VolunteerHomePage extends Component {
                                 <TouchableOpacity style={styles.containerItem}
                                     onPress={() => this.props.navigation.navigate('ProgressingCasePage')}>
                                     <Image
-                                        source={require('../../../../assets/img/AcceptCase_Background.png')}
+                                        source={require('../../../../../assets/img/AcceptCase_Background.png')}
                                         style={{ position: 'absolute', width: "100%", height: "100%",}}
                                     />
                                     <Image
-                                        source={require('../../../../assets/img/numeric-2-circle.png')}
+                                        source={require('../../../../../assets/img/numeric-2-circle.png')}
                                         style={{ height: 30, width: 30 }}
                                     />
                                     <Text style={styles.txtItem}>已接案件</Text>
@@ -58,11 +62,11 @@ class VolunteerHomePage extends Component {
                                 <TouchableOpacity style={styles.containerItem}
                                     onPress={() => this.props.navigation.navigate('HistoryCasePage')}>
                                     <Image
-                                        source={require('../../../../assets/img/History_Background.png')}
+                                        source={require('../../../../../assets/img/History_Background.png')}
                                         style={{ position: 'absolute', width: "100%", height: "100%",}}
                                     />
                                     <Image
-                                        source={require('../../../../assets/img/numeric-3-circle.png')}
+                                        source={require('../../../../../assets/img/numeric-3-circle.png')}
                                         style={{ height: 30, width: 30 }}
                                     />
                                     <Text style={styles.txtItem}>歷史案件</Text>
@@ -84,7 +88,7 @@ const VolunteerHomePageStackNavigation = createStackNavigator({
             headerTitle: (
                 <Image
                     resizeMode="contain"
-                    source={require('../../../../assets/img/plaingrey-07.png')}
+                    source={require('../../../../../assets/img/plaingrey-07.png')}
                     style={{ height: 50, width: 50, flex: 1 }} />
             ),
         },
@@ -96,7 +100,7 @@ const VolunteerHomePageStackNavigation = createStackNavigator({
             headerTitleStyle: { flex: 2, textAlign: "center", },
             headerTintColor: "#F37021",
             headerRight: (<Image
-                source={require('../../../../assets/img/help-circle.png')}
+                source={require('../../../../../assets/img/help-circle.png')}
                 style={{ height: 25, width: 25, tintColor: "#F37021", margin: 3 }}
             />)
         }
@@ -108,7 +112,7 @@ const VolunteerHomePageStackNavigation = createStackNavigator({
             headerTitleStyle: { flex: 2, textAlign: "center", },
             headerTintColor: "#F37021",
             headerRight: (<Image
-                source={require('../../../../assets/img/help-circle.png')}
+                source={require('../../../../../assets/img/help-circle.png')}
                 style={{ height: 25, width: 25, tintColor: "#F37021", margin: 3 }}
             />)
         }
@@ -120,7 +124,7 @@ const VolunteerHomePageStackNavigation = createStackNavigator({
             headerTitleStyle: { flex: 2, textAlign: "center", },
             headerTintColor: "#F37021",
             headerRight: (<Image
-                source={require('../../../../assets/img/help-circle.png')}
+                source={require('../../../../../assets/img/help-circle.png')}
                 style={{ height: 25, width: 25, tintColor: "#F37021", margin: 3 }}
             />)
         }

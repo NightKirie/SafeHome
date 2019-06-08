@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Animated, TouchableOpacity, Image, ListView } from 'react-native';
 import { Dimensions } from 'react-native';
-const data = require('../../../../assets/json/progressedcases.json');
+const data = require('../../../../../assets/json/progressedcases.json');
 var { height } = Dimensions.get('window');
 
 class UnprogressedCasePage extends Component {
@@ -50,7 +50,7 @@ class UnprogressedCasePage extends Component {
                 <Animated.View style={[this.springAnimationXY.getLayout(), { position: "absolute", height: "100%", width: "100%", justifyContent: 'flex-end', }]}>
                     <View style={styles.overlay} onLayout={this.onLayout}>
                         <Image
-                            source={require('../../../../assets/img/Yes.png')}
+                            source={require('../../../../../assets/img/Yes.png')}
                             style={{ height: 50, width: 50, tintColor: "#F37021" }}
                         />
                         <Text style={{ color: "#BBBBBB", fontSize: 40 }}>結案成功</Text>
