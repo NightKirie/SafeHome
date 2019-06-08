@@ -26,7 +26,7 @@ const VolunteerAlertPageStackNavigation = createStackNavigator({
             headerTitle: (
                 <Image
                     resizeMode="contain"
-                    source={require('../../../../assets/img/plaingrey-07.png')}
+                    source={require('../../../../../assets/img/plaingrey-07.png')}
                     style={{ height: 50, width: 50, flex: 1 }} />
             ),
         },
