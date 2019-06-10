@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Animated, TouchableOpacity, Image } from 'react-native';
-import { Button, Input, Icon } from 'react-native-elements';
+import { StyleSheet, View, Animated, TouchableOpacity, Image } from 'react-native';
+import { createStackNavigator } from 'react-navigation'
 import LoginPage from './Main/LoginPage';
 import RegisterPage from './Main/RegisterPage';
-//import MainPageStackNavigation from './Main/MainPageStackNavigation';
 
 class LoadingPage extends Component {
     static navigationOptions = {
@@ -27,7 +26,10 @@ class LoadingPage extends Component {
         }
         else {
             this.setState({
-                animationComponent: <LoginPage login={(loginUserType)=>this.login(loginUserType)}/>});
+                animationComponent: <LoginPage 
+                                        login={(loginUserType)=>this.login(loginUserType)}
+                                        navigation={() => this.props.navigation.navigate('RegisterPage')}/>});
+                // animationComponent: <RegisterPage />});
         }
     }
 
@@ -49,8 +51,6 @@ class LoadingPage extends Component {
         this.interval = setInterval(this.slideDown, 1500);
     }
   
-    //switchLoginAndRegister
-
     login(loginUserType) {
         switch (loginUserType) {
             /* For householder */
@@ -92,6 +92,11 @@ class LoadingPage extends Component {
     }
 }
 
+const MainRegisterPageStackNavigation = createStackNavigator({
+    LoadingPage: LoadingPage,
+    RegisterPage: RegisterPage
+});
+
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
@@ -107,4 +112,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default LoadingPage;
+export default MainRegisterPageStackNavigation;

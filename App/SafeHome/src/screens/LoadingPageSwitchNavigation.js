@@ -1,17 +1,14 @@
 import React from 'react';
-import { 
-    createAppContainer, 
+import {  
     createSwitchNavigator,  
 } from 'react-navigation'; // Version can be specified in package.json
 
-import LoadingPage from './LoadingPage';
-//import MainPageStackNavigation from './Main/MainPageStackNavigation';
-//import LoginPage from './src/screens/Main/LoginPage';
+import MainRegisterPageStackNavigation from './LoadingPage';
 import VolunteerBottomTabNavigation from './Main/Volunteer/VolunteerBottomTabNavigation'
 
 const LoadingPageSwitchNavigation = createSwitchNavigator({
-    LoadingPage: {
-        screen: LoadingPage,
+    MainRegisterPageStackNavigation: {
+        screen: MainRegisterPageStackNavigation,
     },
     VolunteerBottomTabNavigation: {
         screen: VolunteerBottomTabNavigation,

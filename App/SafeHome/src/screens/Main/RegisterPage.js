@@ -53,7 +53,7 @@ class RegisterPage extends Component {
                         titleStyle={{ fontWeight: "bold" }} />
                     <Button
                         title={"取消"}
-                        onPress={() => this.props.navigation.navigate('Login') }
+                        onPress={() => this.props.navigation.navigate('LoadingPage') }
                         containerStyle={styles.containerstyleButtonCancel}
                         buttonStyle={styles.buttonstyleButtonCancel}
                         titleStyle={{ color: "#BBBBBB", fontWeight: "bold" }} />
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         position: "relative",
         width: "90%",
-        height: "80%",
+        height: "auto",
         top: 0,
         left: 0,
         right: 0,

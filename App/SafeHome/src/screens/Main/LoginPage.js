@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Animated, TouchableOpacity, Image } from 'react-native';
 import { Button, Input, Icon } from 'react-native-elements';
-import RegisterPage from './RegisterPage';
 import {
     createStackNavigator,
     withNavigation,
 } from 'react-navigation';
+import RegisterPage from './RegisterPage'
 
 class LoginPage extends Component {
     constructor(props) {
@@ -20,6 +20,8 @@ class LoginPage extends Component {
             buttonUser3Color: "#F37021",
             account: "",
             password: "",
+            registerPageOpacity: new Animated.Value(0),
+            registerPageIsVisible: false,
         }
     }
 
@@ -132,14 +134,16 @@ class LoginPage extends Component {
                 <View style={this.state.loginUserType == 1 ? styles.showRegisterButton : styles.hideRegisterButton} >
                     <Button
                         disabled={this.state.loginUserType == 1 ? false : true}
-                        onPress={() => this.props.navigation.navigate('RegisterPage')}
+                        onPress={() => this.props.navigation()}
                         title={"註冊"}
                         containerStyle={styles.containerstyleButtonRegister}
                         buttonStyle={styles.buttonstyleButtonRegister}
                         titleStyle={{ color: "#BBBBBB", fontWeight: "bold" }}
                     />
                 </View>
+                
             </View>
+           
         );
     }
 }
