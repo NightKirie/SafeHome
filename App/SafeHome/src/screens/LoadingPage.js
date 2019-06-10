@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Animated, TouchableOpacity, Image } from 'react-native';
 import { Button, Input, Icon } from 'react-native-elements';
 import LoginPage from './Main/LoginPage';
+import RegisterPage from './Main/RegisterPage';
 //import MainPageStackNavigation from './Main/MainPageStackNavigation';
 
 class LoadingPage extends Component {
@@ -13,12 +14,26 @@ class LoadingPage extends Component {
         this.state = {
             isOverlayVisible: true,
             backgroundColorContainer: "#FFFFFF",
+            signedIn: false,
+            loginUserType: 2,
+            animationComponent: []
         }
         this.springAnimationXY = new Animated.ValueXY({ x: 0, y: 1000 })
     }
 
+    cheakIfLoginBefore = () => {
+        if(this.state.signedIn == true) {
+            this.login(this.state.loginUserType);
+        }
+        else {
+            this.setState({
+                animationComponent: <LoginPage login={(loginUserType)=>this.login(loginUserType)}/>});
+        }
+    }
+
     /* For slide down the SafeHome icon */
     slideDown = () => {
+        this.cheakIfLoginBefore();
         Animated.spring(
             this.springAnimationXY, {
                 toValue: { x: 0, y: 0 },
@@ -33,9 +48,10 @@ class LoadingPage extends Component {
     setTimerlideDown = () => {
         this.interval = setInterval(this.slideDown, 1500);
     }
+  
+    //switchLoginAndRegister
 
     login(loginUserType) {
-       //alert(`${loginUserType}`)
         switch (loginUserType) {
             /* For householder */
             case 1:
@@ -54,6 +70,8 @@ class LoadingPage extends Component {
         }
     }
 
+
+
     render() {
         return (
             <TouchableOpacity style={[styles.container, { backgroundColor: this.state.backgroundColorContainer }]}
@@ -67,8 +85,7 @@ class LoadingPage extends Component {
                     />
                 </View>
                 <Animated.View style={[this.springAnimationXY.getLayout()]}>
-                    <LoginPage
-                        login={(loginUserType) => this.login(loginUserType)} />
+                    { this.state.animationComponent }     
                 </Animated.View>
             </TouchableOpacity>
         );

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Animated, TouchableOpacity, Image } from 'react-native';
 import { Button, Input, Icon } from 'react-native-elements';
 import RegisterPage from './RegisterPage';
-import { 
-    createStackNavigator, 
+import {
+    createStackNavigator,
     withNavigation,
 } from 'react-navigation';
 
@@ -12,7 +12,6 @@ class LoginPage extends Component {
         super(props);
         this.state = {
             loginUserType: 1,   // 1 for householder(defualt), 2 for volunteer, 3 for technician
-            //showRegisterButton: true,
             buttonUser1BColor: "#F37021",
             buttonUser2BColor: "#FFFFFF",
             buttonUser3BColor: "#FFFFFF",
@@ -130,15 +129,15 @@ class LoginPage extends Component {
                     containerStyle={styles.containerstyleButtonLogin}
                     buttonStyle={styles.buttonstyleButtonLogin}
                     titleStyle={{ fontWeight: "bold" }} />
-                <View style={ this.state.loginUserType == 1 ? styles.showRegisterButton : styles.hideRegisterButton } >
+                <View style={this.state.loginUserType == 1 ? styles.showRegisterButton : styles.hideRegisterButton} >
                     <Button
-                        disabled={ this.state.loginUserType == 1 ? false : true }
+                        disabled={this.state.loginUserType == 1 ? false : true}
                         onPress={() => this.props.navigation.navigate('RegisterPage')}
                         title={"註冊"}
                         containerStyle={styles.containerstyleButtonRegister}
                         buttonStyle={styles.buttonstyleButtonRegister}
-                        titleStyle={{ color: "#BBBBBB", fontWeight: "bold" }} 
-                         />
+                        titleStyle={{ color: "#BBBBBB", fontWeight: "bold" }}
+                    />
                 </View>
             </View>
         );
