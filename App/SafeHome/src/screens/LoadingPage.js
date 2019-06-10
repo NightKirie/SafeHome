@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Animated, TouchableOpacity, Image } from 'react-native';
 import { Button, Input, Icon } from 'react-native-elements';
 import LoginPage from './Main/LoginPage';
+//import MainPageStackNavigation from './Main/MainPageStackNavigation';
 
 class LoadingPage extends Component {
     static navigationOptions = {

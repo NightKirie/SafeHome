@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import { Button, Input, } from 'react-native-elements';
 
 
-class Register extends Component {
+class RegisterPage extends Component {
     static navigationOptions = {
         header: null
     };
@@ -124,4 +124,4 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
     }
 })
-export default Register;
+export default RegisterPage;

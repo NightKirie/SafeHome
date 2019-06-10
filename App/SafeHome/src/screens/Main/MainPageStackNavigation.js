@@ -4,7 +4,6 @@ import {
 } from 'react-navigation'; // Version can be specified in package.json
 
 import LoginPage from './LoginPage';
-import RegisterPage from './RegisterPage';
 
 const MainPageStackNavigation = createStackNavigator({
     LoginPage: {
