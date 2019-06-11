@@ -15,13 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     path('home/', include('homepage.urls')),
     path('check/', include('check.urls')),
     path('apply/', include('apply.urls')),
-    path('accounts/register/', include('authentication.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('authentication.urls')),
+#    path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 ]

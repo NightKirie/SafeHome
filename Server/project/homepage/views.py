@@ -9,12 +9,17 @@ import json
 @group_required('House', 'Volunteer', 'Engineer')
 def welcome(request):
 #    response = "Hi! " + request.user.last_name + request.user.first_name
-    response = '<ul class="success"><li>' + request.user.groups.all()[0].name + '</li></ul>'
+    response = '<p id="success">' + request.user.groups.all()[0].name + '</p>'
     return HttpResponse(response)
 
 
 def seeya(request):
-    response = "See ya!"
+    response = '<p id="success">see ya!</p>'
+    return HttpResponse(response)
+
+
+def denied(request):
+    response = '<ul class="failed"><li>failed</li></ul>'
     return HttpResponse(response)
 
 

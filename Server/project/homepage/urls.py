@@ -18,6 +18,7 @@ from . import views
 
 urlpatterns = [
     path('permissiondenied/', views.permissionD),
+    path('denied/', views.denied),
     path('seeya/', views.seeya),
     path('welcome/', views.welcome),
 ]
