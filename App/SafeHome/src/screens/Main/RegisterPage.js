@@ -38,6 +38,7 @@ class RegisterPage extends Component {
                                     style={{ tintColor: "#F37021", height: 17, width: 17 }}
                                 />
                             }
+                            value={this.state.userName}
                             onChangeText={(userName) => {this.setState({userName: userName})}}
                             keyboardType='default'
                             inputStyle={{ paddingTop: 20, paddingLeft: 10 }}
@@ -51,7 +52,9 @@ class RegisterPage extends Component {
                                     style={{ tintColor: "#F37021", height: 17, width: 17 }}
                                 />
                             }
-                            onChangeText={(userPhoneNum) => {this.setState({userPhoneNum: userPhoneNum})}}
+                            value={this.state.userPhoneNum}
+                            onChangeText={(userPhoneNum) => {
+                                this.setState({userPhoneNum : userPhoneNum.replace(/[^0-9]/g, '')});}}
                             keyboardType='phone-pad'
                             inputStyle={{ paddingTop: 20, paddingLeft: 10 }}
                             containerStyle={{ paddingHorizontal: 18 }}
@@ -64,6 +67,7 @@ class RegisterPage extends Component {
                                     style={{ tintColor: "#F37021", height: 17, width: 17 }}
                                 />
                             }
+                            value={this.state.userPassword}
                             onChangeText={(userPassword) => {this.setState({userPassword: userPassword})}}
                             secureTextEntry={true}
                             autoCapitalize='none'
@@ -80,12 +84,13 @@ class RegisterPage extends Component {
                             }
                             errorMessage={this.state.userPasswordNotMatch}
                             errorStyle={{ fontSize: 17 }}
+                            value={this.state.userPassword}
                             onChangeText={(userPassword) => {
                                 if(userPassword != this.state.userPassword)
                                     this.setState({userPasswordNotMatch: "密碼不一致"})
                                 else
                                     this.setState({userPasswordNotMatch: " "})
-                            }}
+                            }} 
                             secureTextEntry={true}
                             autoCapitalize='none'
                             inputStyle={{ paddingTop: 20, paddingLeft: 10 }}
