@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Animated, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, Animated, TouchableOpacity, Image, Easing } from 'react-native';
 import { createStackNavigator } from 'react-navigation'
 import LoginPage from './Main/LoginPage';
 import RegisterPage from './Main/RegisterPage';
@@ -29,7 +29,6 @@ class LoadingPage extends Component {
                 animationComponent: <LoginPage 
                                         login={(loginUserType)=>this.login(loginUserType)}
                                         navigation={() => this.props.navigation.navigate('RegisterPage')}/>});
-                // animationComponent: <RegisterPage />});
         }
     }
 
@@ -84,7 +83,7 @@ class LoadingPage extends Component {
                         style={{ height: 100, width: 100 }}
                     />
                 </View>
-                <Animated.View style={[this.springAnimationXY.getLayout()]}>
+                <Animated.View style={[styles.container, this.springAnimationXY.getLayout()]}>
                     { this.state.animationComponent }     
                 </Animated.View>
             </TouchableOpacity>
@@ -93,8 +92,34 @@ class LoadingPage extends Component {
 }
 
 const MainRegisterPageStackNavigation = createStackNavigator({
-    LoadingPage: LoadingPage,
-    RegisterPage: RegisterPage
+    LoadingPage: {
+        screen: LoadingPage,
+    },
+    RegisterPage: {
+        screen: RegisterPage,
+    },
+},{
+    transitionConfig: () => ({
+        transitionSpec: {
+            duration: 300,
+            easing: Easing.out(Easing.poly(4)),
+            timing: Animated.timing,
+        },
+        screenInterpolator: sceneProps => {
+            const { layout, position, scene } = sceneProps;
+            const { index } = scene;
+            const Width = layout.initWidth;
+            const translateX = position.interpolate({
+                inputRange: [index - 1, index, index + 1],
+                outputRange: [Width, 0, -(Width - 10)],
+            });
+            const opacity = position.interpolate({
+                inputRange: [index - 1, index - 0.99, index],
+                outputRange: [0, 1, 1],
+            });
+            return { opacity, transform: [{translateX}] };
+        }
+    })
 });
 
 const styles = StyleSheet.create({

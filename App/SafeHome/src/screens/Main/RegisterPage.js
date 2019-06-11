@@ -2,17 +2,34 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { Button, Input, } from 'react-native-elements';
 
-
 class RegisterPage extends Component {
     static navigationOptions = {
         header: null
     };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            userName: "",
+            userPhoneNum: "",
+            userPassword: "",
+            userPasswordNotMatch: " ",
+        }
+    }
+
+    clickRegisterButton = () => {
+        alert(`${this.state.userName}`);
+        alert(`${this.state.userPhoneNum}`);
+        alert(`${this.state.userPassword}`);
+
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.containerOverlay}>
                     <Text style={styles.textRegister}>註冊</Text>
-                    <View style={styles.whitecontainer}>
+                    <View style={styles.containerInput}>
                         <Input
                             placeholder={"姓名"}
                             leftIcon={
@@ -20,15 +37,25 @@ class RegisterPage extends Component {
                                     source={require('../../../assets/img/ICONS/Profile.png')}
                                     style={{ tintColor: "#F37021", height: 17, width: 17 }}
                                 />
-                            } />
+                            }
+                            onChangeText={(userName) => {this.setState({userName: userName})}}
+                            keyboardType='default'
+                            inputStyle={{ paddingTop: 20, paddingLeft: 10 }}
+                            containerStyle={{ paddingHorizontal: 18 }}
+                            leftIconContainerStyle={{ marginLeft: 0, paddingTop: 10, }} />
                         <Input
-                            placeholder={"電子郵件"}
+                            placeholder={"電話/手機號碼"}
                             leftIcon={
                                 <Image
-                                    source={require('../../../assets/img/ICONS/Messages.png')}
+                                    source={require('../../../assets/img/ICONS/Phone.png')}
                                     style={{ tintColor: "#F37021", height: 17, width: 17 }}
                                 />
-                            } />
+                            }
+                            onChangeText={(userPhoneNum) => {this.setState({userPhoneNum: userPhoneNum})}}
+                            keyboardType='phone-pad'
+                            inputStyle={{ paddingTop: 20, paddingLeft: 10 }}
+                            containerStyle={{ paddingHorizontal: 18 }}
+                            leftIconContainerStyle={{ marginLeft: 0, paddingTop: 10, }} />
                         <Input
                             placeholder={"填寫密碼"}
                             leftIcon={
@@ -36,26 +63,46 @@ class RegisterPage extends Component {
                                     source={require('../../../assets/img/ICONS/Lock.png')}
                                     style={{ tintColor: "#F37021", height: 17, width: 17 }}
                                 />
-                            } />
+                            }
+                            onChangeText={(userPassword) => {this.setState({userPassword: userPassword})}}
+                            secureTextEntry={true}
+                            autoCapitalize='none'
+                            inputStyle={{ paddingTop: 20, paddingLeft: 10 }}
+                            containerStyle={{ paddingHorizontal: 18 }}
+                            leftIconContainerStyle={{ marginLeft: 0, paddingTop: 10, }} />
                         <Input
-                            placeholder={"確認密碼"}
+                            placeholder={"再次確認密碼"}
                             leftIcon={
                                 <Image
                                     source={require('../../../assets/img/ICONS/Lock.png')}
                                     style={{ tintColor: "#F37021", height: 17, width: 17 }}
                                 />
-                            } />
+                            }
+                            errorMessage={this.state.userPasswordNotMatch}
+                            errorStyle={{ fontSize: 17 }}
+                            onChangeText={(userPassword) => {
+                                if(userPassword != this.state.userPassword)
+                                    this.setState({userPasswordNotMatch: "密碼不一致"})
+                                else
+                                    this.setState({userPasswordNotMatch: " "})
+                            }}
+                            secureTextEntry={true}
+                            autoCapitalize='none'
+                            inputStyle={{ paddingTop: 20, paddingLeft: 10 }}
+                            containerStyle={{ paddingHorizontal: 18 }}
+                            leftIconContainerStyle={{ marginLeft: 0, paddingTop: 10, }} />
                     </View>
                     <Button
                         title={"提交"}
+                        onPress={() => this.clickRegisterButton() }
                         containerStyle={styles.containerstyleButtonSubmit}
-                        buttonStyle={styles.buttonstyleButtonSubmit}
+                        buttonStyle={{ backgroundColor: "#F37021" }}
                         titleStyle={{ fontWeight: "bold" }} />
                     <Button
                         title={"取消"}
-                        onPress={() => this.props.navigation.navigate('LoadingPage') }
+                        onPress={() => this.props.navigation.navigate('LoadingPage')}
                         containerStyle={styles.containerstyleButtonCancel}
-                        buttonStyle={styles.buttonstyleButtonCancel}
+                        buttonStyle={{ backgroundColor: "white", }}
                         titleStyle={{ color: "#BBBBBB", fontWeight: "bold" }} />
                 </View>
             </View>
@@ -92,13 +139,12 @@ const styles = StyleSheet.create({
         position: "relative",
         fontSize: 40,
         marginTop: "15%",
-        marginBottom: "12%",
-        color: "#BFBFBF"
+        marginBottom: "5%",
+        color: "#BFBFBF",
     },
-    whitecontainer: {
+    containerInput: {
         padding: "2%",
         paddingBottom: "4%",
-        // marginTop:"20%",
         width: "82%",
         alignItems: 'center',
         justifyContent: 'center',
@@ -117,11 +163,5 @@ const styles = StyleSheet.create({
         borderColor: "#BFBFBF",
         marginBottom: "5%"
     },
-    buttonstyleButtonSubmit: {
-        backgroundColor: "#F37021",
-    },
-    buttonstyleButtonCancel: {
-        backgroundColor: "white",
-    }
 })
 export default RegisterPage;

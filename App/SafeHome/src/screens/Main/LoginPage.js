@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Animated, TouchableOpacity, Image } from 'react-native';
-import { Button, Input, Icon } from 'react-native-elements';
-import {
-    createStackNavigator,
-    withNavigation,
-} from 'react-navigation';
-import RegisterPage from './RegisterPage'
+import { StyleSheet, Text, View, Animated, Image } from 'react-native';
+import { Button, Input, } from 'react-native-elements';
+
 
 class LoginPage extends Component {
     constructor(props) {
@@ -18,8 +14,8 @@ class LoginPage extends Component {
             buttonUser1Color: "#FFFFFF",
             buttonUser2Color: "#F37021",
             buttonUser3Color: "#F37021",
-            account: "",
-            password: "",
+            userPhoneNum: "",
+            userPassword: "",
             registerPageOpacity: new Animated.Value(0),
             registerPageIsVisible: false,
         }
@@ -91,75 +87,71 @@ class LoginPage extends Component {
                     <Input
                         placeholder={"電話/手機號碼"}
                         leftIcon={
-                            <Icon
-                                name='call'
-                                type='Foundation'
-                                color='#F37021'
-                                size={17}
+                            <Image
+                                source={require('../../../assets/img/ICONS/Phone.png')}
+                                style={{ tintColor: "#F37021", height: 17, width: 17 }}
                             />
                         }
-                        onChangeText={(account) => this.account = account}
+                        onChangeText={(userPhoneNum) => (this.setState({userPhoneNum : userPhoneNum}))}
                         keyboardType='phone-pad'
-                        inputStyle={styles.inputEmailPW}
+                        inputStyle={{ paddingTop: 20, paddingLeft: 10 }}
                         containerStyle={{ paddingHorizontal: 18 }}
-                        leftIconContainerStyle={styles.inputEmailPWIcon} />
+                        leftIconContainerStyle={{ marginLeft: 0, paddingTop: 10, }} />
                     <Input
                         placeholder={"密碼"}
                         leftIcon={
-                            <Icon
-                                name='lock'
-                                type='Foundation'
-                                color='#F37021'
-                                size={17}
+                            <Image
+                                source={require('../../../assets/img/ICONS/Lock.png')}
+                                style={{ tintColor: "#F37021", height: 17, width: 17 }}
                             />
                         }
-                        onChangeText={(password) => this.password = password}
+                        onChangeText={(userPassword) => this.setState({userPassword: userPassword})}
                         secureTextEntry={true}
                         autoCapitalize='none'
-                        inputStyle={styles.inputEmailPW}
+                        inputStyle={{ paddingTop: 20, paddingLeft: 10 }}
                         containerStyle={{ paddingHorizontal: 18 }}
-                        leftIconContainerStyle={styles.inputEmailPWIcon} />
+                        leftIconContainerStyle={{ marginLeft: 0, paddingTop: 10, }} />
                 </View>
                 <Button
                     title={"忘記密碼 ？"}
                     containerStyle={styles.containerstyleButtonForgetPW}
-                    buttonStyle={styles.butttonstyleButtonForgetPW}
+                    buttonStyle={{ backgroundColor: "#F2F1EF" }}
                     titleStyle={{ fontSize: 14, color: "#BBBBBB", fontWeight: "bold", textDecorationLine: "underline" }} />
                 <Button
-                    onPress={() => this.props.login(this.state.loginUserType)}
                     title={"登入"}
+                    onPress={() => this.props.login(this.state.loginUserType)}
                     containerStyle={styles.containerstyleButtonLogin}
-                    buttonStyle={styles.buttonstyleButtonLogin}
+                    buttonStyle={{ backgroundColor: "#F37021" }}
                     titleStyle={{ fontWeight: "bold" }} />
-                <View style={this.state.loginUserType == 1 ? styles.showRegisterButton : styles.hideRegisterButton} >
-                    <Button
-                        disabled={this.state.loginUserType == 1 ? false : true}
-                        onPress={() => this.props.navigation()}
-                        title={"註冊"}
-                        containerStyle={styles.containerstyleButtonRegister}
-                        buttonStyle={styles.buttonstyleButtonRegister}
-                        titleStyle={{ color: "#BBBBBB", fontWeight: "bold" }}
-                    />
-                </View>
-                
+                <Button
+                    title={"註冊"}
+                    disabled={this.state.loginUserType == 1 ? false : true}
+                    onPress={() => this.props.navigation()}
+                    containerStyle={[styles.containerstyleButtonRegister, this.state.loginUserType == 1 ? {opacity: 1} : {opacity: 0}]}
+                    buttonStyle={{ backgroundColor: "#FFFFFF" }}
+                    titleStyle={{ color: "#BBBBBB", fontWeight: "bold" }}
+                />
             </View>
-           
         );
     }
 }
 
-const MainPageStackNavigation = createStackNavigator({
-    LoginPage: {
-        screen: LoginPage,
-    },
-    RegisterPage: {
-        screen: RegisterPage,
-    },
-});
-
-
 const styles = StyleSheet.create({
+    container: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: "100%",
+        height: "100%",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: "grey",
+        zIndex: 0,
+    },
     containerOverlay: {
+        alignItems: 'center',
+        justifyContent: 'center',
         position: "relative",
         width: "90%",
         height: "auto",
@@ -174,35 +166,24 @@ const styles = StyleSheet.create({
         position: "relative",
         fontSize: 40,
         marginTop: "15%",
-        marginLeft: "38%",
         color: "#BFBFBF"
     },
     containerButtonUser: {
         flexDirection: "row",
         justifyContent: 'space-between',
+        width: "82%",
         marginHorizontal: "8%",
         marginTop: "12%",
         padding: 0,
         margin: 0,
-        backgroundColor: "#F2F1EF",
-    },
-    buttonstyleButtonUser: {
-        backgroundColor: "#F37021",
     },
     containerInput: {
-        position: "relative",
-        marginHorizontal: "8%",
-        marginTop: 0,
-        backgroundColor: "#FFFFFF",
+        padding: "2%",
         paddingBottom: "5%",
-    },
-    inputEmailPW: {
-        paddingTop: 20,
-        paddingLeft: 10,
-    },
-    inputEmailPWIcon: {
-        marginLeft: 0,
-        paddingTop: 10,
+        width: "82%",
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: "white",
     },
     containerstyleButtonForgetPW: {
         marginTop: "0.2%",
@@ -210,32 +191,19 @@ const styles = StyleSheet.create({
         marginRight: "8%",
         marginLeft: "63.3%",
     },
-    butttonstyleButtonForgetPW: {
-        backgroundColor: "#F2F1EF",
-    },
     containerstyleButtonLogin: {
+        width: "82%",
         marginTop: "18%",
         marginHorizontal: "8%",
     },
     containerstyleButtonRegister: {
+        width: "82%",
         marginTop: "3%",
         marginHorizontal: "8%",
         borderWidth: 1,
         borderColor: "#BFBFBF",
-        marginBottom: "5%"
-    },
-    buttonstyleButtonLogin: {
-        backgroundColor: "#F37021",
-    },
-    buttonstyleButtonRegister: {
-        backgroundColor: "#FFFFFF",
-    },
-    showRegisterButton: {
-        opacity: 1,
-    },
-    hideRegisterButton: {
-        opacity: 0,
+        marginBottom: "5%",
     },
 })
 
-export default withNavigation(LoginPage);
+export default LoginPage;
