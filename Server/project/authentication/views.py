@@ -1,5 +1,5 @@
 from django.contrib import auth
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
@@ -15,10 +15,12 @@ def houseRegister(request):
         form = HouseUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect("/accounts/login")
+            if User.objects.filter(username=request.POST.get('username')).count():
+                return HttpResponse('<p class="success" id="success">success</p>')
+            else:
+                return HttpResponse('<p class="error" id="error">registration error</p>')
         else:
-            return HttpResponse(json.dumps(form.errors),
-                                content_type="application/json")
+            return HttpResponse('<p class="error" id="error">' + json.dumps(form.errors) + '</p>')
     else:
         form = HouseUserCreationForm()
         return render(request, "registration/register.html", {'form': form})
@@ -77,7 +79,7 @@ def login(request):
     password = request.POST.get('password')
 
     if not username or not password:
-        return HttpResponse('<p id="nullInputError">null input</p>')
+        return HttpResponse('<p class="error" id="nullInput">null input</p>')
     else:
         user = auth.authenticate(username=username, password=password)
         if user!=None:
@@ -85,9 +87,9 @@ def login(request):
                 auth.login(request, user)
                 return HttpResponseRedirect('/home/welcome/')
             else:
-                return HttpResponse('<p id="inactiveUserError">inactive user</p>')
+                return HttpResponse('<p class="error" id="inactiveUser">inactive user</p>')
         else:
-            return HttpResponse('<p id="non-existUserError">user not found</p>')
+            return HttpResponse('<p class="error" id="non-existUser">wrong username or password</p>')
 
 
 def logout(request):

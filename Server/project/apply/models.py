@@ -29,7 +29,7 @@ class Case(models.Model):
     buildingRemarks = models.CharField(max_length=100)
     assign = models.CharField(max_length=10)
     volunteer = models.CharField(max_length=16)
-    checked = models.CharField(max_length=5)
+    checked = models.CharField(max_length=10)
     status = models.CharField(max_length=10)
     applyDate = models.CharField(max_length=60, default='undefined')
     checkDate = models.CharField(max_length=60, default='undefined')

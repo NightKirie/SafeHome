@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 
 
 class HouseUserCreationForm(forms.Form):
-    username = forms.CharField(label='Enter username', min_length=4, max_length=20)
+    username = forms.CharField(label='Enter username', max_length=20)
 #    email = forms.EmailField(label='Enter email')
     firstName = forms.CharField(label='Enter first name', max_length=10)
     lastName = forms.CharField(label='Enter last name', max_length=10)
@@ -16,8 +16,9 @@ class HouseUserCreationForm(forms.Form):
         username = self.cleaned_data['username'].lower()
         r = User.objects.filter(username=username)
         if r.count():
-            raise ValidationError("Username already exists.")
-        return username
+            raise ValidationError("User already exists.")
+        else:
+            return username
 
 #    def clean_email(self):
 #        email = self.cleaned_data['email'].lower()
@@ -57,6 +58,7 @@ class HouseUserCreationForm(forms.Form):
         group.user_set.add(user)
         return user
 
+# will be removed
 class VolunteerUserCreationForm(forms.Form):
     username = forms.CharField(label='Enter username', min_length=4, max_length=20)
 #    email = forms.EmailField(label='Enter email')
@@ -111,6 +113,7 @@ class VolunteerUserCreationForm(forms.Form):
         group.user_set.add(user)
         return user
 
+# will be removed
 class EngineerUserCreationForm(forms.Form):
     username = forms.CharField(label='Enter username', min_length=4, max_length=20)
 #    email = forms.EmailField(label='Enter email')

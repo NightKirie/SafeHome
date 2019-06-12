@@ -147,5 +147,8 @@ LOGIN_REDIRECT_URL = '/home/welcome/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 
-# Warning!!!
-# CSRF_USE_SESSIONS = False
+# Custom User Model
+
+#AUTH_USER_MODEL = ['authentication.House',
+#                   'authentication.Volunteer',
+#                   'authentication.Engineer',]

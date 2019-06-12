@@ -28,8 +28,7 @@ def upload(request):
 
     if Case.objects.filter(address=address):
         if Case.objects.filter(name=request.POST.get("name")):
-            return HttpResponse(json.dumps({'result': 'case exists'}),
-                                content_type="application/json")
+            return HttpResponse('<p class="error" id="caseExists">case exists</p>')
         else:
             Case.objects.create(SN=generateSN(),
                                 name=nullInputHandle(request.POST.get("name"), 0),
@@ -62,8 +61,7 @@ def upload(request):
             if Case.objects.filter(name=request.POST.get("name"), address=address):
                 case = Case.objects.get(name=request.POST.get("name"), address=address)
             else:
-                return HttpResponse(json.dumps({'stausCode': 'application failed'}),
-                                    content_type="application/json")
+                return HttpResponse('<p class="error" id="unknown">application failed</p>')
 
             path = os.path.abspath('.') + "/check/casefiles/case" + case.SN
             CaseFiles.objects.create(SN=case.SN, name=request.POST.get("name"), path=path)
@@ -75,14 +73,11 @@ def upload(request):
             #verification
             if CaseFiles.objects.filter(SN=case.SN):
                 if os.path.exists(CaseFiles.objects.get(SN=case.SN).path):
-                    return HttpResponse(json.dumps({'statusCode': 'success'}),
-                                        content_type="application/json")
+                    return HttpResponse('<p class="success" id="success">success</p>')
                 else:
-                    return HttpResponse(json.dumps({'statusCode': 'failed to create directory'}),
-                                        content_type="application/json")
+                    return HttpResponse('<p class="error" id="filesystem">failed to create directory</p>')
             else:
-                return HttpResponse(json.dumps({'statusCode': 'failed to create object in casefiles'}),
-                                    content_type="application/json")
+                return HttpResponse('<p class="error" id="database">failed to create object in casefiles</p>')
     else:
         Case.objects.create(SN=generateSN(),
                             name=nullInputHandle(request.POST.get("name"), 0),
@@ -115,8 +110,7 @@ def upload(request):
         if Case.objects.filter(name=request.POST.get("name"), address=address):
             case = Case.objects.get(name=request.POST.get("name"), address=address)
         else:
-            return HttpResponse(json.dumps({'stausCode': 'application failed'}),
-                                    content_type="application/json")
+            return HttpResponse('<p class="error" id="unknown">application failed</p>')
 
         path = os.path.abspath('.') + "/check/casefiles/case" + case.SN
         CaseFiles.objects.create(SN=case.SN, name=request.POST.get("name"), path=path)
@@ -128,14 +122,11 @@ def upload(request):
         #verification
         if CaseFiles.objects.filter(SN=case.SN):
             if os.path.exists(CaseFiles.objects.get(SN=case.SN).path):
-                return HttpResponse(json.dumps({'statusCode': 'success'}),
-                                    content_type="application/json")
+                return HttpResponse('<p class="success" id="success">success</p>')
             else:
-                return HttpResponse(json.dumps({'statusCode': 'failed to create directory'}),
-                                    content_type="application/json")
+                return HttpResponse('<p class="error" id="filesystem">failed to create directory</p>')
         else:
-            return HttpResponse(json.dumps({'statusCode': 'failed to create object in casefiles'}),
-                                content_type="application/json")
+            return HttpResponse('<p class="error" id="database">failed to create object in casefiles</p>')
 
 
 def nullInputHandle(input, mode):
@@ -194,47 +185,44 @@ def modifyHome(request):
 
 @group_required('House', 'Volunteer')
 def modifyFetch(request):
-#    SN = request.GET.get("sn")
     SN = request.POST.get("sn")
     response = []
     if Case.objects.filter(SN=SN):
         case = Case.objects.get(SN=SN)
-        if case.username == request.user.username:
-            response.append(case.SN)
-            response.append(nullInputHandle(case.name, 2))
-            response.append(nullInputHandle(case.lineID, 2))
-            response.append(nullInputHandle(case.phone, 2))
-            response.append(nullInputHandle(case.relation, 2))
-            response.append(nullInputHandle(case.wishDate, 2))
-            response.append(nullInputHandle(case.addressCounty, 2))
-            response.append(nullInputHandle(case.addressDistrict, 2))
-            response.append(nullInputHandle(case.addressRoad, 2))
-            response.append(nullInputHandle(case.addressSection, 2))
-            response.append(nullInputHandle(case.addressLane, 2))
-            response.append(nullInputHandle(case.addressAlley, 2))
-            response.append(nullInputHandle(case.addressNumber, 2))
-            response.append(nullInputHandle(case.addressNumberD, 2))
-            response.append(nullInputHandle(case.addressFloor, 2))
-            response.append(nullInputHandle(case.addressFloorD, 2))
-            response.append(nullInputHandle(case.addressRoom, 2))
-            response.append(nullInputHandle(case.buildingAge, 2))
-            response.append(nullInputHandle(case.buildingType, 2))
-            response.append(nullInputHandle(case.buildingFloors, 2))
-            response.append(nullInputHandle(case.buildingRemarks, 2))
-            return HttpResponse(json.dumps(response, ensure_ascii=False),
-                                content_type="application/json")
+        if case.checked == '0':
+            if case.username == request.user.username:
+                response.append('<ul id="' + case.SN + '">')
+                response.append('<li id="sn">' + case.SN + '</li>')
+                response.append('<li id="name">' + nullInputHandle(case.name, 2) + '</li>')
+                response.append('<li id="lineID">' + nullInputHandle(case.lineID, 2) + '</li>')
+                response.append('<li id="phone">' + nullInputHandle(case.phone, 2) + '</li>')
+                response.append('<li id="relation">' + nullInputHandle(case.relation, 2) + '</li>')
+                response.append('<li id="wishDate">' + nullInputHandle(case.wishDate, 2) + '</li>')
+                response.append('<li id="county">' + nullInputHandle(case.addressCounty, 2) + '</li>')
+                response.append('<li id="district">' + nullInputHandle(case.addressDistrict, 2) + '</li>')
+                response.append('<li id="road">' + nullInputHandle(case.addressRoad, 2) + '</li>')
+                response.append('<li id="section">' + nullInputHandle(case.addressSection, 2) + '</li>')
+                response.append('<li id="lane">' + nullInputHandle(case.addressLane, 2) + '</li>')
+                response.append('<li id="alley">' + nullInputHandle(case.addressAlley, 2) + '</li>')
+                response.append('<li id="number">' + nullInputHandle(case.addressNumber, 2) + '</li>')
+                response.append('<li id="numberD">' + nullInputHandle(case.addressNumberD, 2) + '</li>')
+                response.append('<li id="floor">' + nullInputHandle(case.addressFloor, 2) + '</li>')
+                response.append('<li id="floorD">' + nullInputHandle(case.addressFloorD, 2) + '</li>')
+                response.append('<li id="room">' + nullInputHandle(case.addressRoom, 2) + '</li>')
+                response.append('<li id="age">' + nullInputHandle(case.buildingAge, 2) + '</li>')
+                response.append('<li id="type">' + nullInputHandle(case.buildingType, 2) + '</li>')
+                response.append('<li id="floors">' + nullInputHandle(case.buildingFloors, 2) + '</li>')
+                response.append('<li id="remarks">' + nullInputHandle(case.buildingRemarks, 2) + '</li>')
+                response.append('</ul>')
+#                return HttpResponse(json.dumps(response, ensure_ascii=False),
+#                                   content_type="application/json")
+                return HttpResponse(response)
+            else:
+                return HttpResponse('<p class="error" id="permission">permission denied</p>')
         else:
-            response.append('statusCode: permission denied')
-#            return HttpResponse(json.dumps([{'statusCode: permission denied'}]),
-#                                content_type="application/json")
-            return HttpResponse(json.dumps(response, ensure_ascii=False),
-                                content_type="application/json")
+            return HttpResponse('<p class="error" id="checked">case is checked</p>')
     else:
-        response.append('statusCode: cant find case')
-#        return HttpResponse(json.dumps([{'statusCode: cant find case'}]),
-#                            content_type="application/json")
-        return HttpResponse(json.dumps(response, ensure_ascii=False),
-                            content_type="application/json")
+        return HttpResponse('<p class="error" id="cantfind">cant find case</p>')
 
 
 @group_required('House', 'Volunteer')

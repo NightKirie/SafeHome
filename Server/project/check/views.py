@@ -105,7 +105,10 @@ def volunteerShowCheckedCases(request):
     data = Case.objects.filter(volunteer=request.user.username, checked='1')
     response = []
     for d in data:
-        response.append(d.SN + " " + d.name)
+        response.append('<ul id="' + d.SN + '">')
+        response.append('<li id="sn">' + d.SN +'</li>')
+        response.append('<li id="name">' + d.name + '</li>')
+        response.append('</ul>')
     return HttpResponse(response)
 
 
@@ -123,7 +126,11 @@ def personalShowAppliedCases(request):
     data = Case.objects.filter(username=request.user.username)
     response = []
     for d in data:
-        response.append(d.SN + " " + d.address + " checked" + d.checked)
+        response.append('<ul id="' + d.SN + '">')
+        response.append('<li id="sn">' + d.SN + '</li>')
+        response.append('<li id="name">' + d.address + '</li>')
+        response.append('<li id="checked">' + d.checked + '</li>')
+        response.append('</ul>')
     return HttpResponse(response)
 
 
