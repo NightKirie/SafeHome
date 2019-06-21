@@ -47,19 +47,15 @@ def upload(request):
                                               status=request.POST.get('status'),
                                               checkDate=datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
 
-            return HttpResponse(json.dumps({'statusCode': 'success'}),
-                                content_type="application/json")
+            return HttpResponse('<p class="success" id="success">success</p>')
 
         else:
             if Case.objects.get(SN=SN).assign == '0':
-                return HttpResponse(json.dumps({'statusCode': 'case not assigned'}),
-                                    content_type="application/json")
+                return HttpResponse('<p class="error" id="notAssigned">case not assigned</p>')
             if Case.objects.get(SN=SN).volunteer != request.user.username:
-                return HttpResponse(json.dumps({'statusCode': 'permission denied'}),
-                                    content_type="application/json")
+                return HttpResponse('<p class="error" id="permission">permission denied</p>')
     else:
-        return HttpResponse(json.dumps({'statusCode': 'case not found'}),
-                            content_type="application/json")
+        return HttpResponse('<p class="error" id="notFound">case not found</p>')
 
 
 @group_required('Volunteer', 'Engineer')
@@ -78,69 +74,90 @@ def result(request):
                     response['Content-Disposition'] = 'attachment; filename="result' + SN + '.html"'
                     return response
                 else:
-                    return HttpResponse(json.dumps({'statusCode': 'file does not exist'}),
-                                        content_type="application/json")
+                    return HttpResponse('<p class="error" id="notFound">file not found</p>')
             else:
-                return HttpResponse(json.dumps({'statusCode': 'case not checked'}),
-                                    content_type="application/json")
+                return HttpResponse('<p class="error" id="notChecked">case not checked</p>')
         else:
-            return HttpResponse(json.dumps({'statusCode': 'permission denied'}),
-                                content_type="application/json")
+            return HttpResponse('<p class="error" id="permission">permission denied</p>')
     else:
-        return HttpResponse(json.dumps({'statusCode': 'case not found'}),
-                            content_type="application/json")
+        return HttpResponse('<p class="error" id="notFound">case not found</p>')
 
 
 @group_required('Volunteer', 'Engineer')
 def showUnassignedCases(request):
     data = Case.objects.filter(assign='0')
     response = []
-    for d in data:
-        response.append(d.SN + " " + d.name)
-    return HttpResponse(response)
+    if data.count():
+        for d in data:
+            response.append('<ul id="' + d.SN + '">')
+            response.append('<li id="sn">' + d.SN + '</li>')
+            response.append('<li id="name">' + d.name + '</li>')
+            response.append('</ul>')
+        return HttpResponse(response)
+    else:
+        return HttpResponse('<p class="error" id="notFound">case not found</p>')
 
 
 @group_required('Volunteer')
 def volunteerShowCheckedCases(request):
     data = Case.objects.filter(volunteer=request.user.username, checked='1')
     response = []
-    for d in data:
-        response.append('<ul id="' + d.SN + '">')
-        response.append('<li id="sn">' + d.SN +'</li>')
-        response.append('<li id="name">' + d.name + '</li>')
-        response.append('</ul>')
-    return HttpResponse(response)
+    if data.count():
+        for d in data:
+            response.append('<ul id="' + d.SN + '">')
+            response.append('<li id="sn">' + d.SN +'</li>')
+            response.append('<li id="name">' + d.name + '</li>')
+            response.append('</ul>')
+        return HttpResponse(response)
+    else:
+        return HttpResponse('<p class="error" id="notFound">case not found</p>')
 
 
 @group_required('Volunteer')
 def volunteerShowNotCheckedCases(request):
     data = Case.objects.filter(volunteer=request.user.username, checked='0')
     response = []
-    for d in data:
-        response.append(d.SN + " " + d.name + " " + d.address)
-    return HttpResponse(response)
+    if data.count():
+        for d in data:
+            response.append('<ul id="' + d.SN + '">')
+            response.append('<li id="sn">' + d.SN + '</li>')
+            response.append('<li id="name">' + d.name + '</li>')
+            response.append('<li id="address">' + d.address + '</li>')
+            response.append('</ul>')
+        return HttpResponse(response)
+    else:
+        return HttpResponse('<p class="error" id="notFound">case not found</p>')
 
 
 @group_required('House', 'Volunteer')
 def personalShowAppliedCases(request):
     data = Case.objects.filter(username=request.user.username)
     response = []
-    for d in data:
-        response.append('<ul id="' + d.SN + '">')
-        response.append('<li id="sn">' + d.SN + '</li>')
-        response.append('<li id="name">' + d.address + '</li>')
-        response.append('<li id="checked">' + d.checked + '</li>')
-        response.append('</ul>')
-    return HttpResponse(response)
+    if data.count():
+        for d in data:
+            response.append('<ul id="' + d.SN + '">')
+            response.append('<li id="sn">' + d.SN + '</li>')
+            response.append('<li id="name">' + d.address + '</li>')
+            response.append('<li id="checked">' + d.checked + '</li>')
+            response.append('</ul>')
+        return HttpResponse(response)
+    else:
+        return HttpResponse('<p class="error" id="notFound">case not found</p>')
 
 
 @group_required('Engineer')
 def engineerShowChecks(request):
     data = Case.objects.filter(checked='1')
     response = []
-    for d in data:
-        response.append(d.SN + " " + d.name + " " + d.address)
-    return HttpResponse(response)
+    if data.count():
+        for d in data:
+            response.append('<ul id="' + d.SN + '">')
+            response.append('<li id="sn">' + d.SN + '</li>')
+            response.append('<li id="name">' + d.address + '</li>')
+            response.append('</ul>')
+        return HttpResponse(response)
+    else:
+        return HttpResponse('<p class="error" id="notFound">case not found</p>')
 
 
 @group_required('Volunteer', 'Engineer')
@@ -148,16 +165,17 @@ def showDetail(request):
     if Case.objects.filter(SN=request.POST.get('sn')):
         case = Case.objects.get(SN=request.POST.get('sn'))
         response = []
-        response.append(case.SN)
-        response.append(case.name)
-        response.append(case.buildingType)
-        response.append(case.address)
-        response.append(case.phone)
-        response.append(case.applyDate)
+        response.append('<ul id="' + case.SN + '">')
+        response.append('<li id="sn">' + case.SN +'</li>')
+        response.append('<li id="name">' + case.name + '</li>')
+        response.append('<li id="buildingType">' + case.buildingType + '</li>')
+        response.append('<li id="address">' + case.address + '</li>')
+        response.append('<li id="phone">' + case.phone + '</li>')
+        response.append('<li id="applyDate">' + case.applyDate + '</li>')
+        response.append('</ul>')
         return HttpResponse(response)
     else:
-        return HttpResponse(json.dumps({'statusCode': 'case not found'}),
-                            content_type="application/json")
+        return HttpResponse('<p class="error" id="notFound">case not found</p>')
 
 
 @group_required('Volunteer')
@@ -167,11 +185,9 @@ def assign(request):
         if Case.objects.get(SN=SN).assign == '0':
             Case.objects.filter(SN=SN).update(volunteer=request.user.username,
                                               assign='1')
-            return HttpResponse(json.dumps({'statusCode': 'success'}),
-                                content_type="application/json")
+            return HttpResponse('<p class="success" id="success">success</p>')
         else:
-            return HttpResponse(json.dumps({'statusCode': 'case was assigned'}),
-                                content_type="application/json")
+            return HttpResponse('<p class="error" id="byOthers">assigned by others</p>')
+
     else:
-        return HttpResponse(json.dumps({'statusCode': 'case not found'}),
-                            content_type="application/json")
+        return HttpResponse('<p class="error" id="notFound">case not found</p>')

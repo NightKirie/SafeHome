@@ -198,21 +198,21 @@ def modifyFetch(request):
                 response.append('<li id="phone">' + nullInputHandle(case.phone, 2) + '</li>')
                 response.append('<li id="relation">' + nullInputHandle(case.relation, 2) + '</li>')
                 response.append('<li id="wishDate">' + nullInputHandle(case.wishDate, 2) + '</li>')
-                response.append('<li id="county">' + nullInputHandle(case.addressCounty, 2) + '</li>')
-                response.append('<li id="district">' + nullInputHandle(case.addressDistrict, 2) + '</li>')
-                response.append('<li id="road">' + nullInputHandle(case.addressRoad, 2) + '</li>')
-                response.append('<li id="section">' + nullInputHandle(case.addressSection, 2) + '</li>')
-                response.append('<li id="lane">' + nullInputHandle(case.addressLane, 2) + '</li>')
-                response.append('<li id="alley">' + nullInputHandle(case.addressAlley, 2) + '</li>')
-                response.append('<li id="number">' + nullInputHandle(case.addressNumber, 2) + '</li>')
-                response.append('<li id="numberD">' + nullInputHandle(case.addressNumberD, 2) + '</li>')
-                response.append('<li id="floor">' + nullInputHandle(case.addressFloor, 2) + '</li>')
-                response.append('<li id="floorD">' + nullInputHandle(case.addressFloorD, 2) + '</li>')
-                response.append('<li id="room">' + nullInputHandle(case.addressRoom, 2) + '</li>')
-                response.append('<li id="age">' + nullInputHandle(case.buildingAge, 2) + '</li>')
-                response.append('<li id="type">' + nullInputHandle(case.buildingType, 2) + '</li>')
-                response.append('<li id="floors">' + nullInputHandle(case.buildingFloors, 2) + '</li>')
-                response.append('<li id="remarks">' + nullInputHandle(case.buildingRemarks, 2) + '</li>')
+                response.append('<li id="addressCounty">' + nullInputHandle(case.addressCounty, 2) + '</li>')
+                response.append('<li id="addressDistrict">' + nullInputHandle(case.addressDistrict, 2) + '</li>')
+                response.append('<li id="addressRoad">' + nullInputHandle(case.addressRoad, 2) + '</li>')
+                response.append('<li id="addressSection">' + nullInputHandle(case.addressSection, 2) + '</li>')
+                response.append('<li id="addressLane">' + nullInputHandle(case.addressLane, 2) + '</li>')
+                response.append('<li id="addressAlley">' + nullInputHandle(case.addressAlley, 2) + '</li>')
+                response.append('<li id="addressNumber">' + nullInputHandle(case.addressNumber, 2) + '</li>')
+                response.append('<li id="addressNumberD">' + nullInputHandle(case.addressNumberD, 2) + '</li>')
+                response.append('<li id="addressFloor">' + nullInputHandle(case.addressFloor, 2) + '</li>')
+                response.append('<li id="addressFloorD">' + nullInputHandle(case.addressFloorD, 2) + '</li>')
+                response.append('<li id="addressRoom">' + nullInputHandle(case.addressRoom, 2) + '</li>')
+                response.append('<li id="buildingAge">' + nullInputHandle(case.buildingAge, 2) + '</li>')
+                response.append('<li id="buildingType">' + nullInputHandle(case.buildingType, 2) + '</li>')
+                response.append('<li id="buildingFloors">' + nullInputHandle(case.buildingFloors, 2) + '</li>')
+                response.append('<li id="buildingRemarks">' + nullInputHandle(case.buildingRemarks, 2) + '</li>')
                 response.append('</ul>')
 #                return HttpResponse(json.dumps(response, ensure_ascii=False),
 #                                   content_type="application/json")
@@ -222,7 +222,7 @@ def modifyFetch(request):
         else:
             return HttpResponse('<p class="error" id="checked">case is checked</p>')
     else:
-        return HttpResponse('<p class="error" id="cantfind">cant find case</p>')
+        return HttpResponse('<p class="error" id="notFound">case not found</p>')
 
 
 @group_required('House', 'Volunteer')
@@ -265,11 +265,8 @@ def modify(request):
 
             case.save()
 
-            return HttpResponse(json.dumps({'statusCode': 'success'}),
-                                content_type="application/json")
+            return HttpResponse('<p class="success" id="success">success</p>')
         else:
-            return HttpResponse(json.dumps({'statusCode': 'permission denied'}),
-                                content_type="application/json")
+            return HttpResponse('<p class="error" id="permission">permission denied</p>')
     else:
-        return HttpResponse(json.dumps({'statusCode': 'cant find case'}),
-                            content_type="application/json")
+        return HttpResponse('<p class="error" id="notFound">case not found</p>')
