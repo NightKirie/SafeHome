@@ -67,7 +67,7 @@ const HomeownerHomePageStackNavigation = createStackNavigator({
     ApplyCasePage: {
         screen: ApplyCasePage,
         navigationOptions: {
-            headerTitle: "待理案件",
+            headerTitle: "申請勘查",
             headerTitleStyle: { flex: 2, textAlign: "center", },
             headerTintColor: "#F37021",
             headerRight: (<Image
@@ -79,7 +79,7 @@ const HomeownerHomePageStackNavigation = createStackNavigator({
     RecordPage: {
         screen: RecordPage,
         navigationOptions: {
-            headerTitle: "案件紀錄",
+            headerTitle: "申請紀錄",
             headerTitleStyle: { flex: 2, textAlign: "center", },
             headerTintColor: "#F37021",
             headerRight: (<Image
