@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white"
     },
     containerWork: {
-        flexDirection: 'column',
+        flexDirection: 'row',
         justifyContent: 'space-between',
         backgroundColor: "#F2F1EF",
         width: "100%",
