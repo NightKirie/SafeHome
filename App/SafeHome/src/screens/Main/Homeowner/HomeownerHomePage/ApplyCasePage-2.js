@@ -14,9 +14,7 @@ class ApplyCasePage extends Component {
             adress: '',
             age: '',
             type: '',
-            floors: '',
-            date: new Date(),
-            isDateTimePickerVisible: false
+            floors: ''
         }
     };
 
