@@ -8,6 +8,7 @@ import json
 import os
 import csv
 import datetime
+import shutil
 
 # Create your views here.
 
@@ -16,13 +17,13 @@ today = ""
 count = 0
 
 
-@group_required('House', 'Volunteer')
+@group_required('HouseOwner', 'Volunteer')
 def home(request):
     path = os.path.abspath('.') + "/templates/apply.html"
     return render(request, path)
 
 
-@group_required('House', 'Volunteer')
+@group_required('HouseOwner', 'Volunteer')
 def upload(request):
     address = nullInputHandle(request.POST.get("county"), 1) + nullInputHandle(request.POST.get("district"), 1) + nullInputHandle(request.POST.get("road"), 1) + nullInputHandle(request.POST.get("section"), 1) + nullInputHandle(request.POST.get("lane"), 1) + nullInputHandle(request.POST.get("alley"), 1) + nullInputHandle(request.POST.get("number"), 1) + nullInputHandle(request.POST.get("numberD"), 1) + nullInputHandle(request.POST.get("floor"), 1) + nullInputHandle(request.POST.get("floorD"), 1) + nullInputHandle(request.POST.get("room"), 1)
 
@@ -64,10 +65,10 @@ def upload(request):
                 return HttpResponse('<p class="error" id="unknown">application failed</p>')
 
             path = os.path.abspath('.') + "/check/casefiles/case" + case.SN
-            CaseFiles.objects.create(SN=case.SN, name=request.POST.get("name"), path=path)
+            CaseFiles.objects.create(SN=case.SN, address=case.address, path=path)
 
             if os.path.exists(path):
-                os.remove(path)
+                shutil.rmtree(path)
             os.mkdir(path)
 
             #verification
@@ -104,7 +105,7 @@ def upload(request):
                             buildingRemarks=nullInputHandle(request.POST.get("remarks"), 0),
                             assign=0,
                             checked=0,
-                            applyDate=datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
+                            applyDate=datetime.datetime.now().strftime("%Y/%m/%d"))
 
         # verification
         if Case.objects.filter(name=request.POST.get("name"), address=address):
@@ -113,10 +114,10 @@ def upload(request):
             return HttpResponse('<p class="error" id="unknown">application failed</p>')
 
         path = os.path.abspath('.') + "/check/casefiles/case" + case.SN
-        CaseFiles.objects.create(SN=case.SN, name=request.POST.get("name"), path=path)
+        CaseFiles.objects.create(SN=case.SN, address=case.address, path=path)
 
         if os.path.exists(path):
-            os.remove(path)
+            shutil.rmtree(path)
         os.mkdir(path)
 
         #verification
@@ -177,13 +178,13 @@ def generateSN():
 
 
 # modify application
-@group_required('House', 'Volunteer')
+@group_required('HouseOwner', 'Volunteer')
 def modifyHome(request):
     path = os.path.abspath('.') + "/templates/modifyApplication.html"
     return render(request, path)
 
 
-@group_required('House', 'Volunteer')
+@group_required('HouseOwner', 'Volunteer')
 def modifyFetch(request):
     SN = request.POST.get("sn")
     response = []
@@ -191,28 +192,28 @@ def modifyFetch(request):
         case = Case.objects.get(SN=SN)
         if case.checked == '0':
             if case.username == request.user.username:
-                response.append('<ul id="' + case.SN + '">')
-                response.append('<li id="sn">' + case.SN + '</li>')
-                response.append('<li id="name">' + nullInputHandle(case.name, 2) + '</li>')
-                response.append('<li id="lineID">' + nullInputHandle(case.lineID, 2) + '</li>')
-                response.append('<li id="phone">' + nullInputHandle(case.phone, 2) + '</li>')
-                response.append('<li id="relation">' + nullInputHandle(case.relation, 2) + '</li>')
-                response.append('<li id="wishDate">' + nullInputHandle(case.wishDate, 2) + '</li>')
-                response.append('<li id="addressCounty">' + nullInputHandle(case.addressCounty, 2) + '</li>')
-                response.append('<li id="addressDistrict">' + nullInputHandle(case.addressDistrict, 2) + '</li>')
-                response.append('<li id="addressRoad">' + nullInputHandle(case.addressRoad, 2) + '</li>')
-                response.append('<li id="addressSection">' + nullInputHandle(case.addressSection, 2) + '</li>')
-                response.append('<li id="addressLane">' + nullInputHandle(case.addressLane, 2) + '</li>')
-                response.append('<li id="addressAlley">' + nullInputHandle(case.addressAlley, 2) + '</li>')
-                response.append('<li id="addressNumber">' + nullInputHandle(case.addressNumber, 2) + '</li>')
-                response.append('<li id="addressNumberD">' + nullInputHandle(case.addressNumberD, 2) + '</li>')
-                response.append('<li id="addressFloor">' + nullInputHandle(case.addressFloor, 2) + '</li>')
-                response.append('<li id="addressFloorD">' + nullInputHandle(case.addressFloorD, 2) + '</li>')
-                response.append('<li id="addressRoom">' + nullInputHandle(case.addressRoom, 2) + '</li>')
-                response.append('<li id="buildingAge">' + nullInputHandle(case.buildingAge, 2) + '</li>')
-                response.append('<li id="buildingType">' + nullInputHandle(case.buildingType, 2) + '</li>')
-                response.append('<li id="buildingFloors">' + nullInputHandle(case.buildingFloors, 2) + '</li>')
-                response.append('<li id="buildingRemarks">' + nullInputHandle(case.buildingRemarks, 2) + '</li>')
+                response.append('<ul class="case">')
+                response.append('<li class="sn">' + case.SN + '</li>')
+                response.append('<li class="name">' + nullInputHandle(case.name, 2) + '</li>')
+                response.append('<li class="lineID">' + nullInputHandle(case.lineID, 2) + '</li>')
+                response.append('<li class="phone">' + nullInputHandle(case.phone, 2) + '</li>')
+                response.append('<li class="relation">' + nullInputHandle(case.relation, 2) + '</li>')
+                response.append('<li class="wishDate">' + nullInputHandle(case.wishDate, 2) + '</li>')
+                response.append('<li class="addressCounty">' + nullInputHandle(case.addressCounty, 2) + '</li>')
+                response.append('<li class="addressDistrict">' + nullInputHandle(case.addressDistrict, 2) + '</li>')
+                response.append('<li class="addressRoad">' + nullInputHandle(case.addressRoad, 2) + '</li>')
+                response.append('<li class="addressSection">' + nullInputHandle(case.addressSection, 2) + '</li>')
+                response.append('<li class="addressLane">' + nullInputHandle(case.addressLane, 2) + '</li>')
+                response.append('<li class="addressAlley">' + nullInputHandle(case.addressAlley, 2) + '</li>')
+                response.append('<li class="addressNumber">' + nullInputHandle(case.addressNumber, 2) + '</li>')
+                response.append('<li class="addressNumberD">' + nullInputHandle(case.addressNumberD, 2) + '</li>')
+                response.append('<li class="addressFloor">' + nullInputHandle(case.addressFloor, 2) + '</li>')
+                response.append('<li class="addressFloorD">' + nullInputHandle(case.addressFloorD, 2) + '</li>')
+                response.append('<li class="addressRoom">' + nullInputHandle(case.addressRoom, 2) + '</li>')
+                response.append('<li class="buildingAge">' + nullInputHandle(case.buildingAge, 2) + '</li>')
+                response.append('<li class="buildingType">' + nullInputHandle(case.buildingType, 2) + '</li>')
+                response.append('<li class="buildingFloors">' + nullInputHandle(case.buildingFloors, 2) + '</li>')
+                response.append('<li class="buildingRemarks">' + nullInputHandle(case.buildingRemarks, 2) + '</li>')
                 response.append('</ul>')
 #                return HttpResponse(json.dumps(response, ensure_ascii=False),
 #                                   content_type="application/json")
@@ -225,7 +226,7 @@ def modifyFetch(request):
         return HttpResponse('<p class="error" id="notFound">case not found</p>')
 
 
-@group_required('House', 'Volunteer')
+@group_required('HouseOnwer', 'Volunteer')
 def modify(request):
     address = nullInputHandle(request.POST.get("county"), 1) + nullInputHandle(request.POST.get("district"), 1) + nullInputHandle(request.POST.get("road"), 1) + nullInputHandle(request.POST.get("section"), 1) + nullInputHandle(request.POST.get("lane"), 1) + nullInputHandle(request.POST.get("alley"), 1) + nullInputHandle(request.POST.get("number"), 1) + nullInputHandle(request.POST.get("numberD"), 1) + nullInputHandle(request.POST.get("floor"), 1) + nullInputHandle(request.POST.get("floorD"), 1) + nullInputHandle(request.POST.get("room"), 1)
 

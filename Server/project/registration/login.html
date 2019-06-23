@@ -6,6 +6,7 @@
   <body>
     <form action="./submit/" method="post" id="loginForm">
       {% csrf_token %}
+      UserType:<input name="userType" type="text"><br>
       Username:<input name="username" type="text"><br>
       Password:<input name="password" type="password"><br>
       <button type="submit">Login</button>

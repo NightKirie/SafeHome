@@ -8,7 +8,14 @@
     <form action="./upload/" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       SN:<input name="sn" type="text"><br>
-      status:<input name="status" type="text"><br>
+      volunteer:<input name="volunteer" type="text"><br>
+      date:<input name="date" type="text"><br>
+      floors:<input name="floors" type="text"><br>
+      designYear:<input name="designYear" type="text"><br>
+      householdCount:<input name="householdCount" type="text"><br>
+      structure:<input name="structure" type="text"><br>
+      name:<input name="name" type="text"><br>
+      phone:<input name="phone" type="text"><br>
       <input type="file" name="file" multiple><br>
       <button type="submit">Upload</button>
     </form>

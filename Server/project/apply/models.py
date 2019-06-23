@@ -15,7 +15,7 @@ class Case(models.Model):
     addressCounty = models.CharField(max_length=5)
     addressDistrict = models.CharField(max_length=5)
     addressRoad = models.CharField(max_length=10)
-    addressSection = models.CharField(max_length=2)
+    addressSection = models.CharField(max_length=5)
     addressLane = models.CharField(max_length=5)
     addressAlley = models.CharField(max_length=5)
     addressNumber = models.CharField(max_length=5)

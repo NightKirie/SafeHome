@@ -44,9 +44,15 @@ def upload(request):
                 shutil.move(path + "/" + f, destination)
 
             Case.objects.filter(SN=SN).update(checked='1',
-                                              status=request.POST.get('status'),
-                                              checkDate=datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
-
+                                              checkDate=request.POST.get('date'))
+            CaseFiles.objects.filter(SN=SN).update(volunteer=request.POST.get('volunteer'),
+                                                   checkDate=request.POST.get('date'),
+                                                   buildingFloors=request.POST.get('floors'),
+                                                   buildingDesignYear=request.POST.get('designYear'),
+                                                   buildingHouseholdCount=request.POST.get('householdCount'),
+                                                   buildingStructure=request.POST.get('structure'),
+                                                   name=request.POST.get('name'),
+                                                   phone=request.POST.get('phone'))
             return HttpResponse('<p class="success" id="success">success</p>')
 
         else:
@@ -88,10 +94,12 @@ def showUnassignedCases(request):
     data = Case.objects.filter(assign='0')
     response = []
     if data.count():
+        response.append('<p class="success" id="found">found case</p>')
         for d in data:
-            response.append('<ul id="' + d.SN + '">')
-            response.append('<li id="sn">' + d.SN + '</li>')
-            response.append('<li id="name">' + d.name + '</li>')
+            response.append('<ul class="case">')
+            response.append('<li class="sn">' + d.SN + '</li>')
+            response.append('<li class="name">' + d.name + '</li>')
+            response.append('<li class="date">' + d.applyDate + '</li>')
             response.append('</ul>')
         return HttpResponse(response)
     else:
@@ -103,10 +111,11 @@ def volunteerShowCheckedCases(request):
     data = Case.objects.filter(volunteer=request.user.username, checked='1')
     response = []
     if data.count():
+        response.append('<p class="success" id="found">found case</p>')
         for d in data:
-            response.append('<ul id="' + d.SN + '">')
-            response.append('<li id="sn">' + d.SN +'</li>')
-            response.append('<li id="name">' + d.name + '</li>')
+            response.append('<ul class="case">')
+            response.append('<li class="sn">' + d.SN +'</li>')
+            response.append('<li class="name">' + d.name + '</li>')
             response.append('</ul>')
         return HttpResponse(response)
     else:
@@ -118,27 +127,29 @@ def volunteerShowNotCheckedCases(request):
     data = Case.objects.filter(volunteer=request.user.username, checked='0')
     response = []
     if data.count():
+        response.append('<p class="success" id="found">found case</p>')
         for d in data:
-            response.append('<ul id="' + d.SN + '">')
-            response.append('<li id="sn">' + d.SN + '</li>')
-            response.append('<li id="name">' + d.name + '</li>')
-            response.append('<li id="address">' + d.address + '</li>')
+            response.append('<ul class="case">')
+            response.append('<li class="sn">' + d.SN + '</li>')
+            response.append('<li class="name">' + d.name + '</li>')
+            response.append('<li class="address">' + d.address + '</li>')
             response.append('</ul>')
         return HttpResponse(response)
     else:
         return HttpResponse('<p class="error" id="notFound">case not found</p>')
 
 
-@group_required('House', 'Volunteer')
+@group_required('HouseOwner', 'Volunteer')
 def personalShowAppliedCases(request):
     data = Case.objects.filter(username=request.user.username)
     response = []
     if data.count():
+        response.append('<p class="success" id="found">found case</p>')
         for d in data:
-            response.append('<ul id="' + d.SN + '">')
-            response.append('<li id="sn">' + d.SN + '</li>')
-            response.append('<li id="name">' + d.address + '</li>')
-            response.append('<li id="checked">' + d.checked + '</li>')
+            response.append('<ul class="case">')
+            response.append('<li class="sn">' + d.SN + '</li>')
+            response.append('<li class="name">' + d.address + '</li>')
+            response.append('<li class="checked">' + d.checked + '</li>')
             response.append('</ul>')
         return HttpResponse(response)
     else:
@@ -150,10 +161,11 @@ def engineerShowChecks(request):
     data = Case.objects.filter(checked='1')
     response = []
     if data.count():
+        response.append('<p class="success" id="found">found case</p>')
         for d in data:
-            response.append('<ul id="' + d.SN + '">')
-            response.append('<li id="sn">' + d.SN + '</li>')
-            response.append('<li id="name">' + d.address + '</li>')
+            response.append('<ul class="case">')
+            response.append('<li class="sn">' + d.SN + '</li>')
+            response.append('<li class="name">' + d.address + '</li>')
             response.append('</ul>')
         return HttpResponse(response)
     else:
@@ -165,13 +177,14 @@ def showDetail(request):
     if Case.objects.filter(SN=request.POST.get('sn')):
         case = Case.objects.get(SN=request.POST.get('sn'))
         response = []
-        response.append('<ul id="' + case.SN + '">')
-        response.append('<li id="sn">' + case.SN +'</li>')
-        response.append('<li id="name">' + case.name + '</li>')
-        response.append('<li id="buildingType">' + case.buildingType + '</li>')
-        response.append('<li id="address">' + case.address + '</li>')
-        response.append('<li id="phone">' + case.phone + '</li>')
-        response.append('<li id="applyDate">' + case.applyDate + '</li>')
+        response.append('<p class="success" id="found">found case</p>')
+        response.append('<ul class="case">')
+        response.append('<li class="sn">' + case.SN +'</li>')
+        response.append('<li class="name">' + case.name + '</li>')
+        response.append('<li class="buildingType">' + case.buildingType + '</li>')
+        response.append('<li class="address">' + case.address + '</li>')
+        response.append('<li class="phone">' + case.phone + '</li>')
+        response.append('<li class="applyDate">' + case.applyDate + '</li>')
         response.append('</ul>')
         return HttpResponse(response)
     else:

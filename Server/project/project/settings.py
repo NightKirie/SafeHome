@@ -137,14 +137,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 # Auto logout
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-# SESSION_COOKIE_AGE = 300
+# SESSION_COOKIE_AGE = 200
 SESSION_SAVE_EVERY_REQUEST = True
 
 
 # Login redirect
 
-LOGIN_REDIRECT_URL = '/home/welcome/'
-LOGOUT_REDIRECT_URL = '/accounts/login/'
+# LOGIN_REDIRECT_URL = '/home/welcome/'
+# LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 
 # Custom User Model

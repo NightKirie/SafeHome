@@ -5,11 +5,14 @@ from authentication.views import group_required
 # Create your views here.
 
 
-@group_required('House', 'Volunteer', 'Engineer')
+# @group_required('House', 'Volunteer', 'Engineer')
 def welcome(request):
 #    response = "Hi! " + request.user.last_name + request.user.first_name
-    response = '<p class="success" id="success">' + request.user.groups.all()[0].name + '</p>'
-    return HttpResponse(response)
+    if request.user.groups.all().count():
+        response = '<p class="success" id="success">' + request.user.groups.all()[0].name + '</p>'
+        return HttpResponse(response)
+    else:
+        return HttpResponse('<p class="error" id="anonymous">anonymous user</p>')
 
 
 def seeya(request):

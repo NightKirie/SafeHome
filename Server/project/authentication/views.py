@@ -18,9 +18,9 @@ def houseRegister(request):
             if User.objects.filter(username=request.POST.get('username')).count():
                 return HttpResponse('<p class="success" id="success">success</p>')
             else:
-                return HttpResponse('<p class="error" id="error">registration error</p>')
+                return HttpResponse('<p class="error" id="serverError">registration error</p>')
         else:
-            return HttpResponse('<p class="error" id="error">' + json.dumps(form.errors) + '</p>')
+            return HttpResponse('<p class="error" id="userExists">' + json.dumps(form.errors) + '</p>')
     else:
         form = HouseUserCreationForm()
         return render(request, "registration/register.html", {'form': form})
@@ -68,13 +68,16 @@ def group_required(*group_names):
 
 
 def loginHome(request):
-    return render(request, 'registration/login.html')
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/home/welcome/')
+    else:
+        return render(request, 'registration/login.html')
 
 
 def login(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('/home/welcome/')
-
+    userType = request.POST.get('userType')
     username = request.POST.get('username')
     password = request.POST.get('password')
 
@@ -84,8 +87,11 @@ def login(request):
         user = auth.authenticate(username=username, password=password)
         if user!=None:
             if user.is_active:
-                auth.login(request, user)
-                return HttpResponseRedirect('/home/welcome/')
+                if user.groups.all()[0].name == userType:
+                    auth.login(request, user)
+                    return HttpResponseRedirect('/home/welcome/')
+                else:
+                    return HttpResponse('<p class="error" id="non-existUser">wrong username or password</p>')
             else:
                 return HttpResponse('<p class="error" id="inactiveUser">inactive user</p>')
         else:
