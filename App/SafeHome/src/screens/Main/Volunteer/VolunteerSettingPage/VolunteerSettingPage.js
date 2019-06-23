@@ -4,15 +4,33 @@ import {
     Text,
     StyleSheet,
     Image,
+    Button,
 } from "react-native";
 import { createStackNavigator } from 'react-navigation';
 
 
+
+
 class VolunteerSettingPage extends Component {
+    logout = () => {
+        fetch('http://luffy.ee.ncku.edu.tw:13728/accounts/logout/', {
+            credentials: 'include' //使用cookies
+        })
+            .then((response) => {
+                //App依據伺服器回傳結果處理...
+                console.log(response['url']);
+                this.props.navigation.navigate('MainRegisterPageStackNavigation');
+            })            
+            .catch((err) => {
+                alert(err.message);
+            });
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <Text>VolunteerSettingPage</Text>
+                <Button title="logout" onPress={() => this.logout()}/>
             </View>
         );
     }

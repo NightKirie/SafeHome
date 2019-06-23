@@ -7,7 +7,7 @@ class LoginPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loginUserType: 1,   // 1 for householder(defualt), 2 for volunteer, 3 for technician
+            userType: "HouseOwner",   // 1 for householder(defualt), 2 for volunteer, 3 for technician
             buttonUser1BColor: "#F37021",
             buttonUser2BColor: "#FFFFFF",
             buttonUser3BColor: "#FFFFFF",
@@ -16,9 +16,15 @@ class LoginPage extends Component {
             buttonUser3Color: "#F37021",
             userPhoneNum: "",
             userPassword: "",
+            loginErrorMsg: "",
             registerPageOpacity: new Animated.Value(0),
             registerPageIsVisible: false,
         }
+    }
+
+    setLoginErrorMsg = (loginErrorMsg) => {
+        console.log(loginErrorMsg);
+        this.setState({loginErrorMsg: loginErrorMsg});
     }
 
     render() {
@@ -27,15 +33,17 @@ class LoginPage extends Component {
                 <Text style={styles.textLogin}>登入</Text>
                 <View style={styles.containerButtonUser}>
                     <Button
-                        onPress={() => this.setState({
-                            loginUserType: 1,
-                            buttonUser1BColor: "#F37021",
-                            buttonUser2BColor: "#FFFFFF",
-                            buttonUser3BColor: "#FFFFFF",
-                            buttonUser1Color: "#FFFFFF",
-                            buttonUser2Color: "#F37021",
-                            buttonUser3Color: "#F37021",
-                        })}
+                        onPress={
+                            () => {this.setState({
+                                userType: "HouseOwner",
+                                buttonUser1BColor: "#F37021",
+                                buttonUser2BColor: "#FFFFFF",
+                                buttonUser3BColor: "#FFFFFF",
+                                buttonUser1Color: "#FFFFFF",
+                                buttonUser2Color: "#F37021",
+                                buttonUser3Color: "#F37021",});
+                            this.setLoginErrorMsg("");
+                        }}
                         title={"屋主"}
                         titleStyle={{ color: this.state.buttonUser1Color }}
                         icon={<Image
@@ -45,15 +53,18 @@ class LoginPage extends Component {
                         buttonStyle={{ backgroundColor: this.state.buttonUser1BColor, paddingLeft: "5%" }}
                         containerStyle={{ justifyContent: 'center', flex: 1, marginRight: "2%" }} />
                     <Button
-                        onPress={() => this.setState({
-                            loginUserType: 2,
-                            buttonUser1BColor: "#FFFFFF",
-                            buttonUser2BColor: "#F37021",
-                            buttonUser3BColor: "#FFFFFF",
-                            buttonUser1Color: "#F37021",
-                            buttonUser2Color: "#FFFFFF",
-                            buttonUser3Color: "#F37021",
-                        })}
+                        onPress={() => {
+                            this.setState({
+                                userType: "Volunteer",
+                                buttonUser1BColor: "#FFFFFF",
+                                buttonUser2BColor: "#F37021",
+                                buttonUser3BColor: "#FFFFFF",
+                                buttonUser1Color: "#F37021",
+                                buttonUser2Color: "#FFFFFF",
+                                buttonUser3Color: "#F37021",
+                            });
+                            this.setLoginErrorMsg("");
+                        }}
                         title={"志工"}
                         titleStyle={{ color: this.state.buttonUser2Color }}
                         icon={<Image
@@ -64,15 +75,18 @@ class LoginPage extends Component {
                         buttonStyle={{ backgroundColor: this.state.buttonUser2BColor }}
                     />
                     <Button
-                        onPress={() => this.setState({
-                            loginUserType: 3,
-                            buttonUser1BColor: "#FFFFFF",
-                            buttonUser2BColor: "#FFFFFF",
-                            buttonUser3BColor: "#F37021",
-                            buttonUser1Color: "#F37021",
-                            buttonUser2Color: "#F37021",
-                            buttonUser3Color: "#FFFFFF",
-                        })}
+                        onPress={
+                            () => {this.setState({
+                                userType: "Engineer",
+                                buttonUser1BColor: "#FFFFFF",
+                                buttonUser2BColor: "#FFFFFF",
+                                buttonUser3BColor: "#F37021",
+                                buttonUser1Color: "#F37021",
+                                buttonUser2Color: "#F37021",
+                                buttonUser3Color: "#FFFFFF",
+                            });
+                            this.setLoginErrorMsg("");
+                        }}
                         title={"技師"}
                         titleStyle={{ color: this.state.buttonUser3Color }}
                         icon={<Image
@@ -94,7 +108,8 @@ class LoginPage extends Component {
                         }
                         value={this.state.userPhoneNum}
                         onChangeText={(userPhoneNum) => {
-                            this.setState({userPhoneNum : userPhoneNum.replace(/[^0-9]/g, '')});}}
+                            this.setState({ userPhoneNum: userPhoneNum.replace(/[^0-9]/g, '') });
+                        }}
                         keyboardType='phone-pad'
                         inputStyle={{ paddingTop: 20, paddingLeft: 10 }}
                         containerStyle={{ paddingHorizontal: 18 }}
@@ -107,8 +122,10 @@ class LoginPage extends Component {
                                 style={{ tintColor: "#F37021", height: 17, width: 17 }}
                             />
                         }
+                        errorMessage={this.state.loginErrorMsg}
+                        errorStyle={{ fontSize: 17 }}
                         value={this.state.userPassword}
-                        onChangeText={(userPassword) => this.setState({userPassword: userPassword})}
+                        onChangeText={(userPassword) => this.setState({ userPassword: userPassword })}
                         secureTextEntry={true}
                         autoCapitalize='none'
                         inputStyle={{ paddingTop: 20, paddingLeft: 10 }}
@@ -117,20 +134,23 @@ class LoginPage extends Component {
                 </View>
                 <Button
                     title={"忘記密碼 ？"}
+                    onPress={() => this.props.test()}
                     containerStyle={styles.containerstyleButtonForgetPW}
                     buttonStyle={{ backgroundColor: "#F2F1EF" }}
                     titleStyle={{ fontSize: 14, color: "#BBBBBB", fontWeight: "bold", textDecorationLine: "underline" }} />
                 <Button
                     title={"登入"}
-                    onPress={() => this.props.login(this.state.loginUserType)}
+                    disabled={(this.state.userPhoneNum !== "" && this.state.userPassword !== "") ? false : true}
+                    onPress={() => this.props.login(this.state.userType, this.state.userPhoneNum, this.state.userPassword)}
+                    //onPress={() => console.log(this.state.userPhoneNum)}
                     containerStyle={styles.containerstyleButtonLogin}
                     buttonStyle={{ backgroundColor: "#F37021" }}
                     titleStyle={{ fontWeight: "bold" }} />
                 <Button
                     title={"註冊"}
-                    disabled={this.state.loginUserType == 1 ? false : true}
-                    onPress={() => this.props.navigation()}
-                    containerStyle={[styles.containerstyleButtonRegister, this.state.loginUserType == 1 ? {opacity: 1} : {opacity: 0}]}
+                    disabled={this.state.userType === "HouseOwner" ? false : true}
+                    onPress={() => this.props.register()}
+                    containerStyle={[styles.containerstyleButtonRegister, this.state.userType === "HouseOwner" ? { opacity: 1 } : { opacity: 0 }]}
                     buttonStyle={{ backgroundColor: "#FFFFFF" }}
                     titleStyle={{ color: "#BBBBBB", fontWeight: "bold" }}
                 />

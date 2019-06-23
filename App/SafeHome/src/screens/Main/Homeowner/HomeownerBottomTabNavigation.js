@@ -5,8 +5,7 @@ import HomeownerHomePageStackNavigation from './HomeownerHomePage/HomeownerHomeP
 import HomeownerAlertPageStackNavigation from './HomeownerAlertPage/HomeownerAlertPage'
 import HomeownerSettingPageStackNavigation from './HomeownerSettingPage/HomeownerSettingPage'
 
-
-export default HomeownerBottomTabNavigation = createBottomTabNavigator({
+const HomeownerBottomTabNavigation = createBottomTabNavigator({
     HomeownerHomePageStackNavigation: {
         screen: HomeownerHomePageStackNavigation,
         navigationOptions: {
@@ -48,5 +47,6 @@ export default HomeownerBottomTabNavigation = createBottomTabNavigator({
     },
 });
 
+export default HomeownerBottomTabNavigation;
 
 

@@ -5,8 +5,7 @@ import VolunteerHomePageStackNavigation from './VolunteerHomePage/VolunteerHomeP
 import VolunteerAlertPageStackNavigation from './VolunteerAlertPage/VolunteerAlertPage'
 import VolunteerSettingPageStackNavigation from './VolunteerSettingPage/VolunteerSettingPage'
 
-
-export default VolunteerBottomTabNavigation = createBottomTabNavigator({
+const VolunteerBottomTabNavigation = createBottomTabNavigator({
     VolunteerHomePageStackNavigation: {
         screen: VolunteerHomePageStackNavigation,
         navigationOptions: {
@@ -41,6 +40,7 @@ export default VolunteerBottomTabNavigation = createBottomTabNavigator({
         }, 
     },
 },{
+    initialRouteName: 'VolunteerHomePageStackNavigation',
     tabBarOptions: { 
         showLabel: false,
         activeBackgroundColor: '#F2F1EF',
@@ -48,5 +48,5 @@ export default VolunteerBottomTabNavigation = createBottomTabNavigator({
     },
 });
 
-
+export default VolunteerBottomTabNavigation;
 

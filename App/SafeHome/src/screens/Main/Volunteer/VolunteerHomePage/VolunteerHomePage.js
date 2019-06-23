@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
+import { fromRight } from 'react-navigation-transitions';
 import UnprogressedCasePage from './UnprogressedCasePage';
-import ProgressingCasePage from './ProgressingCasePage';
+import ProgressingCasePage from './ProgressingCasePage/ProgressingCasePage';
+import ProgressingCaseInformationPage from './ProgressingCasePage/ProgressingCaseInformationPage';
 import HistoryCasePage from './HistoryCasePage';
 
 class Name extends Component {  
@@ -10,7 +12,7 @@ class Name extends Component {
         return (
             <View>
                 <Text style={{ color: "#F37021", fontSize: 50 }}>
-                    {this.props.name} <Text style={{ color: "#BBBBBB", fontSize: 30 }}>您好</Text>
+                    {this.props.name } <Text style={{ color: "#BBBBBB", fontSize: 30 }}>您好</Text>
                 </Text>
             </View>
         );
@@ -117,6 +119,18 @@ const VolunteerHomePageStackNavigation = createStackNavigator({
             />)
         }
     },
+    ProgressingCaseInformationPage: {
+        screen: ProgressingCaseInformationPage,
+        navigationOptions: {
+            headerTitle: "資料填寫",
+            headerTitleStyle: { flex: 2, textAlign: "center", },
+            headerTintColor: "#F37021",
+            headerRight: (<Image
+                source={require('../../../../../assets/img/help-circle.png')}
+                style={{ height: 25, width: 25, tintColor: "#F37021", margin: 3 }}
+            />)
+        }
+    },
     HistoryCasePage: {
         screen: HistoryCasePage,
         navigationOptions: {
@@ -129,6 +143,9 @@ const VolunteerHomePageStackNavigation = createStackNavigator({
             />)
         }
     }
+},{
+    initialRouteName: 'VolunteerHomePage',
+    transitionConfig: () => fromRight()
 });
 
 const styles = StyleSheet.create({

@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Animated, TouchableOpacity, Image, Easing } from 'react-native';
 import { createStackNavigator } from 'react-navigation'
+import { fromRight, zoomIn, zoomOut, fromLeft } from 'react-navigation-transitions';
 import LoginPage from './Main/LoginPage';
 import RegisterPage from './Main/RegisterPage';
+import qs from 'qs';
+
+const cheerio = require('react-native-cheerio');
+const htmlparser2 = require('htmlparser2-without-node-native');
 
 class LoadingPage extends Component {
     static navigationOptions = {
@@ -11,38 +16,82 @@ class LoadingPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isAnimationFinish: false,
             isOverlayVisible: true,
             backgroundColorContainer: "#FFFFFF",
             signedIn: false,
-            loginUserType: 2,
-            animationComponent: []
+            animationComponent: null,
+            loginErrorMsg: "",
         }
         this.springAnimationXY = new Animated.ValueXY({ x: 0, y: 1000 })
+        this.loginRef = React.createRef();
     }
 
     cheakIfLoginBefore = () => {
-        if(this.state.signedIn == true) {
-            this.login(this.state.loginUserType);
-        }
-        else {
-            this.setState({
-                animationComponent: <LoginPage 
-                                        login={(loginUserType)=>this.login(loginUserType)}
-                                        navigation={() => this.props.navigation.navigate('RegisterPage')}/>});
-        }
+        /* 直接嘗試登入伺服器，如果回傳success表示登入過 */
+        fetch('http://luffy.ee.ncku.edu.tw:13728/accounts/login/', { //用以取得csrf_token
+            //這邊沒有定義method: 'post'即是一般的HTTP requset，沒有提交表單，只有伺服器回應網頁。
+            credentials: 'include', //使用cookies
+            connection: 'keep-alive'
+        })      
+            .then((response) => {
+                return response.text(); //取得網頁的原始碼
+            })
+            .catch((err) => {
+                alert(err.message);
+            })
+            .then((text) => {
+                return htmlparser2.parseDOM(text); //轉換成html
+            })
+            .then((dom) => {
+                let $ = cheerio.load(dom); //constructor
+                let status = $('p').attr("class"); // Get class is success or error
+                let status_msg = $('p').attr("id"); // Get id of error type
+                let ifLogin = $(`p.${status}#${status_msg}`).text();
+                console.log(ifLogin);
+                switch(ifLogin) {
+                    /* For homewowner */
+                    case "HouseOwner":
+                        alert("Homeowner page is build in progress");
+                        break;
+                    /* For volunteer */
+                    case "Volunteer":
+                        /* If login type match */
+                        this.props.navigation.navigate('VolunteerBottomTabNavigation');
+                        break;
+                    /* For technician */
+                    case "Engineer":
+                        alert("Engineer page is build in progress"); 
+                        break;
+                    default:
+                        this.didFocusSubscription = this.props.navigation.addListener('didFocus', () => {
+                            this.loginRef.current.setLoginErrorMsg("");
+                        });
+                        this.setState({
+                            animationComponent: <LoginPage 
+                                                    ref={this.loginRef}
+                                                    login={(userType, userPhoneNum, userPassword)=>this.login(userType, userPhoneNum, userPassword)}
+                                                    register={() => this.props.navigation.navigate('RegisterPage')}
+                                                    test={()=>this.logout()}/>});
+                        
+                }
+            });
     }
 
     /* For slide down the SafeHome icon */
     slideDown = () => {
-        this.cheakIfLoginBefore();
-        Animated.spring(
-            this.springAnimationXY, {
-                toValue: { x: 0, y: 0 },
-            }
-        ).start();
-        this.setState({ backgroundColorContainer: "grey" });
-        if (this.interval)  // Remove the timer
-            clearInterval(this.interval);
+        if(this.state.isAnimationFinish === false) {
+            this.setState({isAnimationFinish: true});
+            this.cheakIfLoginBefore();
+            Animated.spring(
+                this.springAnimationXY, {
+                    toValue: { x: 0, y: 0 },
+                }
+            ).start();
+            this.setState({ backgroundColorContainer: "grey" });
+            if (this.interval)  // Remove the timer
+                clearInterval(this.interval);
+        }
     }
 
     /* If user doesn't click SafeHome icon after 3 seconds, automatically slide down it */
@@ -50,26 +99,97 @@ class LoadingPage extends Component {
         this.interval = setInterval(this.slideDown, 1500);
     }
   
-    login(loginUserType) {
-        switch (loginUserType) {
-            /* For householder */
-            case 1:
-                alert("Householder page is build in progress");
-                break;
-            /* For volunteer */
-            case 2:
-                this.props.navigation.navigate('VolunteerBottomTabNavigation');
-                break;
-            /* For technician */
-            case 3:
-                alert("Technician page is build in progress");
-                break;
-            default:
-                alert("Type not found");
-        }
+    login(userType, userPhoneNum, userPassword) {
+        fetch('http://luffy.ee.ncku.edu.tw:13728/accounts/login/', { //用以取得csrf_token
+            //這邊沒有定義method: 'post'即是一般的HTTP requset，沒有提交表單，只有伺服器回應網頁。
+            credentials: 'include', //使用cookies
+            connection: 'keep-alive'
+        })
+            .then((response) => {
+                return response.text(); //取得網頁的原始碼
+            })
+            .catch((err) => {
+                this.loginRef.current.setLoginErrorMsg(err.message);
+            })
+            .then((text) => {
+                return htmlparser2.parseDOM(text); //轉換成html
+            })
+            .then((dom) => {
+                let $ = cheerio.load(dom); //constructor
+                return $('input[name="csrfmiddlewaretoken"]').val(); //用jQuery語法取得csrf_token
+            })
+            .then((csrf) => {
+                fetch('http://luffy.ee.ncku.edu.tw:13728/accounts/login/submit/', { //發送HTTP post request提交表單
+                    method: 'post', //與先前fetch同樣的網址，但是多定義了method，即是發送Http post request提交表單
+                    credentials: 'same-origin', //same-origin cookie
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8' //設定資料類型，如同html
+                    },
+                    body: qs.stringify({ //用qs轉換成application/x-www-form-urlencoded格式，
+                        csrfmiddlewaretoken: csrf, //csrf_token
+                        userType: userType,
+                        username: userPhoneNum, //屋主註冊的form input
+                        password: userPassword,              
+                    })
+                })
+                    .then((response) => {
+                        return response.text(); //取得網頁的原始碼
+                    })
+                    .then((text) => {
+                        return htmlparser2.parseDOM(text); //轉換成html
+                    })
+                    .then((dom) => {
+                        let $ = cheerio.load(dom); //constructor
+                        let status = $('p').attr("class"); // Get class is success or error
+                        let status_msg = $('p').attr("id"); // Get id of error type
+                        if(status === 'success') {
+                            /* Need to check if login type is same as return type */
+                            let loginType = $(`p.${status}#${status_msg}`).text();
+                            switch (loginType) {
+                                /* For homewowner */
+                                case "HouseOwner":
+                                    alert("Homeowner page is build in progress");
+                                    break;
+                                /* For volunteer */
+                                case "Volunteer":
+                                    /* If login type match */
+                                    this.props.navigation.navigate('VolunteerBottomTabNavigation');
+                                    break;
+                                /* For technician */
+                                case "Engineer":
+                                    alert("Engineer page is build in progress"); 
+                                    break;
+                                default:
+                                    alert("Type not found");
+                            }
+                        }
+                        else if(status === 'error') {
+                            switch(status_msg) {
+                                case "nullInput":
+                                    this.loginRef.current.setLoginErrorMsg("帳號或密碼不能為空");
+                                    break;
+                                case "inactiveUser":
+                                    this.loginRef.current.setLoginErrorMsg("使用者帳號無效");
+                                    break;
+                                case "non-existUser":
+                                    this.loginRef.current.setLoginErrorMsg("帳號或密碼錯誤");
+                                    break;
+                            }
+                        }  
+                        return status;
+                    })
+            })
     }
-
-
+    
+    logout = () => {
+        fetch('http://luffy.ee.ncku.edu.tw:13728/accounts/logout/', {
+            credentials: 'include' //使用cookies
+        })
+            .then((response) => {
+                //App依據伺服器回傳結果處理...
+                console.log(response['url']);
+            })
+    }
 
     render() {
         return (
@@ -99,27 +219,8 @@ const MainRegisterPageStackNavigation = createStackNavigator({
         screen: RegisterPage,
     },
 },{
-    transitionConfig: () => ({
-        transitionSpec: {
-            duration: 300,
-            easing: Easing.out(Easing.poly(4)),
-            timing: Animated.timing,
-        },
-        screenInterpolator: sceneProps => {
-            const { layout, position, scene } = sceneProps;
-            const { index } = scene;
-            const Width = layout.initWidth;
-            const translateX = position.interpolate({
-                inputRange: [index - 1, index, index + 1],
-                outputRange: [Width, 0, -(Width - 10)],
-            });
-            const opacity = position.interpolate({
-                inputRange: [index - 1, index - 0.99, index],
-                outputRange: [0, 1, 1],
-            });
-            return { opacity, transform: [{translateX}] };
-        }
-    })
+    initialRouteName: 'LoadingPage',
+    transitionConfig: () => fromRight()
 });
 
 const styles = StyleSheet.create({
