@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Alert } from 'react-native';
 import { Button, Input, } from 'react-native-elements';
 import qs from 'qs';
 
@@ -40,7 +40,7 @@ class RegisterPage extends Component {
                 return response.text(); //取得網頁的原始碼
             })
             .catch((err) => {
-                this.loginRef.current.setLoginErrorMsg(err.message);
+                Alert.alert("", err.message);
             })
             .then((text) => {
                 return htmlparser2.parseDOM(text); //轉換成html
@@ -59,8 +59,7 @@ class RegisterPage extends Component {
                     body: qs.stringify({ //用qs轉換成application/x-www-form-urlencoded格式，
                         csrfmiddlewaretoken: csrf, //csrf_token
                         username: this.state.userPhoneNum,
-                        firstName: this.state.userName,
-                        lastName: this.state.userName,
+                        name: this.state.userName,
                         password: this.state.userPassword,
                     })
                 })
@@ -71,27 +70,23 @@ class RegisterPage extends Component {
                         return htmlparser2.parseDOM(text); //轉換成html
                     })
                     .then((dom) => {
-                        // let $ = cheerio.load(dom); //constructor
-                        // let status = $('p').attr("class"); // Get class is success or error
-                        // let status_msg = $('p').attr("id"); // Get id of error type
-                        // if(status === 'success') {
-                        //     /* Need to check if login type is same as return type */
-
-                        // }
-                        // else if(status === 'error') {
-                        //     switch(status_msg) {
-                        //         case "nullInput":
-                        //             this.loginRef.current.setLoginErrorMsg("帳號或密碼不能為空");
-                        //             break;
-                        //         case "inactiveUser":
-                        //             this.loginRef.current.setLoginErrorMsg("使用者帳號無效");
-                        //             break;
-                        //         case "non-existUser":
-                        //             this.loginRef.current.setLoginErrorMsg("帳號或密碼錯誤");
-                        //             break;
-                        //     }
-                        // }  
-                        // return status;
+                        let $ = cheerio.load(dom); //constructor
+                        let status = $('p').attr("class"); // Get class is success or error
+                        let status_msg = $('p').attr("id"); // Get id of error type
+                        if(status === 'success') {
+                            alert('', '註冊成功！');
+                        }
+                        else if(status === 'error') {
+                            switch(status_msg) {
+                                case "serverError":
+                                    Alert.alert('', '註冊失敗，請重新輸入');
+                                    break;
+                                case "userExists":
+                                    Alert.alert('', '該用戶已存在');
+                                    break;
+                            }
+                        }  
+                        return status;
                     })
             })
     }

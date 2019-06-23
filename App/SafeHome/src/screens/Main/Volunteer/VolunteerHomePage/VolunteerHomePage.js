@@ -5,6 +5,9 @@ import { fromRight } from 'react-navigation-transitions';
 import UnprogressedCasePage from './UnprogressedCasePage';
 import ProgressingCasePage from './ProgressingCasePage/ProgressingCasePage';
 import ProgressingCaseInformationPage from './ProgressingCasePage/ProgressingCaseInformationPage';
+import BasicData from './ProgressingCasePage/ProgressingCaseInformationPage/BasicData';
+import AddFloorPlan from './ProgressingCasePage/ProgressingCaseInformationPage/AddFloorPlan';
+import RecordPicture from './ProgressingCasePage/ProgressingCaseInformationPage/RecordPicture';
 import HistoryCasePage from './HistoryCasePage';
 
 class Name extends Component {  
@@ -131,10 +134,47 @@ const VolunteerHomePageStackNavigation = createStackNavigator({
             />)
         }
     },
+    BasicData: {
+        screen: BasicData,
+        navigationOptions: {
+            headerTitle: "基本資料",
+            headerTitleStyle: { flex: 2, textAlign: "center", },
+            headerTintColor: "#F37021",
+            headerRight: (<Image
+                source={require('../../../../../assets/img/help-circle.png')}
+                style={{ height: 25, width: 25, tintColor: "#F37021", margin: 3 }}
+            />)
+        }
+    },
+    AddFloorPlan: {
+        screen: AddFloorPlan,
+        navigationOptions: {
+            headerTitle: "建築平面圖",
+            headerTitleStyle: { flex: 2, textAlign: "center", },
+            headerTintColor: "#F37021",
+            headerRight: (<Image
+                source={require('../../../../../assets/img/help-circle.png')}
+                style={{ height: 25, width: 25, tintColor: "#F37021", margin: 3 }}
+            />)
+        }
+    },
+    RecordPicture: {
+        screen: RecordPicture,
+        navigationOptions: {
+            headerTitle: "建築平面圖",
+            headerTitleStyle: { flex: 2, textAlign: "center", },
+            headerTintColor: "#F37021",
+            headerRight: (<Image
+                source={require('../../../../../assets/img/help-circle.png')}
+                style={{ height: 25, width: 25, tintColor: "#F37021", margin: 3 }}
+            />)
+        }
+    },
+
     HistoryCasePage: {
         screen: HistoryCasePage,
         navigationOptions: {
-            headerTitle: "歷史案件",
+            headerTitle: "劣化照片紀錄",
             headerTitleStyle: { flex: 2, textAlign: "center", },
             headerTintColor: "#F37021",
             headerRight: (<Image

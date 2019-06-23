@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Animated, TouchableOpacity, Image, Easing } from 'react-native';
+import { StyleSheet, View, Animated, TouchableOpacity, Image, Alert } from 'react-native';
 import { createStackNavigator } from 'react-navigation'
-import { fromRight, zoomIn, zoomOut, fromLeft } from 'react-navigation-transitions';
+import { fromRight } from 'react-navigation-transitions';
 import LoginPage from './Main/LoginPage';
 import RegisterPage from './Main/RegisterPage';
 import qs from 'qs';
@@ -38,7 +38,7 @@ class LoadingPage extends Component {
                 return response.text(); //取得網頁的原始碼
             })
             .catch((err) => {
-                alert(err.message);
+                Alert.alert("", err.message);
             })
             .then((text) => {
                 return htmlparser2.parseDOM(text); //轉換成html
@@ -52,16 +52,19 @@ class LoadingPage extends Component {
                 switch(ifLogin) {
                     /* For homewowner */
                     case "HouseOwner":
-                        alert("Homeowner page is build in progress");
+                        Alert.alert("", "屋主登入成功！");
+                        Alert.alert("Homeowner page is build in progress");
                         break;
                     /* For volunteer */
                     case "Volunteer":
                         /* If login type match */
+                        Alert.alert("", "志工登入成功！");
                         this.props.navigation.navigate('VolunteerBottomTabNavigation');
                         break;
                     /* For technician */
                     case "Engineer":
-                        alert("Engineer page is build in progress"); 
+                        Alert.alert("", "技師登入成功！");
+                        Alert.alert("", "Engineer page is build in progress"); 
                         break;
                     default:
                         this.didFocusSubscription = this.props.navigation.addListener('didFocus', () => {
@@ -72,7 +75,8 @@ class LoadingPage extends Component {
                                                     ref={this.loginRef}
                                                     login={(userType, userPhoneNum, userPassword)=>this.login(userType, userPhoneNum, userPassword)}
                                                     register={() => this.props.navigation.navigate('RegisterPage')}
-                                                    test={()=>this.logout()}/>});
+                                                    testlogin={()=>this.props.navigation.navigate('VolunteerBottomTabNavigation')}
+                                                    testlogout={()=>this.logout()}/>});
                         
                 }
             });
@@ -82,7 +86,14 @@ class LoadingPage extends Component {
     slideDown = () => {
         if(this.state.isAnimationFinish === false) {
             this.setState({isAnimationFinish: true});
-            this.cheakIfLoginBefore();
+            //this.cheakIfLoginBefore();
+            this.setState({
+                animationComponent: <LoginPage 
+                                        ref={this.loginRef}
+                                        login={(userType, userPhoneNum, userPassword)=>this.login(userType, userPhoneNum, userPassword)}
+                                        register={() => this.props.navigation.navigate('RegisterPage')}
+                                        testlogin={()=>this.props.navigation.navigate('VolunteerBottomTabNavigation')}
+                                        testlogout={()=>this.logout()}/>});
             Animated.spring(
                 this.springAnimationXY, {
                     toValue: { x: 0, y: 0 },
@@ -148,31 +159,34 @@ class LoadingPage extends Component {
                             switch (loginType) {
                                 /* For homewowner */
                                 case "HouseOwner":
-                                    alert("Homeowner page is build in progress");
+                                    Alert.alert("", "屋主登入成功！");
+                                    Alert.alert("Homeowner page is build in progress");
                                     break;
                                 /* For volunteer */
                                 case "Volunteer":
                                     /* If login type match */
+                                    Alert.alert("", "志工登入成功！");
                                     this.props.navigation.navigate('VolunteerBottomTabNavigation');
                                     break;
                                 /* For technician */
                                 case "Engineer":
-                                    alert("Engineer page is build in progress"); 
+                                    Alert.alert("", "技師登入成功！");
+                                    Alert.alert("", "Engineer page is build in progress"); 
                                     break;
                                 default:
-                                    alert("Type not found");
+                                    Alert.alert("", "Type not found");
                             }
                         }
                         else if(status === 'error') {
                             switch(status_msg) {
                                 case "nullInput":
-                                    this.loginRef.current.setLoginErrorMsg("帳號或密碼不能為空");
+                                    Alert.alert("", "帳號或密碼不能為空");
                                     break;
                                 case "inactiveUser":
-                                    this.loginRef.current.setLoginErrorMsg("使用者帳號無效");
+                                    Alert.alert("", "使用者帳號無效，請連繫客服");
                                     break;
                                 case "non-existUser":
-                                    this.loginRef.current.setLoginErrorMsg("帳號或密碼錯誤");
+                                    Alert.alert("", "帳號或密碼錯誤");
                                     break;
                             }
                         }  

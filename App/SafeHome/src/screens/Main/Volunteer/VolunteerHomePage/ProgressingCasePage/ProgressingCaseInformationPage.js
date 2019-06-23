@@ -43,16 +43,19 @@ class ProgressingCaseInformationPage extends Component {
                     </View>
                     <Button
                         title={"1. 基本資料表單"}
+                        onPress={() => this.props.navigation.navigate("BasicData")}
                         buttonStyle={{ backgroundColor: "white" }}
                         containerStyle={{ borderWidth: 1, borderColor: "#BBBBBB", alignItems: "flex-start", marginTop: "8%", borderRadius: 0 }}
                         titleStyle={{ color: "#BBBBBB" }} />
                     <Button
                         title={"2. 建築平面圖"}
+                        onPress={() => this.props.navigation.navigate("AddFloorPlan")}
                         buttonStyle={{ backgroundColor: "white" }}
                         containerStyle={{ borderWidth: 1, borderColor: "#BBBBBB", alignItems: "flex-start", marginTop: "5%", borderRadius: 0 }}
                         titleStyle={{ color: "#BBBBBB" }} />
                     <Button
                         title={"3. 劣化照片"}
+                        onPress={() => this.props.navigation.navigate("RecordPicture")}
                         buttonStyle={{ backgroundColor: "white" }}
                         containerStyle={{ borderWidth: 1, borderColor: "#BBBBBB", alignItems: "flex-start", marginTop: "5%", marginBottom: "5%", borderRadius: 0 }}
                         titleStyle={{ color: "#BBBBBB" }} />
@@ -60,9 +63,9 @@ class ProgressingCaseInformationPage extends Component {
                 <View style={{ postition: "relative", width: "90%", marginTop: "10%", marginBottom: "5%" }}>
                     <Button
                         title={"提交"}
-                        buttonStyle={{ backgroundColor: "#F37021", paddingLeft: "45%", paddingRight: "45%", paddingBottom: "2%" }}
+                        buttonStyle={{ backgroundColor: "#F37021", paddingLeft: "45%", paddingRight: "45%" }}
                         containerStyle={{ alignItems: "center", justifyContent: "center" }}
-                        titleStyle={{ color: "white" }} />
+                        titleStyle={{ color: "white", fontSize: 17, fontWeight: "bold" }} />
                 </View>
             </View>
         );
@@ -80,7 +83,6 @@ const styles = StyleSheet.create({
         zIndex: 0,
         backgroundColor: "#F2F1EF",
         marginBottom: "2%",
-
     },
     caseContainer: {
         position: "relative",

@@ -19,7 +19,7 @@ class LoginPage extends Component {
             loginErrorMsg: "",
             registerPageOpacity: new Animated.Value(0),
             registerPageIsVisible: false,
-        }
+        }   
     }
 
     setLoginErrorMsg = (loginErrorMsg) => {
@@ -133,8 +133,8 @@ class LoginPage extends Component {
                         leftIconContainerStyle={{ marginLeft: 0, paddingTop: 10, }} />
                 </View>
                 <Button
-                    title={"忘記密碼 ？"}
-                    onPress={() => this.props.test()}
+                    title={"我大概沒用喔 ？"}
+                    onPress={() => this.props.testlogin()}
                     containerStyle={styles.containerstyleButtonForgetPW}
                     buttonStyle={{ backgroundColor: "#F2F1EF" }}
                     titleStyle={{ fontSize: 14, color: "#BBBBBB", fontWeight: "bold", textDecorationLine: "underline" }} />
@@ -142,7 +142,7 @@ class LoginPage extends Component {
                     title={"登入"}
                     disabled={(this.state.userPhoneNum !== "" && this.state.userPassword !== "") ? false : true}
                     onPress={() => this.props.login(this.state.userType, this.state.userPhoneNum, this.state.userPassword)}
-                    //onPress={() => console.log(this.state.userPhoneNum)}
+                    //onPress={() => this.props.testlogin()}
                     containerStyle={styles.containerstyleButtonLogin}
                     buttonStyle={{ backgroundColor: "#F37021" }}
                     titleStyle={{ fontWeight: "bold" }} />

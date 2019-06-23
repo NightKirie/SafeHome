@@ -22,8 +22,8 @@ class ProgressingCasePage extends Component {
                         renderRow={(rowData) =>
                             <TouchableOpacity style={styles.caseitemContainer}
                                 onPress={this.nextPage}>
-                                <View>
-                                    <Text style={{ fontSize: 35, color: "#BBBBBB" }}>{rowData.name}</Text>
+                                <View style={{ alignItems: "center", justifyContent: "center" }}>
+                                    <Text style={{ fontSize: 35, color: "#BBBBBB", textAlign: "center" }}>{rowData.name}</Text>
                                 </View>
                                 <View style={{ justifyContent: "flex-end", marginRight: "3%" }}>
                                     <Image
