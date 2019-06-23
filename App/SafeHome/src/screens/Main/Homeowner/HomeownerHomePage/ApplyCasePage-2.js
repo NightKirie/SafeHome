@@ -1,17 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Picker, TextInput, TouchableOpacity} from 'react-native';
-import DatePicker from 'react-native-date-picker';
 import { createStackNavigator } from 'react-navigation';
-import DateTimePicker from "react-native-modal-datetime-picker";
-/*  套件：
-    1. 時間的picker
-    npm install react-native-date-picker --save
-    react-native link react-native-date-picker
-    2. 有placeholder的picker
-    npm install native-base --save
-    react-native link
-
-*/ 
 
 class ApplyCasePage extends Component {
     
