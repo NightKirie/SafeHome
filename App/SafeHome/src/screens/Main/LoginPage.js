@@ -133,7 +133,7 @@ class LoginPage extends Component {
                         leftIconContainerStyle={{ marginLeft: 0, paddingTop: 10, }} />
                 </View>
                 <Button
-                    title={"我大概沒用喔 ？"}
+                    title={"我大概沒用"}
                     onPress={() => this.props.testlogin()}
                     containerStyle={styles.containerstyleButtonForgetPW}
                     buttonStyle={{ backgroundColor: "#F2F1EF" }}

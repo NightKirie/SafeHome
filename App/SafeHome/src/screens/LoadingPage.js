@@ -86,14 +86,14 @@ class LoadingPage extends Component {
     slideDown = () => {
         if(this.state.isAnimationFinish === false) {
             this.setState({isAnimationFinish: true});
-            //this.cheakIfLoginBefore();
-            this.setState({
-                animationComponent: <LoginPage 
-                                        ref={this.loginRef}
-                                        login={(userType, userPhoneNum, userPassword)=>this.login(userType, userPhoneNum, userPassword)}
-                                        register={() => this.props.navigation.navigate('RegisterPage')}
-                                        testlogin={()=>this.props.navigation.navigate('VolunteerBottomTabNavigation')}
-                                        testlogout={()=>this.logout()}/>});
+            this.cheakIfLoginBefore();
+            // this.setState({
+            //     animationComponent: <LoginPage 
+            //                             ref={this.loginRef}
+            //                             login={(userType, userPhoneNum, userPassword)=>this.login(userType, userPhoneNum, userPassword)}
+            //                             register={() => this.props.navigation.navigate('RegisterPage')}
+            //                             testlogin={()=>this.props.navigation.navigate('VolunteerBottomTabNavigation')}
+            //                             testlogout={()=>this.logout()}/>});
             Animated.spring(
                 this.springAnimationXY, {
                     toValue: { x: 0, y: 0 },

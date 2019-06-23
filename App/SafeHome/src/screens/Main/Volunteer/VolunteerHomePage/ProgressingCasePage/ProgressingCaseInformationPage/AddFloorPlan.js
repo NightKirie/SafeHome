@@ -71,7 +71,6 @@ class AddFloorPlan extends Component {
         this.updatePlanFloorList();
     }
 
-
     render() {
         return (
             <View style={styles.MainContainer}>
