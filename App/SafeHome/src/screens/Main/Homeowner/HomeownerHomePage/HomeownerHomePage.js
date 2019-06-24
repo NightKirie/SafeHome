@@ -1,5 +1,17 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import ApplyCasePage_1 from './ApplyCasePage-1';
+import ApplyCasePage_1 from './ApplyCasePage-1';
+import ProgressingCasePage from './ProgressingCasePage/ProgressingCasePage';
+import ProgressingCaseInformationPage from './ProgressingCasePage/ProgressingCaseInformationPage';
+import BasicData from './ProgressingCasePage/ProgressingCaseInformationPage/BasicData';
+import AddFloorPlan from './ProgressingCasePage/ProgressingCaseInformationPage/AddFloorPlan';
+import RecordPicture from './ProgressingCasePage/ProgressingCaseInformationPage/RecordPicture';
+import RecordPage from './RecordPage';
+import qs from 'qs';
+
+
+
 
 class Name extends Component {  
     render() {
@@ -49,7 +61,48 @@ class HomeownerHomePage extends Component {
     );
   }
 }
-}
+const homeownerHomePageStackNavigation = createStackNavigator({
+    homeownerHomePage: {
+        screen: homeowmerHomePage,
+        navigationOptions: {
+            headerLeft: null,
+            headerTitle: (
+                <Image
+                    resizeMode="contain"
+                    source={require('../../../../../assets/img/plaingrey-07.png')}
+                    style={{ height: 50, width: 50, flex: 1 }} />
+            ),
+        },
+    },
+    ApplyCasePage_1: {
+        screen: ApplyCasePage_1,
+        navigationOptions: {
+            headerTitle: "申請勘查",
+            headerTitleStyle: { flex: 2, textAlign: "center", },
+            headerTintColor: "#F37021"
+        }
+    },
+    ApplyCasePage_2: {
+        screen: ApplyCasePage_2,
+        navigationOptions: {
+            headerTitle: "申請勘查",
+            headerTitleStyle: { flex: 2, textAlign: "center", },
+            headerTintColor: "#F37021"
+        }
+    },
+
+    RecordPage: {
+        screen: RecordPage,
+        navigationOptions: {
+            headerTitle: "申請紀錄",
+            headerTitleStyle: { flex: 2, textAlign: "center", },
+            headerTintColor: "#F37021",
+        }
+    }
+},{
+    initialRouteName: 'homeownerHomePage',
+    transitionConfig: () => fromRight()
+});
 
 const styles = StyleSheet.create({
     backgroundContainer: {
