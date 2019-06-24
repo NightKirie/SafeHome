@@ -19,10 +19,21 @@
       <input type="file" name="file" multiple><br>
       <button type="submit">Upload</button>
     </form>
-    <form action="./result/" method="post">
+    <form action="./getreport/" method="post">
       {% csrf_token %}
       SN:<input name="sn" type="text"><br>
-      <button type="submit">Show result</button>
+      <button type="submit">Get report</button>
+    </form>
+    <form action="./getphotocount/" method="post">
+      {% csrf_token %}
+      SN:<input name="sn" type="text"><br>
+      <button type="submit">Get photo count</button>
+    </form>
+    <form action="./getphoto/" method="post">
+      {% csrf_token %}
+      SN:<input name="sn" type="text"><br>
+      filename:<input name="filename" type="text"><br>
+      <button type="submit">Get photo</button>
     </form>
     <form action="./assign/" method="post">
       {% csrf_token %}

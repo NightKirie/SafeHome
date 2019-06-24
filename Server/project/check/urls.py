@@ -24,7 +24,9 @@ urlpatterns = [
     path('volunteer/showcheckedcases/', views.volunteerShowCheckedCases),
     path('showunassignedcases/', views.showUnassignedCases),
     path('assign/', views.assign),
-    path('result/', views.result),
+    path('getphotocount/', views.getPhotoCount),
+    path('getphoto/', views.getPhoto),
+    path('getreport/', views.getReport),
     path('upload/', views.upload),
     path('', views.home),
 ]

@@ -12,6 +12,8 @@ class Case(models.Model):
     relation = models.CharField(max_length=5)
     wishDate = models.CharField(max_length=10)
     address = models.CharField(max_length=100)
+    addressLatitude = models.FloatField(default=0.0)
+    addressLongitude = models.FloatField(default=0.0)
     addressCounty = models.CharField(max_length=5)
     addressDistrict = models.CharField(max_length=5)
     addressRoad = models.CharField(max_length=10)

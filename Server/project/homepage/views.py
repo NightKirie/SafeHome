@@ -8,7 +8,7 @@ from authentication.views import group_required
 # @group_required('House', 'Volunteer', 'Engineer')
 def welcome(request):
 #    response = "Hi! " + request.user.last_name + request.user.first_name
-    if request.user.groups.all().count():
+    if request.user.is_authenticated:
         response = '<p class="success" id="success">' + request.user.groups.all()[0].name + '</p>'
         return HttpResponse(response)
     else:
@@ -28,3 +28,11 @@ def denied(request):
 def permissionD(request):
     response = '<p class="error" id="permission">permission denied</p>'
     return HttpResponse(response)
+
+
+def getVolunteerName(request):
+    if request.user.is_authenticated:
+        response = '<p class="success" id="success">' + request.user.first_name + '</p>'
+        return HttpResponse(response)
+    else:
+        return HttpResponse('<p class="error" id="anonymous">anonymous user</p>')

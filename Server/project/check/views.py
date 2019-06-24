@@ -24,6 +24,7 @@ def home(request):
 def upload(request):
     SN = request.POST.get('sn')
     uploadFiles = request.FILES.getlist('file')
+    print(uploadFiles)
 
     if CaseFiles.objects.filter(SN=SN):
         if Case.objects.get(SN=SN).assign == '1' and Case.objects.get(SN=SN).volunteer == request.user.username:
@@ -52,6 +53,7 @@ def upload(request):
                                                    buildingHouseholdCount=request.POST.get('householdCount'),
                                                    buildingStructure=request.POST.get('structure'),
                                                    name=request.POST.get('name'),
+                                                   photoCount=len(uploadFiles)-1,
                                                    phone=request.POST.get('phone'))
             return HttpResponse('<p class="success" id="success">success</p>')
 
@@ -65,7 +67,7 @@ def upload(request):
 
 
 @group_required('Volunteer', 'Engineer')
-def result(request):
+def getReport(request):
     SN = request.POST.get('sn')
     if CaseFiles.objects.filter(SN=SN):
         if Case.objects.get(SN=SN).volunteer == request.user.username or request.user.groups.filter(name="Engineer").exists() is True or request.user.is_superuser is True:
@@ -78,6 +80,53 @@ def result(request):
                     openFile = open(case.path + "/result" + SN + ".html", 'r')
                     response = HttpResponse(openFile.read(), content_type="text/html")
                     response['Content-Disposition'] = 'attachment; filename="result' + SN + '.html"'
+                    return response
+                else:
+                    # openFile = open(case.path + "/freebear.jpg", 'rb')
+                    # response = HttpResponse(openFile.read(), content_type='image/jpeg')
+                    # response['Content-Disposition'] = 'attachment; filename="freebear.jpg"'
+                    # return response
+                    return HttpResponse('<p class="error" id="notFound">file not found</p>')
+            else:
+                return HttpResponse('<p class="error" id="notChecked">case not checked</p>')
+        else:
+            return HttpResponse('<p class="error" id="permission">permission denied</p>')
+    else:
+        return HttpResponse('<p class="error" id="notFound">case not found</p>')
+
+
+@group_required('Volunteer', 'Engineer')
+def getPhotoCount(request):
+    SN = request.POST.get('sn')
+    if CaseFiles.objects.filter(SN=SN):
+        if Case.objects.get(SN=SN).volunteer == request.user.username or request.user.groupts.filter(name="Engineer").exists() is True or request.user.is_superuser is True:
+            if Case.objects.get(SN=SN).checked == '1':
+                case = CaseFiles.objects.get(SN=SN)
+                if os.path.exists(case.path):
+                    response = '<p class="success" id="success">' + str(len(os.listdir(case.path))) + '</p>'
+                    return HttpResponse(response)
+                else:
+                    return HttpResponse('<p class="error" id="unknown">unknown error</p>')
+            else:
+                return HttpResponse('<p class="error" id="notChecked">case not checked</p>')
+        else:
+            return HttpResponse('<p class="error" id="permission">permission denied</p>')
+    else:
+        return HttpResponse('<p class="error" id="notFound">case not found</p>')
+
+
+@group_required('Volunteer', 'Engineer')
+def getPhoto(request):
+    SN = request.POST.get('sn')
+    filename = request.POST.get('filename')
+    if CaseFiles.objects.filter(SN=SN):
+        if Case.objects.get(SN=SN).volunteer == request.user.username or request.user.groups.filter(name="Engineer").exists() is True or request.user.is_superuser is True:
+            if Case.objects.get(SN=SN).checked == '1':
+                case = CaseFiles.objects.get(SN=SN)
+                if os.path.isfile(case.path + "/" + filename) is True:
+                    openFile = open(case.path + "/" + filename, 'rb')
+                    response = HttpResponse(openFile.read(), content_type='image/jpeg')
+                    response['Content-Disposition'] = 'attachment; filename="' + filename
                     return response
                 else:
                     return HttpResponse('<p class="error" id="notFound">file not found</p>')
@@ -132,7 +181,6 @@ def volunteerShowNotCheckedCases(request):
             response.append('<ul class="case">')
             response.append('<li class="sn">' + d.SN + '</li>')
             response.append('<li class="name">' + d.name + '</li>')
-            response.append('<li class="address">' + d.address + '</li>')
             response.append('</ul>')
         return HttpResponse(response)
     else:
@@ -183,6 +231,8 @@ def showDetail(request):
         response.append('<li class="name">' + case.name + '</li>')
         response.append('<li class="buildingType">' + case.buildingType + '</li>')
         response.append('<li class="address">' + case.address + '</li>')
+        response.append('<li class="lat">' + str(case.addressLatitude) + '</li>')
+        response.append('<li class="lng">' + str(case.addressLongitude) + '</li>')
         response.append('<li class="phone">' + case.phone + '</li>')
         response.append('<li class="applyDate">' + case.applyDate + '</li>')
         response.append('</ul>')

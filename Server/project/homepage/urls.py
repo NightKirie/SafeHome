@@ -21,4 +21,5 @@ urlpatterns = [
     path('denied/', views.denied),
     path('seeya/', views.seeya),
     path('welcome/', views.welcome),
+    path('getvolunteername/', views.getVolunteerName)
 ]

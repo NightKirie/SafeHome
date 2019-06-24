@@ -15,6 +15,7 @@ class CaseFiles(models.Model):
     buildingHouseholdCount = models.CharField(max_length=4, default='undf')
     buildingStructure = models.CharField(max_length=20, default='undefined')
     path = models.CharField(max_length=255)
+    photoCount = models.IntegerField()
 
     def __str__(self):
         return self.address
