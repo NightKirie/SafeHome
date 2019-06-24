@@ -110,7 +110,7 @@ class ApplyCasePage extends Component {
                     
                 </View>
                 <TouchableOpacity style={styles.containerItem}
-                    onPress={() => this.props.navigation.navigate('ApplyCasePage-2')}>
+                    onPress={() => this.props.navigation.navigate('ApplyCasePage_2')}>
                     <Text style={{marginTop: "5%",color: "white", fontSize: 20}}>下一步</Text>
                 </TouchableOpacity>
                 

@@ -6,6 +6,14 @@ const data = require('../../../../../../assets/json/progressedcases.json');
 class ProgressingCasePage extends Component {
     constructor() {
         super();
+        this.state = {
+            caseSN: "",
+            caseName: "",
+            casebuildingType: "",
+            caseAddress: "",
+            casePhoneNum: "",
+            caseDate: "",
+        }
         this.dataSource = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2
         })

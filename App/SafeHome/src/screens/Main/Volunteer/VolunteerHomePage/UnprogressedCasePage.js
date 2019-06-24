@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Animated, TouchableOpacity, Image, ListView, Alert, Dimensions } from 'react-native';
 import { Button } from 'react-native-elements';
-const data = require('../../../../../assets/json/progressedcases.json');
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
+import call from 'react-native-phone-call';
 var { height } = Dimensions.get('window');
 import qs from 'qs';
 
@@ -20,6 +21,8 @@ class UnprogressedCasePage extends Component {
             caseAddress: "",
             casePhoneNum: "",
             caseDate: "",
+            caseLat: 23.122841,
+            caseLng: 120.464157,
             animation: new Animated.Value(0),
         }
         this.dataSource = new ListView.DataSource({
@@ -30,12 +33,14 @@ class UnprogressedCasePage extends Component {
     };
 
     handleOpen = () => {
+        console.log(this.state.caseLat);
         Animated.timing(this.state.animation, {
             toValue: 1,
             duration: 300,
             useNativeDriver: true,
         }).start();
     };
+
     handleClose = () => {
         Animated.timing(this.state.animation, {
             toValue: 0,
@@ -61,7 +66,19 @@ class UnprogressedCasePage extends Component {
         ).start();
     }
 
-    getCaseSpec = (sn) => {
+    makeCall = () => {
+        let number = this.state.casePhoneNum;
+        if(number.charAt(0) === '0')
+            number = number.substr(1);
+        const args = {
+            number: "+886" + number,
+            prompt: false,
+        };
+        call(args).catch(console.error);
+    }
+
+
+    getUnprogressedCaseSpec = (sn) => {
         fetch('http://luffy.ee.ncku.edu.tw:13728/check/', { //用以取得csrf_token
             //這邊沒有定義method: 'post'即是一般的HTTP requset，沒有提交表單，只有伺服器回應網頁。
             credentials: 'include', //使用cookies
@@ -112,6 +129,8 @@ class UnprogressedCasePage extends Component {
                                 caseAddress: $('li.address').text(),
                                 casePhoneNum: $('li.phone').text(),
                                 caseDate: $('li.applyDate').text(),
+                                caseLat: parseFloat($('li.lat').text()),
+                                caseLng: parseFloat($('li.lng').text()),
                             }, ()=>this.handleOpen());
                         }
                         else if (status === 'error') {
@@ -122,10 +141,12 @@ class UnprogressedCasePage extends Component {
                                 caseAddress: "",
                                 casePhoneNum: "",
                                 caseDate: "",
+                                caseLat: 23.122841,
+                                caseLng: 120.464157,
                             });
                         }
+                        return "done";
                     })
-
             })
     }
 
@@ -157,14 +178,20 @@ class UnprogressedCasePage extends Component {
                         });
                     });
                     this.setState({ dataList: dataList });
+                    console.log('yes');
                 }
                 else if (status === 'error') {
-                    this.setState({ nothingText: "沒有可接案件" });
+                    this.setState({ 
+                        nothingText: "沒有可接案件",
+                        dataList: []
+                    });
+                    console.log('no');
                 }
-            })    
+            }) 
+            
     }
     
-    acceptCase = () => {
+    acceptUnprogressedCase = () => {
         fetch('http://luffy.ee.ncku.edu.tw:13728/check/', { //用以取得csrf_token
             //這邊沒有定義method: 'post'即是一般的HTTP requset，沒有提交表單，只有伺服器回應網頁。
             credentials: 'include', //使用cookies
@@ -217,6 +244,16 @@ class UnprogressedCasePage extends Component {
                             else if(status_err === "notFound")
                                 Alert.alert("", '案件不存在');
                         }
+                        return "done";
+                    })
+                    .then((done) => {
+                        if(done === "done")
+                            this.getUnprogressedCase();
+                        return "done"
+                    })
+                    .then((done) => {
+                        if(done === "done")
+                            this.handleClose();
                     })
             })
     }
@@ -261,7 +298,7 @@ class UnprogressedCasePage extends Component {
                         renderRow={(rowData) =>
                             <TouchableOpacity 
                                 style={styles.caseItemContainer}
-                                onPress={()=>this.getCaseSpec(rowData.sn)}>
+                                onPress={()=>this.getUnprogressedCaseSpec(rowData.sn)}>
                                 <View>
                                     <Text style={{ fontSize: 40, color: "#BBBBBB" }}>{rowData.name}</Text>
                                 </View>
@@ -277,7 +314,16 @@ class UnprogressedCasePage extends Component {
                         <Animated.View style={[styles.popup, slideUp]}>
                             <View style={styles.userDataContainer}>
                                 <View style={{ flex: 1, backgroundColor: "#BBBBBB" }}>
-
+                                <MapView
+                                    provider={ PROVIDER_GOOGLE } 
+                                    region={{
+                                        latitude: this.state.caseLat,
+                                        longitude: this.state.caseLng,
+                                        latitudeDelta: 0.0005,
+                                        longitudeDelta: 0.0001,
+                                    }}
+                                    style={styles.map}
+                                />
                                 </View>
                                 <View style={{ flex: 1, flexDirection: 'row', }}>
                                     <View style={{ flex: 2.3, }}>
@@ -297,6 +343,7 @@ class UnprogressedCasePage extends Component {
                                         </View>
                                         <View style={{ flex: 1, alignItems: "flex-end" }}>
                                             <Button
+                                                onPress={()=>this.makeCall()}
                                                 title={"致電"}
                                                 titleStyle={{ color: "#F37021", fontSize: 22 }}
                                                 buttonStyle={{ backgroundColor: "rgba(0, 0, 0, 0)", borderColor: "#F37021", borderWidth: 2, height: "80%", borderRadius: 8 }}
@@ -307,7 +354,7 @@ class UnprogressedCasePage extends Component {
                             </View>
                             <View style={styles.horizontalButtonContainer}>
                                 <Button
-                                    onPress={() => this.acceptCase()}
+                                    onPress={() => this.acceptUnprogressedCase()}
                                     title={"接案"}
                                     titleStyle={{ color: "#FFFFFF", fontSize: 20, fontWeight: "bold" }}
                                     buttonStyle={{ backgroundColor: "#F37021", paddingLeft: "5%" }}
@@ -437,6 +484,13 @@ const styles = StyleSheet.create({
         fontSize: 17,
         color: "#BBBBBB",
         marginLeft: "5%",
+    },
+    map: {
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
     }
 })
 

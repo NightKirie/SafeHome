@@ -162,7 +162,7 @@ class ApplyCasePage extends Component {
                     </View>
                 </ScrollView>
                 <TouchableOpacity style={styles.containerBotton}
-                    //onPress={() => this.props.navigation.navigate('')}
+                    onPress={() => this.props.navigation.navigate('HomeownerHomePage')}
                 >
                     <Text style={{ marginTop: "4%", color: "white", fontSize: 20}}>完成</Text>
                 </TouchableOpacity>

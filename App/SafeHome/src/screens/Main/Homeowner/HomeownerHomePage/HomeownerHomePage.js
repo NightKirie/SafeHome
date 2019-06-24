@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
+import { fromRight } from 'react-navigation-transitions';
 import ApplyCasePage_1 from './ApplyCasePage-1';
-import ApplyCasePage_1 from './ApplyCasePage-1';
-import ProgressingCasePage from './ProgressingCasePage/ProgressingCasePage';
-import ProgressingCaseInformationPage from './ProgressingCasePage/ProgressingCaseInformationPage';
-import BasicData from './ProgressingCasePage/ProgressingCaseInformationPage/BasicData';
-import AddFloorPlan from './ProgressingCasePage/ProgressingCaseInformationPage/AddFloorPlan';
-import RecordPicture from './ProgressingCasePage/ProgressingCaseInformationPage/RecordPicture';
+import ApplyCasePage_2 from './ApplyCasePage-2';
 import RecordPage from './RecordPage';
 import qs from 'qs';
 
@@ -42,7 +39,7 @@ class HomeownerHomePage extends Component {
 				<View style={{ flex: 1, width: "100%" }}>
 					<View style={styles.containerWork}>
 						<TouchableOpacity style={styles.containerItem}
-                            onPress={() => this.props.navigation.navigate('ApplyCasePage')}>
+                            onPress={() => this.props.navigation.navigate('ApplyCasePage_1')}>
                             <Image
                                 source={require('../../../../../assets/img/ApplyCase_Background.png')}
                                 style={{ position: 'absolute', width: "100%", height: "100%",}}
@@ -61,9 +58,9 @@ class HomeownerHomePage extends Component {
     );
   }
 }
-const homeownerHomePageStackNavigation = createStackNavigator({
-    homeownerHomePage: {
-        screen: homeowmerHomePage,
+const HomeownerHomePageStackNavigation = createStackNavigator({
+    HomeownerHomePage: {
+        screen: HomeownerHomePage,
         navigationOptions: {
             headerLeft: null,
             headerTitle: (
@@ -100,7 +97,7 @@ const homeownerHomePageStackNavigation = createStackNavigator({
         }
     }
 },{
-    initialRouteName: 'homeownerHomePage',
+    initialRouteName: 'HomeownerHomePage',
     transitionConfig: () => fromRight()
 });
 
@@ -149,4 +146,4 @@ const styles = StyleSheet.create({
         aspectRatio: 1
     }
 })
-export default HomeownerHomePage;
+export default HomeownerHomePageStackNavigation;

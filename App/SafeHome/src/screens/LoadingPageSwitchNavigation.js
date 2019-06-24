@@ -5,7 +5,7 @@ import {
 
 import MainRegisterPageStackNavigation from './LoadingPage';
 import VolunteerBottomTabNavigation from './Main/Volunteer/VolunteerBottomTabNavigation'
-//import HomeownerBottomNavigation from './Main/Homeowner/HomeownerBottomTabNavigation'
+import HomeownerBottomTabNavigation from './Main/Homeowner/HomeownerBottomTabNavigation'
 
 const LoadingPageSwitchNavigation = createSwitchNavigator({
     MainRegisterPageStackNavigation: {
@@ -14,9 +14,9 @@ const LoadingPageSwitchNavigation = createSwitchNavigator({
     VolunteerBottomTabNavigation: {
         screen: VolunteerBottomTabNavigation,
     },
-    // HomeownerBottomNavigation: {
-    //     screen: HomeownerBottomNavigation,
-    // },
+    HomeownerBottomTabNavigation: {
+        screen: HomeownerBottomTabNavigation,
+    },
 });
 
 export default LoadingPageSwitchNavigation;
