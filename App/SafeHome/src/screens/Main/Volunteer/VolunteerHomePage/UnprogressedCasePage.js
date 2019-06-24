@@ -187,8 +187,7 @@ class UnprogressedCasePage extends Component {
                     });
                     console.log('no');
                 }
-            }) 
-            
+            })    
     }
     
     acceptUnprogressedCase = () => {

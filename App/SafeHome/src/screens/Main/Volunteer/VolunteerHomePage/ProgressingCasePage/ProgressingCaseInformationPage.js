@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, } from 'react-native';
 import { Button, } from 'react-native-elements';
 
+
+
 class ProgressingCaseInformationPage extends Component {
+    constructor() {
+        super();
+    };
+    
     render() {
         return (
             <View style={styles.container}>
@@ -10,10 +16,10 @@ class ProgressingCaseInformationPage extends Component {
                     <View style={styles.titlecontainer}>
                         <View style={styles.namecontainer}>
                             <Text style={{ fontSize: 40, color: "#BBBBBB" }}>
-                                name
+                                {this.props.navigation.state.params.caseName}
                             </Text>
                             <Text style={{ fontSize: 25, color: "#BBBBBB" }}>
-                                house                            
+                                {this.props.navigation.state.params.casebuildingType}                            
                             </Text>
                         </View>
                         <View style={{ justifyContent: "flex-end", alignItems: "flex-end" }}>
@@ -21,17 +27,17 @@ class ProgressingCaseInformationPage extends Component {
                                 申請日期
                             </Text>
                             <Text style={{ fontSize: 20, color: "black" }}>
-                                date
+                                {this.props.navigation.state.params.caseDate} 
                             </Text>
                         </View>
                     </View>
                     <View style={styles.addresscontainer}>
                         <View>
                             <Text>
-                                address
+                                {this.props.navigation.state.params.caseAddress} 
                             </Text>
                             <Text>
-                                phone
+                                {this.props.navigation.state.params.casePhoneNum}
                             </Text>
                         </View>
                         <View style={{ alignItems: "flex-end" }}>
