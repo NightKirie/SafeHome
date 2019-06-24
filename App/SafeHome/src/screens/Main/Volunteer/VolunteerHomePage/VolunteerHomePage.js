@@ -68,7 +68,7 @@ class VolunteerHomePage extends Component {
                                 source={require('../../../../../assets/img/Name_Background.png')}
                                 style={{ position: 'absolute', width: "100%", height: "100%", }}
                             />
-                            <Name style={styles.textName} name="楊承憲"></Name>
+                            <Name style={styles.textName}></Name>
                         </View>
                     </View>
                     <View style={{ flex: 2, width: "100%" }}>

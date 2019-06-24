@@ -53,7 +53,7 @@ class LoadingPage extends Component {
                     /* For homewowner */
                     case "HouseOwner":
                         Alert.alert("", "屋主登入成功！");
-                        Alert.alert("Homeowner page is build in progress");
+                        this.props.navigation.navigate('HomeownerBottomTabNavigation');
                         break;
                     /* For volunteer */
                     case "Volunteer":
@@ -153,7 +153,7 @@ class LoadingPage extends Component {
                                 /* For homewowner */
                                 case "HouseOwner":
                                     Alert.alert("", "屋主登入成功！");
-                                    Alert.alert("Homeowner page is build in progress");
+                                    this.props.navigation.navigate('HomeownerBottomTabNavigation');
                                     break;
                                 /* For volunteer */
                                 case "Volunteer":

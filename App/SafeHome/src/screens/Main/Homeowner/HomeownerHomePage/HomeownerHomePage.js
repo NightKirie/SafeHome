@@ -19,7 +19,7 @@ class Name extends Component {
         this.getHomeownerName();
     }
     getHomeownerName = () => {
-        fetch('http://luffy.ee.ncku.edu.tw:13728/home/getHomeownername/', { //發送HTTP post request提交表單
+        fetch('http://luffy.ee.ncku.edu.tw:13728/home/getvolunteername/', { //發送HTTP post request提交表單
             credentials: 'include', //same-origin cookie
         })
             .then((response) => {
