@@ -32,11 +32,17 @@ def upload(request):
             path = os.path.abspath('.') + "/uploads"
             destination = CaseFiles.objects.get(SN=SN).path
 
+            jpegCount = 0
+            pngCount = 0
             for f in uploadFiles:
                 if f.name.endswith('.html'):
                     fs.save('result'+SN+'.html', f)
-                else:
-                    fs.save(f.name, f)
+                if f.name.endswith('.jpg'):
+                    fs.save('jpeg'+str(jpegCount)+'.jpg', f)
+                    jpegCount = jpegCount + 1
+                if f.name.endswith('.png'):
+                    fs.save('png'+str(pngCount)+'.png', f)
+                    pngCount = pngCount + 1
 
             for f in os.listdir(destination):
                 os.remove(destination + "/" + f)
@@ -53,7 +59,8 @@ def upload(request):
                                                    buildingHouseholdCount=request.POST.get('householdCount'),
                                                    buildingStructure=request.POST.get('structure'),
                                                    name=request.POST.get('name'),
-                                                   photoCount=len(uploadFiles)-1,
+                                                   jpegCount=jpegCount,
+                                                   pngCount=pngCount,
                                                    phone=request.POST.get('phone'))
             return HttpResponse('<p class="success" id="success">success</p>')
 
@@ -98,21 +105,8 @@ def getReport(request):
 @group_required('Volunteer', 'Engineer')
 def getPhotoCount(request):
     SN = request.POST.get('sn')
-    if CaseFiles.objects.filter(SN=SN):
-        if Case.objects.get(SN=SN).volunteer == request.user.username or request.user.groupts.filter(name="Engineer").exists() is True or request.user.is_superuser is True:
-            if Case.objects.get(SN=SN).checked == '1':
-                case = CaseFiles.objects.get(SN=SN)
-                if os.path.exists(case.path):
-                    response = '<p class="success" id="success">' + str(len(os.listdir(case.path))) + '</p>'
-                    return HttpResponse(response)
-                else:
-                    return HttpResponse('<p class="error" id="unknown">unknown error</p>')
-            else:
-                return HttpResponse('<p class="error" id="notChecked">case not checked</p>')
-        else:
-            return HttpResponse('<p class="error" id="permission">permission denied</p>')
-    else:
-        return HttpResponse('<p class="error" id="notFound">case not found</p>')
+    response = '<p class="success" id="count">' + str(CaseFiles.objects.get(SN=SN).jpegCount) + '</p>'
+    return HttpResponse(response)
 
 
 @group_required('Volunteer', 'Engineer')
@@ -163,7 +157,7 @@ def volunteerShowCheckedCases(request):
         response.append('<p class="success" id="found">found case</p>')
         for d in data:
             response.append('<ul class="case">')
-            response.append('<li class="sn">' + d.SN +'</li>')
+            response.append('<li class="sn">' + d.SN + '</li>')
             response.append('<li class="name">' + d.name + '</li>')
             response.append('</ul>')
         return HttpResponse(response)
@@ -227,7 +221,7 @@ def showDetail(request):
         response = []
         response.append('<p class="success" id="found">found case</p>')
         response.append('<ul class="case">')
-        response.append('<li class="sn">' + case.SN +'</li>')
+        response.append('<li class="sn">' + case.SN + '</li>')
         response.append('<li class="name">' + case.name + '</li>')
         response.append('<li class="buildingType">' + case.buildingType + '</li>')
         response.append('<li class="address">' + case.address + '</li>')
