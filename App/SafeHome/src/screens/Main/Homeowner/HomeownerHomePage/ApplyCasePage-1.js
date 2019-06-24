@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Picker, TextInput, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Picker, TextInput, TouchableOpacity} from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import DateTimePicker from "react-native-modal-datetime-picker";
 /*  套件：
     npm install react-native-modal-datetime-picker --save
+    npm install react-native-maps –save
+react-native link react-native-maps
+npm install --save react-native-geocoder
+react-native link react-native-geocoder
 */ 
 
 class ApplyCasePage extends Component {
@@ -36,7 +40,7 @@ class ApplyCasePage extends Component {
       
     render() {
         return (
-            <View style={styles.backgroundContainer}>
+            <ScrollView style={styles.backgroundContainer}>
                 <View style={styles.container}>
                     <View style={styles.containertitle}>
                         <View><Text style={{textAlign:'left', color: "#BBBBBB", fontSize: 30}}>基本資料</Text></View>
@@ -85,9 +89,7 @@ class ApplyCasePage extends Component {
                                 <Picker.Item color='#BBBBBB' label="其他" value="其他" />
                             </Picker>
                         </View>
-                        
-                    </View>
-                    <View style={styles.containerdate}>
+                        <View style={ styles.containerinput }>
                         <TouchableOpacity
                             
                             color= "white"
@@ -102,23 +104,24 @@ class ApplyCasePage extends Component {
                             onConfirm={this.handleDatePicked}
                             onCancel={this.hideDateTimePicker}
                         />
+                        </View>
                     </View>
+                    
                     
                 </View>
                 <TouchableOpacity style={styles.containerItem}
                     onPress={() => this.props.navigation.navigate('ApplyCasePage-2')}>
-                    <Text style={{color: "white", fontSize: 20}}>下一步</Text>
+                    <Text style={{marginTop: "5%",color: "white", fontSize: 20}}>下一步</Text>
                 </TouchableOpacity>
                 
-            </View>
+            </ScrollView>
         );
     }
 }
 
 const styles = StyleSheet.create({
     backgroundContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
+
         width: "100%",
         height: "100%",
         backgroundColor: "#F2F1EF"
@@ -127,8 +130,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: "80%",
-        height: "60%",
-        marginBottom: "20%",
+        height: "70%",
+        margin: "10%",
+        marginBottom: "10%",
         backgroundColor: "white",
         shadowColor: "#000",
         shadowOffset: {
@@ -140,41 +144,33 @@ const styles = StyleSheet.create({
         elevation: 8,
     },
     containertitle: {
+        margin: "5%",
         alignItems: 'flex-start',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: "3%",
-        marginBottom: "10%",
         width: "90%"
     },
     containertable: {
+        margin: "5%",
         flexDirection: 'column',
         justifyContent: 'space-between',
         width: "90%",
-        height: "60%",
-        marginBottom: "1.5%",
+        height: "75%",
     },
     containerinput: {
         borderWidth: 0.5,
         borderColor: 'black',
         width: "100%",
-        height: "23%"
+        height: "19%"
     },
-    containerdate: {
-        borderWidth: 0.5,
-        borderColor: 'black',
-        width: "90%",
-        height: "15%",
-        
-    },
-    TextInput: {
-        height: "15%"
-    },
+
+
 
     containerItem: {
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: "5%",
+        margin: "10%",
         width: "80%",
         height: "8%",
         backgroundColor: "#F37021",
