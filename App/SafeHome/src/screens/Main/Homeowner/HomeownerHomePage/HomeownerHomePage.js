@@ -6,16 +6,48 @@ import ApplyCasePage_1 from './ApplyCasePage-1';
 import ApplyCasePage_2 from './ApplyCasePage-2';
 import RecordPage from './RecordPage';
 import qs from 'qs';
-
-
+const cheerio = require('react-native-cheerio');
+const htmlparser2 = require('htmlparser2-without-node-native');
 
 
 class Name extends Component {  
+    constructor(props) {
+        super(props);
+        this.state = {
+            userName: ""
+        }
+        this.getHomeownerName();
+    }
+    getHomeownerName = () => {
+        fetch('http://luffy.ee.ncku.edu.tw:13728/home/getHomeownername/', { //發送HTTP post request提交表單
+            credentials: 'include', //same-origin cookie
+        })
+            .then((response) => {
+                return response.text(); //取得網頁的原始碼
+            })
+            .catch((err) => {
+                Alert.alert("", err.message);
+            })
+            .then((text) => {
+                return htmlparser2.parseDOM(text); //轉換成html
+            })
+            .then((dom) => {
+                let $ = cheerio.load(dom); //constructor
+                let status = $('p').attr("class"); // Get class is success or error
+                console.log($('p').text());
+                if(status === 'success') {     
+                    this.setState({userName: $('p.success').text()});
+                }
+                else if (status === 'error') {
+                    this.setState({userName: ""});
+                }
+            })     
+    }
     render() {
         return (
             <View>
                 <Text style={{ color: "#F37021", fontSize: 50 }}>
-                    {this.props.name} <Text style={{ color: "#BBBBBB", fontSize: 30 }}> 您好</Text>
+                    {this.state.userName } <Text style={{ color: "#BBBBBB", fontSize: 30 }}>您好</Text>
                 </Text>
             </View>
         );
