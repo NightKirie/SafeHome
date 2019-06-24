@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Alert } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import { fromRight } from 'react-navigation-transitions';
 import UnprogressedCasePage from './UnprogressedCasePage';
@@ -9,13 +9,49 @@ import BasicData from './ProgressingCasePage/ProgressingCaseInformationPage/Basi
 import AddFloorPlan from './ProgressingCasePage/ProgressingCaseInformationPage/AddFloorPlan';
 import RecordPicture from './ProgressingCasePage/ProgressingCaseInformationPage/RecordPicture';
 import HistoryCasePage from './HistoryCasePage';
+import qs from 'qs';
+
+const cheerio = require('react-native-cheerio');
+const htmlparser2 = require('htmlparser2-without-node-native');
 
 class Name extends Component {  
+    constructor(props) {
+        super(props);
+        this.state = {
+            userName: ""
+        }
+        this.getVolunteerName();
+    }
+    getVolunteerName = () => {
+        fetch('http://luffy.ee.ncku.edu.tw:13728/home/getvolunteername/', { //發送HTTP post request提交表單
+            credentials: 'include', //same-origin cookie
+        })
+            .then((response) => {
+                return response.text(); //取得網頁的原始碼
+            })
+            .catch((err) => {
+                Alert.alert("", err.message);
+            })
+            .then((text) => {
+                return htmlparser2.parseDOM(text); //轉換成html
+            })
+            .then((dom) => {
+                let $ = cheerio.load(dom); //constructor
+                let status = $('p').attr("class"); // Get class is success or error
+                console.log($('p').text());
+                if(status === 'success') {     
+                    this.setState({userName: $('p.success').text()});
+                }
+                else if (status === 'error') {
+                    this.setState({userName: ""});
+                }
+            })     
+    }
     render() {
         return (
             <View>
                 <Text style={{ color: "#F37021", fontSize: 50 }}>
-                    {this.props.name } <Text style={{ color: "#BBBBBB", fontSize: 30 }}>您好</Text>
+                    {this.state.userName } <Text style={{ color: "#BBBBBB", fontSize: 30 }}>您好</Text>
                 </Text>
             </View>
         );
@@ -161,7 +197,7 @@ const VolunteerHomePageStackNavigation = createStackNavigator({
     RecordPicture: {
         screen: RecordPicture,
         navigationOptions: {
-            headerTitle: "建築平面圖",
+            headerTitle: "劣化照片紀錄",
             headerTitleStyle: { flex: 2, textAlign: "center", },
             headerTintColor: "#F37021",
             headerRight: (<Image
@@ -174,7 +210,7 @@ const VolunteerHomePageStackNavigation = createStackNavigator({
     HistoryCasePage: {
         screen: HistoryCasePage,
         navigationOptions: {
-            headerTitle: "劣化照片紀錄",
+            headerTitle: "歷史紀錄",
             headerTitleStyle: { flex: 2, textAlign: "center", },
             headerTintColor: "#F37021",
             headerRight: (<Image
