@@ -14,7 +14,7 @@ import shutil
 
 
 today = ""
-count = 0
+count = 50
 
 
 @group_required('HouseOwner', 'Volunteer')
@@ -25,8 +25,8 @@ def home(request):
 
 @group_required('HouseOwner', 'Volunteer')
 def upload(request):
-    address = nullInputHandle(request.POST.get("county"), 1) + nullInputHandle(request.POST.get("district"), 1) + nullInputHandle(request.POST.get("road"), 1) + nullInputHandle(request.POST.get("section"), 1) + nullInputHandle(request.POST.get("lane"), 1) + nullInputHandle(request.POST.get("alley"), 1) + nullInputHandle(request.POST.get("number"), 1) + nullInputHandle(request.POST.get("numberD"), 1) + nullInputHandle(request.POST.get("floor"), 1) + nullInputHandle(request.POST.get("floorD"), 1) + nullInputHandle(request.POST.get("room"), 1)
-
+#    address = nullInputHandle(request.POST.get("county"), 1) + nullInputHandle(request.POST.get("district"), 1) + nullInputHandle(request.POST.get("road"), 1) + nullInputHandle(request.POST.get("section"), 1) + nullInputHandle(request.POST.get("lane"), 1) + nullInputHandle(request.POST.get("alley"), 1) + nullInputHandle(request.POST.get("number"), 1) + nullInputHandle(request.POST.get("numberD"), 1) + nullInputHandle(request.POST.get("floor"), 1) + nullInputHandle(request.POST.get("floorD"), 1) + nullInputHandle(request.POST.get("room"), 1)
+    address = nullInputHandle(request.POST.get("county"), 1) + nullInputHandle(request.POST.get("district"), 1) + nullInputHandle(request.POST.get("address"), 1)
     if Case.objects.filter(address=address):
         if Case.objects.filter(name=request.POST.get("name")):
             return HttpResponse('<p class="error" id="caseExists">case exists</p>')
@@ -43,15 +43,24 @@ def upload(request):
                                 addressLongitude=request.POST.get("lng"),
                                 addressCounty=nullInputHandle(request.POST.get("county"), 0),
                                 addressDistrict=nullInputHandle(request.POST.get("district"), 0),
-                                addressRoad=nullInputHandle(request.POST.get("road"), 0),
-                                addressSection=nullInputHandle(request.POST.get("section"), 0),
-                                addressLane=nullInputHandle(request.POST.get("lane"), 0),
-                                addressAlley=nullInputHandle(request.POST.get("alley"), 0),
-                                addressNumber=nullInputHandle(request.POST.get("number"), 0),
-                                addressNumberD=nullInputHandle(request.POST.get("numberD"), 0),
-                                addressFloor=nullInputHandle(request.POST.get("floor"), 0),
-                                addressFloorD=nullInputHandle(request.POST.get("floorD"), 0),
-                                addressRoom=nullInputHandle(request.POST.get("room"), 0),
+#                                addressRoad=nullInputHandle(request.POST.get("road"), 0),
+#                                addressSection=nullInputHandle(request.POST.get("section"), 0),
+#                                addressLane=nullInputHandle(request.POST.get("lane"), 0),
+#                                addressAlley=nullInputHandle(request.POST.get("alley"), 0),
+#                                addressNumber=nullInputHandle(request.POST.get("number"), 0),
+#                                addressNumberD=nullInputHandle(request.POST.get("numberD"), 0),
+#                                addressFloor=nullInputHandle(request.POST.get("floor"), 0),
+#                                addressFloorD=nullInputHandle(request.POST.get("floorD"), 0),
+#                                addressRoom=nullInputHandle(request.POST.get("room"), 0),
+                                addressRoad="none",
+                                addressSection="none",
+                                addressLane="none",
+                                addressAlley="none",
+                                addressNumber="none",
+                                addressNumberD="none",
+                                addressFloor="none",
+                                addressFloorD="none",
+                                addressRoom="none",
                                 buildingAge=nullInputHandle(request.POST.get("age"), 0),
                                 buildingType=nullInputHandle(request.POST.get("type"), 0),
                                 buildingFloors=nullInputHandle(request.POST.get("floors"), 0),
@@ -67,7 +76,7 @@ def upload(request):
                 return HttpResponse('<p class="error" id="unknown">application failed</p>')
 
             path = os.path.abspath('.') + "/check/casefiles/case" + case.SN
-            CaseFiles.objects.create(SN=case.SN, address=case.address, path=path)
+            CaseFiles.objects.create(SN=case.SN, address=case.address, path=path, jpegCount=0, pngCount=0)
 
             if os.path.exists(path):
                 shutil.rmtree(path)
@@ -94,15 +103,24 @@ def upload(request):
                             addressLongitude=request.POST.get("lng"),
                             addressCounty=nullInputHandle(request.POST.get("county"), 0),
                             addressDistrict=nullInputHandle(request.POST.get("district"), 0),
-                            addressRoad=nullInputHandle(request.POST.get("road"), 0),
-                            addressSection=nullInputHandle(request.POST.get("section"), 0),
-                            addressLane=nullInputHandle(request.POST.get("lane"), 0),
-                            addressAlley=nullInputHandle(request.POST.get("alley"), 0),
-                            addressNumber=nullInputHandle(request.POST.get("number"), 0),
-                            addressNumberD=nullInputHandle(request.POST.get("numberD"), 0),
-                            addressFloor=nullInputHandle(request.POST.get("floor"), 0),
-                            addressFloorD=nullInputHandle(request.POST.get("floorD"), 0),
-                            addressRoom=nullInputHandle(request.POST.get("room"), 0),
+#                            addressRoad=nullInputHandle(request.POST.get("road"), 0),
+#                            addressSection=nullInputHandle(request.POST.get("section"), 0),
+#                            addressLane=nullInputHandle(request.POST.get("lane"), 0),
+#                            addressAlley=nullInputHandle(request.POST.get("alley"), 0),
+#                            addressNumber=nullInputHandle(request.POST.get("number"), 0),
+#                            addressNumberD=nullInputHandle(request.POST.get("numberD"), 0),
+#                            addressFloor=nullInputHandle(request.POST.get("floor"), 0),
+#                            addressFloorD=nullInputHandle(request.POST.get("floorD"), 0),
+#                            addressRoom=nullInputHandle(request.POST.get("room"), 0),
+                            addressRoad="none",
+                            addressSection="none",
+                            addressLane="none",
+                            addressAlley="none",
+                            addressNumber="none",
+                            addressNumberD="none",
+                            addressFloor="none",
+                            addressFloorD="none",
+                            addressRoom="none",
                             buildingAge=nullInputHandle(request.POST.get("age"), 0),
                             buildingType=nullInputHandle(request.POST.get("type"), 0),
                             buildingFloors=nullInputHandle(request.POST.get("floors"), 0),
@@ -118,7 +136,7 @@ def upload(request):
             return HttpResponse('<p class="error" id="unknown">application failed</p>')
 
         path = os.path.abspath('.') + "/check/casefiles/case" + case.SN
-        CaseFiles.objects.create(SN=case.SN, address=case.address, path=path)
+        CaseFiles.objects.create(SN=case.SN, address=case.address, path=path, jpegCount=0, pngCount=0)
 
         if os.path.exists(path):
             shutil.rmtree(path)

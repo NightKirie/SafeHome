@@ -15,7 +15,8 @@
       Longitude:<input name="lng" type="number"><br>
       County/City:<input name="county" type="text"><br>
       Town/Village/City/District:<input name="district" type="text"><br>
-      Road:<input name="road" type="text"><br>
+      Address:<input name="address" type="text"><br>
+      <!--Road:<input name="road" type="text"><br>
       Section:<input name="section" type="text"><br>
       Lane:<input name="lane" type="text"><br>
       Alley:<input name="alley" type="text"><br>
@@ -23,7 +24,7 @@
       -number:<input name="numberD" type="text"><br>
       Floor:<input name="floor" type="text"><br>
       -floor:<input name="floorD" type="text"><br>
-      Room:<input name="room" type="text"><br>
+      Room:<input name="room" type="text"><br><-->
       Building age:<input name="age" type="text"><br>
       Building type:<input name="type" type="text"><br>
       Building floors:<input name="floors" type="text"><br>
@@ -32,95 +33,5 @@
       <h1 class="apply" id="applyResult"></h1>
     </form>
     <a href="/check/personal/showappliedcases/">Show applied cases</a><br>
-
-    <!--form action="./modify/" method="post" class="modify">
-      {% csrf_token %}
-      SN:<input name="sn" type="text"><br>
-      Name:<input name="name" type="text"><br>
-      LineID:<input name="lineID" type="text"><br>
-      Phone number:<input name="phone" type="text"><br>
-      Relation:<input name="relation" type="text"><br>
-      Wish date:<input name="date" type="text"><br>
-      County/City:<input name="county" type="text"><br>
-      Town/Village/City/District:<input name="district" type="text"><br>
-      Road:<input name="road" type="text"><br>
-      Section:<input name="section" type="text"><br>
-      Lane:<input name="lane" type="text"><br>
-      Alley:<input name="alley" type="text"><br>
-      Number:<input name="number" type="text"><br>
-      -number:<input name="numberD" type="text"><br>
-      Floor:<input name="floor" type="text"><br>
-      -floor:<input name="floorD" type="text"><br>
-      Room:<input name="room" type="text"><br>
-      Building age:<input name="age" type="text"><br>
-      Building type:<input name="type" type="text"><br>
-      Building floors:<input name="floors" type="text"><br>
-      Remarks:<input name="remarks" type="text"><br>
-      <button type="submit" id="modifySubmit">modify</button><br>
-      <h1 class="apply" id="modifyResult"></h1>
-    </form-->
-
-
-
-    <!--script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script>
-      $(document).ready(function(){
-        $('#applySubmit').click((event)=>{ 
-          event.preventDefault()
-          $.get('./upload',{
-            name:$('.apply input[name="name"]').val(),
-            LineID:$('.apply input[name="lineid"]').val(),
-            phone:$('.apply input[name="phone"]').val(),
-            relation:$('.apply input[name="relation"]').val(),
-            date:$('.apply input[name="date"]').val(),
-            county:$('.apply input[name="county"]').val(),
-            district:$('.apply input[name="district"]').val(),
-            road:$('.apply input[name="road"]').val(),
-            section:$('.apply input[name="section"]').val(),
-            lane:$('.apply input[name="lane"]').val(),
-            alley:$('.apply input[name="alley"]').val(),
-            number:$('.apply input[name="number"]').val(),
-            numberD:$('.apply input[name="numberD"]').val(),
-            floor:$('.apply input[name="floor"]').val(),
-            floorD:$('.apply input[name="floorD"]').val(),
-            room:$('.apply input[name="room"]').val(),
-            age:$('.apply input[name="age"]').val(),
-            type:$('.apply input[name="type"]').val(),
-            floors:$('.apply input[name="floors"]').val(),
-            remarks:$('.apply input[name="remarks"]').val()
-          }, (data)=>{
-            $("#applyResult").text(data)
-          })
-        })
-        $('#modifySubmit').click((event)=>{ 
-          event.preventDefault()
-          $.get('./modify',{
-            sn:$('.modify input[name="sn"]').val(),
-            name:$('.modify input[name="name"]').val(),
-            LineID:$('.modify input[name="lineid"]').val(),
-            phone:$('.modify input[name="phone"]').val(),
-            relation:$('.modify input[name="relation"]').val(),
-            date:$('.modify input[name="date"]').val(),
-            county:$('.modify input[name="county"]').val(),
-            district:$('.modify input[name="district"]').val(),
-            road:$('.modify input[name="road"]').val(),
-            section:$('.modify input[name="section"]').val(),
-            lane:$('.modify input[name="lane"]').val(),
-            alley:$('.modify input[name="alley"]').val(),
-            number:$('.modify input[name="number"]').val(),
-            numberD:$('.modify input[name="numberD"]').val(),
-            floor:$('.modify input[name="floor"]').val(),
-            floorD:$('.modify input[name="floorD"]').val(),
-            room:$('.modify input[name="room"]').val(),
-            age:$('.modify input[name="age"]').val(),
-            type:$('.modify input[name="type"]').val(),
-            floors:$('.modify input[name="floors"]').val(),
-            remarks:$('.modify input[name="remarks"]').val()
-          }, (data)=>{
-          $("#modifyResult").text(data)
-          })
-        })
-      })
-    </script-->
   </body>
 </html>
