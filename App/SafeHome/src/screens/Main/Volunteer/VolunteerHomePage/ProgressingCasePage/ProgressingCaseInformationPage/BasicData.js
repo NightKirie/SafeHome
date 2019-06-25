@@ -41,15 +41,20 @@ class BasicData extends Component {
             let data = this.state;
             delete data['isDateTimePickerVisible'];
             await AsyncStorage.setItem(this.props.navigation.state.params.caseSN, JSON.stringify({sn: this.props.navigation.state.params.caseSN, ...data}));
+            Alert.alert("", "儲存成功！");
+            this.props.navigation.navigate("ProgressingCaseInformationPage");
+
         } catch (error) {
             Alert.alert("", error);
+            this.props.navigation.navigate("ProgressingCaseInformationPage");
         }
     }
 
     ignoreAndBack = async() => {
         try {
-            const value = await AsyncStorage.getItem(this.props.navigation.state.params.caseSN);
+            this.props.navigation.navigate("ProgressingCaseInformationPage");
         } catch (error) {
+            this.props.navigation.navigate("ProgressingCaseInformationPage");
             Alert.alert("", error);
         }
     }
@@ -78,7 +83,7 @@ class BasicData extends Component {
                         <TouchableOpacity style={{ flex: 1, justifyContent: 'center', borderBottomWidth: 1, borderBottomColor: "#BBBBBB", marginHorizontal: "3%" }} onPress={this.showDateTimePicker}>
                             <View style={{}}>
                                 <Text style={{ fontSize: 18, color: "#BBBBBB" }}>
-                                    {this.state.date}
+                                {(this.state.date === "") ?  "勘察日期" : (this.state.date)}
                                 </Text>
                             </View>
                         </TouchableOpacity>

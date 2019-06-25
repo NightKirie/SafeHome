@@ -146,7 +146,7 @@ class ProgressingCasePage extends Component {
                     <ListView
                         dataSource={this.dataSource.cloneWithRows(this.state.dataList)}
                         renderRow={(rowData) =>
-                            <TouchableOpacity style={styles.caseitemContainer}
+                            <TouchableOpacity style={styles.caseItemContainer}
                                 onPress={() => this.getProgressingCaseSpec(rowData.sn)}>
                                 <View style={{ alignItems: "center", justifyContent: "center" }}>
                                     <Text style={{ fontSize: 35, color: "#BBBBBB", textAlign: "center" }}>{rowData.name}</Text>
@@ -167,6 +167,9 @@ class ProgressingCasePage extends Component {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
         alignItems: 'center',
         width: "100%",
         height: "100%",
@@ -176,25 +179,20 @@ const styles = StyleSheet.create({
         bottom: 0,
         zIndex: 0,
         backgroundColor: "#F2F1EF",
-        marginBottom: "2%",
     },
     caseContainer: {
+        marginTop: "5%",
         position: "relative",
-        height: "100%",
-        width: "100%",
-        marginTop: "5%"
+        width: "90%",
     },
-    caseitemContainer: {
-        marginHorizontal: "5%",
-        marginTop: "1%",
-        borderColor: "#DCDCDC",
+    caseItemContainer: {
+        paddingTop: "3%",
+        paddingBottom: "5%",
+        paddingHorizontal: "5%",
         flexDirection: "row",
         justifyContent: 'space-between',
-        alignItems: 'center',
+        margin: 10,
         backgroundColor: "white",
-        paddingVertical: "3%",
-        paddingLeft: "5%",
-        paddingRight: "3%",
     },
 })
 export default ProgressingCasePage;

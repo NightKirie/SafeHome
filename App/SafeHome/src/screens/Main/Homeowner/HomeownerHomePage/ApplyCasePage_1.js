@@ -107,7 +107,7 @@ class ApplyCasePage extends Component {
                                 color="white"
                                 onPress={this.showDateTimePicker}
                                 border='none'>
-                                <View style={{ margin: "4%" }}><Text style={{ color: "#BBBBBB", fontSize: 15 }}>希望的勘查日期</Text></View>
+                                <View style={{ margin: "4%" }}><Text style={{ color: "#BBBBBB", fontSize: 15 }}>{(this.state.date === "") ?  "希望勘察之日期" : (this.state.date)}</Text></View>
                             </TouchableOpacity>
 
                             <DateTimePicker

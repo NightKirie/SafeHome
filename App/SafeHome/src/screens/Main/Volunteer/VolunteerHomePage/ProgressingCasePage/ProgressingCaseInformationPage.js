@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, } from 'react-native';
+import { StyleSheet, Text, View, AsyncStorage, Alert } from 'react-native';
 import { Button, } from 'react-native-elements';
 import call from 'react-native-phone-call';
 
@@ -10,6 +10,7 @@ class ProgressingCaseInformationPage extends Component {
     };
     
     makeCall = () => {
+        this.ignoreAndBack();
         let number = this.props.navigation.state.params.casePhoneNum;
         if(number.charAt(0) === '0')
             number = number.substr(1);
@@ -18,6 +19,15 @@ class ProgressingCaseInformationPage extends Component {
             prompt: false,
         };
         call(args).catch(console.error);
+    }
+
+    ignoreAndBack = async() => {
+        try {
+            this.props.navigation.navigate("ProgressingCaseInformationPage");
+        } catch (error) {
+            this.props.navigation.navigate("ProgressingCaseInformationPage");
+            Alert.alert("", error);
+        }
     }
 
     render() {

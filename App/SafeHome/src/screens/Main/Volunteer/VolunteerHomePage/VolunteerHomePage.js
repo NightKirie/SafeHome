@@ -7,6 +7,7 @@ import ProgressingCasePage from './ProgressingCasePage/ProgressingCasePage';
 import ProgressingCaseInformationPage from './ProgressingCasePage/ProgressingCaseInformationPage';
 import BasicData from './ProgressingCasePage/ProgressingCaseInformationPage/BasicData';
 import AddFloorPlan from './ProgressingCasePage/ProgressingCaseInformationPage/AddFloorPlan';
+import FloorPlan from './ProgressingCasePage/ProgressingCaseInformationPage/FloorPlan'
 import RecordPicture from './ProgressingCasePage/ProgressingCaseInformationPage/RecordPicture';
 import HistoryCasePage from './HistoryCasePage';
 import qs from 'qs';
@@ -184,6 +185,18 @@ const VolunteerHomePageStackNavigation = createStackNavigator({
     },
     AddFloorPlan: {
         screen: AddFloorPlan,
+        navigationOptions: {
+            headerTitle: "建築平面圖",
+            headerTitleStyle: { flex: 2, textAlign: "center", },
+            headerTintColor: "#F37021",
+            headerRight: (<Image
+                source={require('../../../../../assets/img/help-circle.png')}
+                style={{ height: 25, width: 25, tintColor: "#F37021", margin: 3 }}
+            />)
+        }
+    },
+    FloorPlan: {
+        screen: FloorPlan,
         navigationOptions: {
             headerTitle: "建築平面圖",
             headerTitleStyle: { flex: 2, textAlign: "center", },
