@@ -14,8 +14,8 @@ class FloorPlan extends Component {
 
     storeAndBack = async () => {   
         try {
-            //const data = await AsyncStorage.getItem(this.props.navigation.state.params.caseSN);
-            //await AsyncStorage.setItem(this.props.navigation.state.params.caseSN, JSON.stringify({...data, [`floorPic${this.props.navigation.state.params.floorPlanNum}`]: this.state.floorPlanPic }));
+            const data = await AsyncStorage.getItem(this.props.navigation.state.params.caseSN);
+            await AsyncStorage.setItem(this.props.navigation.state.params.caseSN, JSON.stringify({...JSON.parse(data), [`floorPic${this.props.navigation.state.params.floorPlanNum}`]: this.state.floorPlanPic }));
             Alert.alert("", "儲存成功！");
             this.props.navigation.navigate("AddFloorPlan", {newFloorPlanNum: (this.props.navigation.state.params.floorPlanNum+1)});
 

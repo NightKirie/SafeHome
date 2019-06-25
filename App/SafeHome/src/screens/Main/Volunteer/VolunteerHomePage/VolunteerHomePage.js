@@ -9,6 +9,7 @@ import BasicData from './ProgressingCasePage/ProgressingCaseInformationPage/Basi
 import AddFloorPlan from './ProgressingCasePage/ProgressingCaseInformationPage/AddFloorPlan';
 import FloorPlan from './ProgressingCasePage/ProgressingCaseInformationPage/FloorPlan'
 import RecordPicture from './ProgressingCasePage/ProgressingCaseInformationPage/RecordPicture';
+import TakePic from './ProgressingCasePage/ProgressingCaseInformationPage/TakePic';
 import HistoryCasePage from './HistoryCasePage';
 import qs from 'qs';
 
@@ -209,6 +210,18 @@ const VolunteerHomePageStackNavigation = createStackNavigator({
     },
     RecordPicture: {
         screen: RecordPicture,
+        navigationOptions: {
+            headerTitle: "劣化照片紀錄",
+            headerTitleStyle: { flex: 2, textAlign: "center", },
+            headerTintColor: "#F37021",
+            headerRight: (<Image
+                source={require('../../../../../assets/img/help-circle.png')}
+                style={{ height: 25, width: 25, tintColor: "#F37021", margin: 3 }}
+            />)
+        }
+    },
+    TakePic: {
+        screen: TakePic,
         navigationOptions: {
             headerTitle: "劣化照片紀錄",
             headerTitleStyle: { flex: 2, textAlign: "center", },

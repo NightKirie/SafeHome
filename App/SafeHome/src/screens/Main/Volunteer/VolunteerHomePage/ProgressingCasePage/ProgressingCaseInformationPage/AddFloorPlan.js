@@ -22,9 +22,7 @@ class AddFloorPlan extends Component {
 
 
     addNewFloorPlan = () => {
-        this.props.navigation.navigate('FloorPlan', { caseSN: this.props.navigation.state.params.caseSN, floorPlanNum: this.state.floorPlanNum })
-        // .then()
-        
+        this.props.navigation.navigate('FloorPlan', { caseSN: this.props.navigation.state.params.caseSN, floorPlanNum: this.state.floorPlanNum })        
     }
 
     updatePlanFloorList = () => {
@@ -75,9 +73,6 @@ class AddFloorPlan extends Component {
 
     }
 
-    willFocus() {
-        console.log(this.props.navigation.state.params.floorPlanNum)
-    }
 
     render() {
         const willFocusSubscription = this.props.navigation.addListener(
