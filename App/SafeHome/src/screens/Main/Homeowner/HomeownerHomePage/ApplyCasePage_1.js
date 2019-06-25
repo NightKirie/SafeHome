@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Picker, TextInput, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Picker, TextInput, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import DateTimePicker from "react-native-modal-datetime-picker";
 /*  套件：
@@ -8,10 +8,10 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 react-native link react-native-maps
 npm install --save react-native-geocoder
 react-native link react-native-geocoder
-*/ 
+*/
 
 class ApplyCasePage extends Component {
-    
+
 
 
     constructor(props) {
@@ -21,30 +21,41 @@ class ApplyCasePage extends Component {
             lineID: '',
             phone: '',
             relation: '',
+            date: '',
             isDateTimePickerVisible: false
         }
     };
 
-      showDateTimePicker = () => {
+    showDateTimePicker = () => {
         this.setState({ isDateTimePickerVisible: true });
-      };
-     
-      hideDateTimePicker = () => {
+    };
+
+    hideDateTimePicker = () => {
         this.setState({ isDateTimePickerVisible: false });
-      };
-     
-      handleDatePicked = date => {
+    };  
+
+    handleDatePicked = date => {
         console.log("A date has been picked: ", date);
+        this.setState({ 
+            date: date.getFullYear() + '/' +
+                  (date.getMonth()+1) + '/' +
+                  date.getDate()}, ()=>{console.log(this.state.date)});
         this.hideDateTimePicker();
-      };
-      
+    };
+
+    nextStep = () => {
+        let dataPass = this.state;
+        delete dataPass['isDateTimePickerVisible'];
+        this.props.navigation.navigate("ApplyCasePage_2", dataPass);
+    }
+
     render() {
         return (
             <ScrollView style={styles.backgroundContainer}>
                 <View style={styles.container}>
                     <View style={styles.containertitle}>
-                        <View><Text style={{textAlign:'left', color: "#BBBBBB", fontSize: 30}}>基本資料</Text></View>
-                        <View><Text style={{textAlign:'right', color: "#BBBBBB", fontSize: 30}}>1/2</Text></View>
+                        <View><Text style={{ textAlign: 'left', color: "#BBBBBB", fontSize: 30 }}>基本資料</Text></View>
+                        <View><Text style={{ textAlign: 'right', color: "#BBBBBB", fontSize: 30 }}>1/2</Text></View>
                     </View>
                     <View style={styles.containertable}>
                         <View style={styles.containerinput}>
@@ -52,7 +63,7 @@ class ApplyCasePage extends Component {
                                 placeholder={" 姓名"}
                                 value={this.state.name}
                                 onChangeText={(name) => {
-                                    this.setState({name : name});
+                                    this.setState({ name: name });
                                 }}
                             />
                         </View>
@@ -62,58 +73,59 @@ class ApplyCasePage extends Component {
                                 placeholder={" LINE ID"}
                                 value={this.state.lineID}
                                 onChangeText={(lineID) => {
-                                    this.setState({lineID : lineID});}}
+                                    this.setState({ lineID: lineID });
+                                }}
                             />
                         </View>
 
-                        <View style={ styles.containerinput }>
+                        <View style={styles.containerinput}>
                             <TextInput
                                 placeholder={" 電話/手機號碼"}
                                 value={this.state.phone}
                                 onChangeText={(phone) => {
-                                    this.setState({phone : phone.replace(/[^0-9]/g, '')});}}
+                                    this.setState({ phone: phone.replace(/[^0-9]/g, '') });
+                                }}
                                 keyboardType='phone-pad'
                             />
                         </View>
-                        
-                        <View style={ styles.containerinput }>
-                            <Picker 
+
+                        <View style={styles.containerinput}>
+                            <Picker
                                 selectedValue={this.state.relation}
                                 onValueChange={(itemValue, itemIndex) =>
-                                    this.setState({relation: itemValue})
+                                    this.setState({ relation: itemValue })
                                 }>
-                                <Picker.Item color='#BBBBBB' label="與屋主關係" value="" />  
+                                <Picker.Item color='#BBBBBB' label="與屋主關係" value="" />
                                 <Picker.Item color='#BBBBBB' label="本人" value="本人" />
                                 <Picker.Item color='#BBBBBB' label="家屬" value="家屬" />
                                 <Picker.Item color='#BBBBBB' label="房客" value="房客" />
                                 <Picker.Item color='#BBBBBB' label="其他" value="其他" />
                             </Picker>
                         </View>
-                        <View style={ styles.containerinput }>
-                        <TouchableOpacity
-                            
-                            color= "white"
-                            onPress={this.showDateTimePicker} 
-                            border= 'none'>
-                            <View style={{margin:"4%"}}><Text style={{color: "#BBBBBB", fontSize: 15}}>希望的勘查日期</Text></View>
-                        </TouchableOpacity>
-                         
-                        <DateTimePicker
-                            locale='zh'
-                            isVisible={this.state.isDateTimePickerVisible}
-                            onConfirm={this.handleDatePicked}
-                            onCancel={this.hideDateTimePicker}
-                        />
+                        <View style={styles.containerinput}>
+                            <TouchableOpacity
+                                color="white"
+                                onPress={this.showDateTimePicker}
+                                border='none'>
+                                <View style={{ margin: "4%" }}><Text style={{ color: "#BBBBBB", fontSize: 15 }}>希望的勘查日期</Text></View>
+                            </TouchableOpacity>
+
+                            <DateTimePicker
+                                locale='zh'
+                                isVisible={this.state.isDateTimePickerVisible}
+                                onConfirm={this.handleDatePicked}
+                                onCancel={this.hideDateTimePicker}
+                            />
                         </View>
                     </View>
-                    
-                    
+
+
                 </View>
                 <TouchableOpacity style={styles.containerItem}
-                    onPress={() => this.props.navigation.navigate('ApplyCasePage_2')}>
-                    <Text style={{marginTop: "5%",color: "white", fontSize: 20}}>下一步</Text>
+                    onPress={() => this.nextStep()}>
+                    <Text style={{ marginTop: "5%", color: "white", fontSize: 20 }}>下一步</Text>
                 </TouchableOpacity>
-                
+
             </ScrollView>
         );
     }

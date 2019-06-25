@@ -6,6 +6,8 @@ import {
     ActivityIndicator,
     Image,
     TouchableOpacity,
+    AsyncStorage, 
+    Alert
 } from "react-native";
 
 class AddFloorPlan extends Component {
@@ -17,7 +19,16 @@ class AddFloorPlan extends Component {
         };
     }
 
+    ignoreAndBack = async() => {
+        try {
+            const value = await AsyncStorage.getItem(this.props.navigation.state.params.caseSN);
+        } catch (error) {
+            Alert.alert("", error);
+        }
+    }
+
     addNewFloorPlan = () => {
+        this.ignoreAndBack();
         this.setState((prevState, props) => ({
                 floorPlanNum: prevState.floorPlanNum + 1
             }), 

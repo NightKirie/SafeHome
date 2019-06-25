@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, } from 'react-native';
 import { Button, } from 'react-native-elements';
-
+import call from 'react-native-phone-call';
 
 
 class ProgressingCaseInformationPage extends Component {
@@ -9,6 +9,17 @@ class ProgressingCaseInformationPage extends Component {
         super();
     };
     
+    makeCall = () => {
+        let number = this.props.navigation.state.params.casePhoneNum;
+        if(number.charAt(0) === '0')
+            number = number.substr(1);
+        const args = {
+            number: "+886" + number,
+            prompt: false,
+        };
+        call(args).catch(console.error);
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -41,7 +52,8 @@ class ProgressingCaseInformationPage extends Component {
                             </Text>
                         </View>
                         <View style={{ alignItems: "flex-end" }}>
-                            <Button title={"打電話"}
+                            <Button title={"致電"}
+                                onPress={() => this.makeCall()}
                                 buttonStyle={{ backgroundColor: "white" }}
                                 containerStyle={{ borderWidth: 1, borderColor: "#F37021" }}
                                 titleStyle={{ color: "#F37021" }} />
@@ -49,13 +61,13 @@ class ProgressingCaseInformationPage extends Component {
                     </View>
                     <Button
                         title={"1. 基本資料表單"}
-                        onPress={() => this.props.navigation.navigate("BasicData")}
+                        onPress={() => this.props.navigation.navigate("BasicData", this.props.navigation.state.params)}
                         buttonStyle={{ backgroundColor: "white" }}
                         containerStyle={{ borderWidth: 1, borderColor: "#BBBBBB", alignItems: "flex-start", marginTop: "8%", borderRadius: 0 }}
                         titleStyle={{ color: "#BBBBBB" }} />
                     <Button
                         title={"2. 建築平面圖"}
-                        onPress={() => this.props.navigation.navigate("AddFloorPlan")}
+                        onPress={() => this.props.navigation.navigate("AddFloorPlan", this.props.navigation.state.params)}
                         buttonStyle={{ backgroundColor: "white" }}
                         containerStyle={{ borderWidth: 1, borderColor: "#BBBBBB", alignItems: "flex-start", marginTop: "5%", borderRadius: 0 }}
                         titleStyle={{ color: "#BBBBBB" }} />
