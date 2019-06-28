@@ -14,7 +14,7 @@ import shutil
 
 
 today = ""
-count = 50
+count = 0
 
 
 @group_required('HouseOwner', 'Volunteer')
