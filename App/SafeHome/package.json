@@ -14,7 +14,7 @@
     "path": "^0.12.7",
     "qs": "^6.7.0",
     "react": "16.8.3",
-    "react-native": "0.59.8",
+    "react-native": "0.62.3",
     "react-native-camera": "^2.11.0",
     "react-native-cheerio": "^1.0.0-rc.4",
     "react-native-elements": "^1.1.0",
