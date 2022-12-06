@@ -12,7 +12,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.8.2",
     "htmlparser2-without-node-native": "^3.9.2",
     "path": "^0.12.7",
-    "qs": "^6.7.0",
+    "qs": "^6.7.3",
     "react": "16.8.3",
     "react-native": "0.59.8",
     "react-native-camera": "^2.11.0",
